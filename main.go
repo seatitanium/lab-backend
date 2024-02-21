@@ -3,6 +3,7 @@ package backend
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/handlers/auth"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -18,4 +19,6 @@ func main() {
 	router := gin.New()
 	router.Use(middlewares())
 
+	authGroup := router.Group("/auth")
+	authGroup.POST("register", auth.HandleRegister(Db))
 }
