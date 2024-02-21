@@ -27,7 +27,7 @@ func midfuncAccessControl(ctx *gin.Context) {
 }
 
 func midfuncTokenCheck(ctx *gin.Context) {
-	checkErr := checkJWT(ctx.Request.Header.Get("Token"))
+	checkErr := CheckJWT(ctx.Request.Header.Get("Token"))
 
 	if checkErr != nil {
 		Respond(ctx, false, "Invalid credentials", nil)
