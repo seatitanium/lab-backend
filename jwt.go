@@ -7,9 +7,10 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func genJWT(object map[string]string) (string, error) {
+// 从参数 object 所携带的信息生成一个 JSON Web Token 文本。
+func GenerateJWT(object map[string]string) (string, error) {
 	claims := &jwt.MapClaims{
-		"iss":  "kotoba",
+		"iss":  "seati",
 		"exp":  time.Now().Add(time.Duration(Conf().Token.Expiration) * time.Minute).Unix(),
 		"data": object,
 	}
@@ -24,7 +25,8 @@ func genJWT(object map[string]string) (string, error) {
 	return res, nil
 }
 
-func parseJWT(headerToken string) (*jwt.Token, error) {
+// 尝试将参数中的 JWT 字符串解析为 *jwt.Token
+func ParseJWT(headerToken string) (*jwt.Token, error) {
 	return jwt.Parse(headerToken, func(_token *jwt.Token) (any, error) {
 		if _, ok := _token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", _token.Header["alg"])
@@ -34,8 +36,12 @@ func parseJWT(headerToken string) (*jwt.Token, error) {
 	})
 }
 
-func checkJWT(headerToken string) error {
-	token, err := parseJWT(headerToken)
+// 检查参数中的 JWT 字符串是否有效。按照如下两个方面检查：
+//
+// 1. 是否可以正确解析。
+// 2. 可以正确解析时，是否有效（例如是否过期等）。
+func CheckJWT(headerToken string) error {
+	token, err := ParseJWT(headerToken)
 
 	if err != nil {
 		return err
@@ -48,14 +54,15 @@ func checkJWT(headerToken string) error {
 	return nil
 }
 
-func extractJWT(headerToken string, keys ...string) (map[string]any, error) {
-	checkErr := checkJWT(headerToken)
+// 尝试从参数中的 JWT 字符串中解析出生成时的 Object 内容
+func ExtractJWT(headerToken string) (map[string]any, error) {
+	checkErr := CheckJWT(headerToken)
 
 	if checkErr != nil {
 		return nil, checkErr
 	}
 
-	token, parseErr := parseJWT(headerToken)
+	token, parseErr := ParseJWT(headerToken)
 
 	if parseErr != nil {
 		return nil, checkErr
