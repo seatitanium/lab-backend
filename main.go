@@ -9,7 +9,7 @@ import (
 
 func main() {
 	dbConf := Conf().Database
-	Db, err := sql.Open("mysql", dbConf.User+":"+dbConf.Password+"@"+dbConf.Host+"/"+dbConf.DbName)
+	Db, err := sql.Open("mysql", dbConf.User+":"+dbConf.Password+"@"+dbConf.Host+"/"+dbConf.DbName+"?parseTime=true")
 	utils.MustPanic(err)
 	Db.SetConnMaxLifetime(time.Minute * 3)
 	Db.SetMaxOpenConns(10)
