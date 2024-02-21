@@ -1,9 +1,9 @@
-package lab_backend
+package backend
 
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	"seatimc/lab-backend/utils"
+	"seatimc/backend/utils"
 	"time"
 )
 

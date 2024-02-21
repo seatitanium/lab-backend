@@ -1,9 +1,9 @@
-package lab_backend
+package backend
 
 import (
 	"gopkg.in/yaml.v3"
 	"os"
-	"seatimc/lab-backend/utils"
+	"seatimc/backend/utils"
 )
 
 type ConfigDatabase struct {

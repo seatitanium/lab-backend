@@ -1,4 +1,4 @@
-module seatimc/lab-backend
+module seatimc/backend
 
 go 1.21.6
 

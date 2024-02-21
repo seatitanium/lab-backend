@@ -1,4 +1,4 @@
-package lab_backend
+package backend
 
 import (
 	"github.com/gin-gonic/gin"

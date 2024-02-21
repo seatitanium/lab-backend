@@ -1,3 +1,3 @@
-module seatimc/lab-backend/utils
+module seatimc/backend/utils
 
 go 1.21.6

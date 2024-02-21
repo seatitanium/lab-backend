@@ -1,7 +1,8 @@
-package lab_backend
+package backend
 
 import (
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/utils"
 	"slices"
 )
 
@@ -27,7 +28,7 @@ func midfuncAccessControl(ctx *gin.Context) {
 }
 
 func midfuncTokenCheck(ctx *gin.Context) {
-	checkErr := CheckJWT(ctx.Request.Header.Get("Token"))
+	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
 
 	if checkErr != nil {
 		Respond(ctx, false, "Invalid credentials", nil)

@@ -1,4 +1,4 @@
-module seatimc/lab-backend/handlers/auth
+module seatimc/backend/handlers/auth
 
 go 1.21.6
 
