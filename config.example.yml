@@ -1,0 +1,12 @@
+domain: seati.cc
+allowed-origins:
+  - https://seati.cc
+  - https://lab.seati.cc
+database:
+  host: localhost
+  user: ~
+  password: ~
+  port: 3306
+token:
+  expiration: 1440 # 单位：分钟
+  private-key: ~
