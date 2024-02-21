@@ -33,7 +33,7 @@ func ParseJWT(headerToken string) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", _token.Header["alg"])
 		}
 
-		return []byte(lab_backend.Conf().Token.PrivateKey), nil
+		return []byte(backend.Conf().Token.PrivateKey), nil
 	})
 }
 
