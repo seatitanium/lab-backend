@@ -6,7 +6,7 @@ database:
   host: localhost
   user: ~
   password: ~
-  port: 3306
+  dbname: ~
 token:
   expiration: 1440 # 单位：分钟
   private-key: ~

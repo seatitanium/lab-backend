@@ -3,13 +3,14 @@ package lab_backend
 import (
 	"gopkg.in/yaml.v3"
 	"os"
+	"seatimc/lab-backend/utils"
 )
 
 type ConfigDatabase struct {
 	Host     string `yaml:"host"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
-	Port     string `yaml:"port"`
+	DbName   string `yaml:"dbname"`
 }
 
 type ConfigToken struct {
@@ -27,8 +28,8 @@ type Config struct {
 func Conf() Config {
 	cfg := Config{}
 	cfgFile, err := os.ReadFile("./config.yml")
-	MustPanic(err)
+	utils.MustPanic(err)
 	ymlErr := yaml.Unmarshal([]byte(cfgFile), &cfg)
-	MustPanic(ymlErr)
+	utils.MustPanic(ymlErr)
 	return cfg
 }
