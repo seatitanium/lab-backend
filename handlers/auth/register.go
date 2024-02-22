@@ -11,13 +11,13 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var object RegisterRequest
 		if err := c.BindJSON(&object); err != nil {
-			backend.Respond(c, false, "Invalid Request Body", nil)
+			backend.RespondNg(c, "Invalid Request Body", "", nil)
 			return
 		}
 		tx := db.MustBegin()
 		hash, err := utils.GenerateHash(object.Password)
 		if err != nil {
-			backend.Respond(c, false, "Failed to generate hash for user: "+err.Error(), nil)
+			backend.RespondNg(c, "Failed to generate hash for user: "+err.Error(), "", nil)
 			return
 		}
 		_, err = tx.Exec(
@@ -25,8 +25,9 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 			object.Username, hash, object.MCID, object.Email,
 		)
 		if err != nil {
-			backend.Respond(c, false, "Failed to execute some sql: "+err.Error(), nil)
+			backend.RespondNg(c, "Failed to save user: "+err.Error(), "", nil)
 			return
 		}
+		backend.RespondOk(c, "Registered successfully.", "注册成功", nil)
 	}
 }
