@@ -9,7 +9,7 @@ import (
 )
 
 // 从参数 object 所携带的信息生成一个 JSON Web Token 文本。
-func GenerateJWT(object map[string]string) (string, error) {
+func GenerateJWT(object JWTPayload) (string, error) {
 	claims := &jwt.MapClaims{
 		"iss":  "seati",
 		"exp":  time.Now().Add(time.Duration(backend.Conf().Token.Expiration) * time.Minute).Unix(),
