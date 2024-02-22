@@ -21,4 +21,5 @@ func main() {
 
 	authGroup := router.Group("/auth")
 	authGroup.POST("register", auth.HandleRegister(Db))
+	authGroup.POST("login", auth.HandleLogin(Db))
 }
