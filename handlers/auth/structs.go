@@ -20,3 +20,8 @@ type RegisterRequest struct {
 	Email    string `json:"email"`
 	MCID     string `json:"mcid"`
 }
+
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
