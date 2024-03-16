@@ -1,4 +1,7 @@
 domain: seati.cc
+bind-port: 9090
+version: 0.10
+enable-origin-whitelist: true
 allowed-origins:
   - https://seati.cc
   - https://lab.seati.cc
