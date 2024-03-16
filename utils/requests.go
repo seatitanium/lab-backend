@@ -23,11 +23,16 @@ func Respond(c *gin.Context, ok bool, note string, message string, data any) {
 }
 
 // 向前端返回 JSON 格式的信息，并将操作状态设置为 true
-func RespondOk(c *gin.Context, note string, message string, data any) {
+func ReturnOK(c *gin.Context, note string, message string, data any) {
+	Respond(c, true, note, message, data)
+}
+
+// 向前端返回 JSON 格式的信息，并将操作状态设置为 false，且不携带 data
+func RespondOK(c *gin.Context, note string, message string) {
 	Respond(c, true, note, message, nil)
 }
 
-// 向前端返回 JSON 格式的信息，并将操作状态设置为 false
-func RespondNg(c *gin.Context, note string, message string, data any) {
+// 向前端返回 JSON 格式的信息，并将操作状态设置为 true，且不携带 data
+func RespondNG(c *gin.Context, note string, message string) {
 	Respond(c, false, note, message, nil)
 }

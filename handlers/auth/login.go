@@ -11,7 +11,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 	f := func(ctx *gin.Context) {
 		var object LoginRequest
 		if err := ctx.ShouldBindJSON(&object); err != nil {
-			utils.RespondNg(ctx, "Invalid Request Body", "", nil)
+			utils.RespondNG(ctx, "Invalid Request Body", "")
 			return
 		}
 
@@ -21,7 +21,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 		err := tx.Select(&user, "SELECT * FROM `seati_users` WHERE username=?", object.Username)
 
 		if err != nil {
-			utils.RespondNg(ctx, "Unable to bind user: "+err.Error(), "", nil)
+			utils.RespondNG(ctx, "Unable to bind user: "+err.Error(), "")
 		}
 
 		if utils.VerifyHash([]byte(object.Password), []byte(user.Hash)) {
@@ -31,13 +31,13 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 			})
 
 			if err != nil {
-				utils.RespondNg(ctx, "Unable to create token: "+err.Error(), "", nil)
+				utils.RespondNG(ctx, "Unable to create token: "+err.Error(), "")
 				return
 			}
 
-			utils.RespondOk(ctx, "Logged in successfully.", "登录成功", jwt)
+			utils.ReturnOK(ctx, "Logged in successfully.", "登录成功", jwt)
 		} else {
-			utils.RespondNg(ctx, "Incorrect password.", "", nil)
+			utils.RespondNG(ctx, "Incorrect password.", "")
 		}
 	}
 
