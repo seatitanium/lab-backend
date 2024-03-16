@@ -5,8 +5,8 @@ CREATE TABLE `seati_users`
     `nickname`   VARCHAR(50) DEFAULT NULL,
     `email`      VARCHAR(100) NOT NULL,
     `mcid`       VARCHAR(30)  NOT NULL,
-    `created_at` TIMESTAMP    NOT NULL,
-    `updated_at` TIMESTAMP    NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `hash`       VARCHAR(512) NOT NULL,
     PRIMARY KEY (`id`)
 );
