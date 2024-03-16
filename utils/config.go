@@ -1,9 +1,8 @@
-package backend
+package utils
 
 import (
 	"gopkg.in/yaml.v3"
 	"os"
-	"seatimc/backend/utils"
 )
 
 type ConfigDatabase struct {
@@ -28,8 +27,8 @@ type Config struct {
 func Conf() Config {
 	cfg := Config{}
 	cfgFile, err := os.ReadFile("./config.yml")
-	utils.MustPanic(err)
+	MustPanic(err)
 	ymlErr := yaml.Unmarshal([]byte(cfgFile), &cfg)
-	utils.MustPanic(ymlErr)
+	MustPanic(ymlErr)
 	return cfg
 }

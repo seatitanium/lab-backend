@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"seatimc/backend"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -12,12 +11,12 @@ import (
 func GenerateJWT(object JWTPayload) (string, error) {
 	claims := &jwt.MapClaims{
 		"iss":  "seati",
-		"exp":  time.Now().Add(time.Duration(backend.Conf().Token.Expiration) * time.Minute).Unix(),
+		"exp":  time.Now().Add(time.Duration(Conf().Token.Expiration) * time.Minute).Unix(),
 		"data": object,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	res, err := token.SignedString([]byte(backend.Conf().Token.PrivateKey))
+	res, err := token.SignedString([]byte(Conf().Token.PrivateKey))
 
 	if err != nil {
 		return "", err
@@ -33,7 +32,7 @@ func ParseJWT(headerToken string) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", _token.Header["alg"])
 		}
 
-		return []byte(backend.Conf().Token.PrivateKey), nil
+		return []byte(Conf().Token.PrivateKey), nil
 	})
 }
 
