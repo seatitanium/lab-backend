@@ -7,9 +7,9 @@ import (
 )
 
 func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	f := func(c *gin.Context) {
 		var object RegisterRequest
-		if err := c.BindJSON(&object); err != nil {
+		if err := c.ShouldBindJSON(&object); err != nil {
 			utils.RespondNg(c, "Invalid Request Body", "", nil)
 			return
 		}
@@ -33,4 +33,6 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 
 		utils.RespondOk(c, "Registered successfully.", "注册成功", nil)
 	}
+
+	return f
 }
