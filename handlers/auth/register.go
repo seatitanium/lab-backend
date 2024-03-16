@@ -22,7 +22,7 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 		}
 
 		_, err = tx.Exec(
-			"INSERT INTO `seati_users` (`username`, `hash`, `mcid`, `email`) VALUES ($1, $2, $3, $4)",
+			"INSERT INTO `seati_users` (`username`, `hash`, `mcid`, `email`) VALUES (?, ?, ?, ?)",
 			object.Username, hash, object.MCID, object.Email,
 		)
 

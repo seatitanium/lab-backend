@@ -18,7 +18,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 		var user User
 
 		tx := db.MustBegin()
-		err := tx.Select(&user, "SELECT * FROM `seati_users` WHERE username=$1", object.Username)
+		err := tx.Select(&user, "SELECT * FROM `seati_users` WHERE username=?", object.Username)
 		if err != nil {
 			utils.RespondNg(ctx, "Unable to bind user: "+err.Error(), "", nil)
 		}
