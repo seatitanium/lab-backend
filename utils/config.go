@@ -18,12 +18,16 @@ type ConfigToken struct {
 }
 
 type Config struct {
-	Domain         string         `yaml:"domain"`
-	AllowedOrigins []string       `yaml:"allowed-origins"`
-	Database       ConfigDatabase `yaml:"database"`
-	Token          ConfigToken    `yaml:"token"`
+	Domain                string         `yaml:"domain"`
+	AllowedOrigins        []string       `yaml:"allowed-origins"`
+	Database              ConfigDatabase `yaml:"database"`
+	Token                 ConfigToken    `yaml:"token"`
+	BindPort              int            `yaml:"bind-port"`
+	Version               string         `yaml:"version"`
+	EnableConfigWhitelist bool           `yaml:"enable-config-whitelist"`
 }
 
+// 从 config.yml 中获取数据
 func Conf() Config {
 	cfg := Config{}
 	cfgFile, err := os.ReadFile("./config.yml")

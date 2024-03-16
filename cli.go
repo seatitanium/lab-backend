@@ -1,20 +1,22 @@
-package backend
+package main
 
 import (
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
 	"seatimc/backend/handlers/auth"
 	"seatimc/backend/utils"
+	"strconv"
 	"time"
 )
 
-func Boot() {
+func Run() {
 	log.Println("Starting 🌊Tisea Backend.")
 
 	dbConf := utils.Conf().Database
 	log.Println("Initializing database with configuration: (mysql) " + dbConf.User + "@" + dbConf.Host + "/" + dbConf.DbName + "?parseTime=true")
-	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@"+dbConf.Host+"/"+dbConf.DbName+"?parseTime=true")
+	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@tcp("+dbConf.Host+")/"+dbConf.DbName+"?parseTime=true")
 	utils.MustPanic(err)
 	Db.SetConnMaxLifetime(time.Minute * 3)
 	Db.SetMaxOpenConns(10)
@@ -25,7 +27,21 @@ func Boot() {
 	router.Use(middlewares())
 
 	log.Println("Adding routes")
+
+	versionHandler := func(context *gin.Context) {
+		context.String(200, "tisea @ "+utils.Conf().Version)
+	}
+	// 根目录返回信息
+	router.GET("/", versionHandler)
+	router.POST("/", versionHandler)
+
 	authGroup := router.Group("/auth")
 	authGroup.POST("register", auth.HandleRegister(Db))
 	authGroup.POST("login", auth.HandleLogin(Db))
+
+	runErr := router.Run(":" + strconv.Itoa(utils.Conf().BindPort))
+
+	if runErr != nil {
+		log.Fatal(runErr.Error())
+	}
 }
