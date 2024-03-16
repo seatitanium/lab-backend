@@ -27,6 +27,13 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 		)
 
 		if err != nil {
+			utils.RespondNg(c, "Failed to execute some statements: "+err.Error(), "", nil)
+			return
+		}
+
+		err = tx.Commit()
+
+		if err != nil {
 			utils.RespondNg(c, "Failed to save user: "+err.Error(), "", nil)
 			return
 		}

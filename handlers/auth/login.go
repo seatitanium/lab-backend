@@ -19,9 +19,11 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 
 		tx := db.MustBegin()
 		err := tx.Select(&user, "SELECT * FROM `seati_users` WHERE username=?", object.Username)
+
 		if err != nil {
 			utils.RespondNg(ctx, "Unable to bind user: "+err.Error(), "", nil)
 		}
+
 		if utils.VerifyHash([]byte(object.Password), []byte(user.Hash)) {
 			jwt, err := utils.GenerateJWT(utils.JWTPayload{
 				Username:  object.Username,
