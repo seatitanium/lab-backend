@@ -1,4 +1,4 @@
-package backend
+package main
 
 import (
 	"github.com/gin-gonic/gin"
@@ -15,19 +15,26 @@ func middlewares() gin.HandlerFunc {
 }
 
 func midfuncCheckOrigin(ctx *gin.Context) {
+	if !utils.Conf().EnableConfigWhitelist {
+		return
+	}
+
 	if currentOrigin := ctx.Request.Header.Get("Origin"); !slices.Contains(utils.Conf().AllowedOrigins, currentOrigin) {
 		utils.Respond(ctx, false, "Not supported origin", "", nil)
 	}
 }
 
 func midfuncAccessControl(ctx *gin.Context) {
-	ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*"+utils.Conf().Domain)
 	ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET")
 }
 
 func midfuncTokenCheck(ctx *gin.Context) {
+	if !utils.NeedAuthorize(ctx.HandlerName()) {
+		return
+	}
+
 	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
 
 	if checkErr != nil {
