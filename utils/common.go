@@ -1,7 +1,9 @@
 package utils
 
+import "log"
+
 func MustPanic(mustPanic error) {
 	if mustPanic != nil {
-		panic(mustPanic)
+		log.Fatal(mustPanic.Error())
 	}
 }
