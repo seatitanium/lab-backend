@@ -1,25 +1,27 @@
 package backend
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
-	"seatimc/backend/handlers/auth"
-	"seatimc/backend/utils"
-	"time"
+	"github.com/urfave/cli/v2"
+	"log"
+	"os"
 )
 
 func main() {
-	dbConf := Conf().Database
-	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@"+dbConf.Host+"/"+dbConf.DbName+"?parseTime=true")
-	utils.MustPanic(err)
-	Db.SetConnMaxLifetime(time.Minute * 3)
-	Db.SetMaxOpenConns(10)
-	Db.SetMaxIdleConns(10)
+	app := &cli.App{
+		Name:  "TiseaBackend",
+		Usage: "Take control of the backend through this CLI.",
+		Commands: []*cli.Command{{
+			Name:    "boot",
+			Aliases: []string{"run"},
+			Usage:   "Start the backend service",
+			Action: func(context *cli.Context) error {
+				Boot()
+				return nil
+			},
+		}},
+	}
 
-	router := gin.New()
-	router.Use(middlewares())
-
-	authGroup := router.Group("/auth")
-	authGroup.POST("register", auth.HandleRegister(Db))
-	authGroup.POST("login", auth.HandleLogin(Db))
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
 }
