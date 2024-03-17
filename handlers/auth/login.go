@@ -8,7 +8,7 @@ import (
 )
 
 func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
-	f := func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
 		var object LoginRequest
 		if err := ctx.ShouldBindJSON(&object); err != nil {
 			utils.RespondNG(ctx, "Invalid Request Body", "")
@@ -40,6 +40,4 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 			utils.RespondNG(ctx, "Incorrect password.", "密码错误")
 		}
 	}
-
-	return f
 }

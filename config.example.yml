@@ -13,3 +13,5 @@ database:
 token:
   expiration: 1440 # 单位：分钟
   private-key: ~
+need-authorize-handlers:
+  - ExampleHandler

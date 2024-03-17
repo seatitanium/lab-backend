@@ -25,6 +25,7 @@ type Config struct {
 	BindPort              int            `yaml:"bind-port"`
 	Version               string         `yaml:"version"`
 	EnableConfigWhitelist bool           `yaml:"enable-config-whitelist"`
+	NeedAuthorizeHandlers []string       `yaml:"need-authorize-handlers"`
 }
 
 // 从 config.yml 中获取数据
