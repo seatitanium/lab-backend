@@ -18,10 +18,10 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 		var user User
 
 		tx := db.MustBegin()
-		err := tx.Select(&user, "SELECT * FROM `seati_users` WHERE username=?", object.Username)
 
-		if err != nil {
+		if err := tx.Get(&user, "SELECT * FROM `seati_users` WHERE `username`=?", object.Username); err != nil {
 			utils.RespondNG(ctx, "Unable to bind user: "+err.Error(), "")
+			return
 		}
 
 		if utils.VerifyHash([]byte(object.Password), []byte(user.Hash)) {
