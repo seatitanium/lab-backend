@@ -33,7 +33,7 @@ func Conf() Config {
 	cfg := Config{}
 	cfgFile, err := os.ReadFile("./config.yml")
 	MustPanic(err)
-	ymlErr := yaml.Unmarshal([]byte(cfgFile), &cfg)
+	ymlErr := yaml.Unmarshal(cfgFile, &cfg)
 	MustPanic(ymlErr)
 	return cfg
 }
