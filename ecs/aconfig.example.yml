@@ -1,0 +1,9 @@
+access-key-id: ~
+access-key-secret: ~
+primary-region-id: cn-shenzhen
+using:
+  instance-type: ~ # eg: ecs.g6.xlarge
+  network-type: vpc # vpc / classic
+  io-optimized: true
+  spot-duration: 1 # 0 / 1
+  os-type: linux
