@@ -24,7 +24,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		if utils.VerifyHash([]byte(object.Password), []byte(user.Hash)) {
+		if utils.VerifyHash([]byte(user.Hash), []byte(object.Password)) {
 			jwt, err := utils.GenerateJWT(utils.JWTPayload{
 				Username:  object.Username,
 				UpdatedAt: time.Now().UnixMilli(),
@@ -37,7 +37,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 
 			utils.ReturnOK(ctx, "Logged in successfully.", "登录成功", jwt)
 		} else {
-			utils.RespondNG(ctx, "Incorrect password.", "")
+			utils.RespondNG(ctx, "Incorrect password.", "密码错误")
 		}
 	}
 
