@@ -2,8 +2,55 @@ access-key-id: ~
 access-key-secret: ~
 primary-region-id: cn-shenzhen
 using:
-  instance-type: ~ # eg: ecs.g6.xlarge
-  network-type: vpc # vpc / classic
+  # 是否为预检
+  dry-run: true
+  # 实例类型，决定配置
+  # 如 ecs.g6.large
+  instance-type: ~
+  # 实例网络
+  # vpc 或者 classic
+  network-type: vpc
+  # 是否为 IO 优化
   io-optimized: true
-  spot-duration: 1 # 0 / 1
+  # 实例使用时长
+  # 即保证不会释放的时长，稳定的取值范围为 0 或 1
+  spot-duration: 1
+  # 实例系统类型
+  # linux 或者 windows
   os-type: linux
+  # 使用的镜像 ID
+  image-id: debian_12_4_x64_20G_alibase_20240126.vhd
+  # 网络安全组 ID
+  # 可在阿里云控制台创建
+  security-group-id: ~
+  # 实例名称
+  instance-name: seati-game
+  # 网络计费类型
+  # - PayByTraffic 按量计费
+  # - PayByBandwidth 按固定带宽计费
+  internet-charge-type: PayByTraffic
+  # 公网出带宽最大值，单位 Mbit/s
+  # 取值范围 1～100
+  internet-max-bandwidth-out: 50
+  # 实例密码
+  password: ~
+  disk:
+    # 硬盘大小，单位 GiB
+    size: 50
+    # 硬盘种类
+    # - cloud_essd：ESSD 云盘（可通过参数 SystemDisk.PerformanceLevel 设置云盘的性能等级）
+    # - cloud_efficiency：高效云盘。
+    # - cloud_ssd：SSD 云盘。
+    # - cloud：普通云盘。
+    category: cloud_efficiency
+    # 硬盘名称
+    disk-name: ~
+  # 实例付费方式
+  # - PrePaid 包年包月
+  # - PostPaid 按量计费
+  instance-charge-type: PostPaid
+  # 实例抢占策略
+  # - NoSpot：正常按量付费实例。
+  # - SpotWithPriceLimit：设置上限价格的抢占式实例。
+  # - SpotAsPriceGo：系统自动出价，跟随当前市场实际价格。
+  spot-strategy: SpotAsPriceGo

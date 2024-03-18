@@ -25,3 +25,10 @@ type SpotPriceHistory struct {
 	// 网络类型
 	NetworkType string `json:"network_type"`
 }
+
+type CreatedInstance struct {
+	// 成交价格
+	TradePrice float32 `json:"trade_price"`
+	// 实例 ID
+	InstanceId string `json:"instance_id"`
+}
