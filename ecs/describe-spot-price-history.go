@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// 按照 aconfig.yml 中的配置获取参数中给定的 zoneId 对应的可用区的竞价数值历史，返回一个 SpotPriceHistory 数组
 func DescribeSpotPriceHistory(zoneId string) []SpotPriceHistory {
 	client, err := CreateClient()
 
