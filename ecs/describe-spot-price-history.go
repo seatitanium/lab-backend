@@ -14,21 +14,15 @@ func DescribeSpotPriceHistory(zoneId string) []SpotPriceHistory {
 		return nil
 	}
 
-	var ioOptimized string
-	if AConf().Using.IoOptimized {
-		ioOptimized = "optimized"
-	} else {
-		ioOptimized = "none"
-	}
-
+	conf := AConf()
 	request := &ecs.DescribeSpotPriceHistoryRequest{
-		RegionId:     tea.String(AConf().PrimaryRegionId),
-		NetworkType:  tea.String(AConf().Using.NetworkType),
-		IoOptimized:  tea.String(ioOptimized),
-		InstanceType: tea.String(AConf().Using.InstanceType),
+		RegionId:     tea.String(conf.PrimaryRegionId),
+		NetworkType:  tea.String(conf.Using.NetworkType),
+		IoOptimized:  tea.String(GetIoOptimized(conf.Using.IoOptimized)),
+		InstanceType: tea.String(conf.Using.InstanceType),
 		ZoneId:       tea.String(zoneId),
-		SpotDuration: tea.Int32(AConf().Using.SpotDuration),
-		OSType:       tea.String(AConf().Using.OSType),
+		SpotDuration: tea.Int32(conf.Using.SpotDuration),
+		OSType:       tea.String(conf.Using.OSType),
 	}
 
 	resp, err := client.DescribeSpotPriceHistory(request)
