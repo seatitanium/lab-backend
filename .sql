@@ -16,8 +16,16 @@ CREATE TABLE `seati_ecs`
     `id` INT unsigned NOT NULL AUTO_INCREMENT,
     `instance_id` VARCHAR(50) NOT NULL,
     `trade_price` FLOAT NOT NULL,
+    `region_id` VARCHAR(20) NOT NULL,
+    `instance_type` VARCHAR(20) NOT NULL,
     `active` BOOL NOT NULL DEFAULT 1,
-    `status` VARCHAR(20) NOT NULL DEFAULT 'stopped',
+    # 关于 status:
+    # Pending：创建中
+    # Running：运行中
+    # Starting：启动中
+    # Stopping：停止中
+    # Stopped：已停止
+    `status` VARCHAR(20) NOT NULL DEFAULT 'Pending',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)

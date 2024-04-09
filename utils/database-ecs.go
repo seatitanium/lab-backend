@@ -58,8 +58,8 @@ func HasActiveInstance(db *sqlx.DB) (bool, error) {
 // 将一个 *CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。
-func SaveNewActiveInstance(db *sqlx.DB, instance *ecs.CreatedInstance) error {
-	_, err := DbExec(db, "INSERT INTO `seati_ecs` (`instance_id`, `trade_price`) VALUES (?, ?)", instance.InstanceId, instance.TradePrice)
+func SaveNewActiveInstance(db *sqlx.DB, instance *ecs.CreatedInstance, regionId string, instanceType string) error {
+	_, err := DbExec(db, "INSERT INTO `seati_ecs` (`instance_id`, `trade_price`, `region_id`, `instance_type`) VALUES (?, ?, ?, ?)", instance.InstanceId, instance.TradePrice, regionId, instanceType)
 
 	if err != nil {
 		return err

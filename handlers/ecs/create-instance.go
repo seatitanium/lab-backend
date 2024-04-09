@@ -29,7 +29,7 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err = utils.SaveNewActiveInstance(db, created)
+		err = utils.SaveNewActiveInstance(db, created, conf.PrimaryRegionId, conf.Using.InstanceType)
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to insert instance info into database: "+err.Error(), "无法保存实例")
