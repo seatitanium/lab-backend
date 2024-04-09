@@ -15,11 +15,9 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		var user User
+		user, err := utils.GetUserByUsername(db, object.Username)
 
-		tx := db.MustBegin()
-
-		if err := tx.Get(&user, "SELECT * FROM `seati_users` WHERE `username`=?", object.Username); err != nil {
+		if err != nil {
 			utils.RespondNG(ctx, "Unable to bind user: "+err.Error(), "")
 			return
 		}
