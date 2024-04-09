@@ -5,4 +5,5 @@ use (
 	handlers/auth
 	utils
 	ecs
+	handlers/ecs
 )
