@@ -9,32 +9,35 @@ import (
 
 func HandleDescribeInstance(db *sqlx.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		hasActive, err := utils.HasActiveInstance(db)
+		var request CommonInstanceRequest
 
-		if err != nil {
-			utils.RespondNG(context, "Unable to determine active instance: "+err.Error(), "获取活跃实例时出现问题")
+		if err := context.ShouldBindJSON(&request); err != nil {
+			utils.RespondNG(context, "Invalid Request Body", "")
 			return
 		}
 
-		if hasActive == false {
-			utils.ReturnOK(context, "No active instance record", "暂无活跃实例", nil)
-			return
-		}
-
-		activeInstance, err := utils.GetActiveInstance(db)
+		activeInstance, err := utils.GetInstanceByInstanceId(db, request.InstanceId)
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to get instance from database: "+err.Error(), "获取活跃实例时出现问题")
 			return
 		}
 
-		res, err := ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+		retrieved, err := ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+		local := ecs.InstanceDescriptionLocal{
+			InstanceId:   activeInstance.InstanceId,
+			RegionId:     activeInstance.RegionId,
+			InstanceType: activeInstance.InstanceType,
+		}
 
 		if err != nil {
-			utils.RespondNG(context, "Unable to DescribeInstance (aliyun): "+err.Error(), "调用 API 过程出现问题")
+			utils.RespondNG(context, "DescribeInstance failed: "+err.Error(), "获取实例信息时出现问题")
 			return
 		}
 
-		utils.ReturnOK(context, "Successfully got instance info.", "成功获取到实例信息", res)
+		utils.ReturnOK(context, "Successfully got instance info.", "成功获取到实例信息", ecs.InstanceDescription{
+			Local:     local,
+			Retrieved: *retrieved,
+		})
 	}
 }

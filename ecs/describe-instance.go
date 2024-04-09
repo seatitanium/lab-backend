@@ -7,7 +7,7 @@ import (
 )
 
 // 动态获取指定 regionId 下的 instanceId 实例的实时信息
-func DescribeInstance(instanceId string, regionId string) (*InstanceDescription, error) {
+func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionRetrieved, error) {
 	client, err := CreateClient()
 
 	if err != nil {
@@ -23,7 +23,7 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescription,
 		return nil, err
 	}
 
-	var result InstanceDescription
+	var result InstanceDescriptionRetrieved
 
 	for _, inst := range res.Body.Instances.Instance {
 		result.Status = tea.StringValue(inst.Status)

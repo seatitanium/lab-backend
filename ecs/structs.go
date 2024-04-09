@@ -36,7 +36,18 @@ type CreatedInstance struct {
 }
 
 type InstanceDescription struct {
+	Retrieved InstanceDescriptionRetrieved `json:"retrieved"`
+	Local     InstanceDescriptionLocal     `json:"local"`
+}
+
+type InstanceDescriptionRetrieved struct {
 	Status          string    `json:"status"`
 	PublicIpAddress []string  `json:"public_ip_address"`
 	CreationTime    time.Time `json:"creation_time"`
+}
+
+type InstanceDescriptionLocal struct {
+	InstanceId   string `json:"instance_id"`
+	RegionId     string `json:"region_id"`
+	InstanceType string `json:"instance_type"`
 }
