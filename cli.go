@@ -43,9 +43,9 @@ func Run() {
 	ecsGroup := router.Group("/ecs")
 	ecsGroup.POST("create", ecs.HandleCreateInstance(Db))
 	ecsGroup.POST("describe", ecs.HandleDescribeInstance(Db))
-	ecsGroup.POST("stop", ecs.HandleStopInstance())
-	ecsGroup.POST("start", ecs.HandleStartInstance())
-	ecsGroup.POST("reboot", ecs.HandleRebootInstance())
+	ecsGroup.POST("stop", ecs.HandleStopInstance(Db))
+	ecsGroup.POST("start", ecs.HandleStartInstance(Db))
+	ecsGroup.POST("reboot", ecs.HandleRebootInstance(Db))
 
 	runErr := router.Run(":" + strconv.Itoa(utils.Conf().BindPort))
 
