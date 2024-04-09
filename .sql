@@ -34,9 +34,9 @@ CREATE TABLE `seati_ecs`
 CREATE TABLE `seati_ecs_actions`
 (
     `id` INT unsigned NOT NULL AUTO_INCREMENT,
-    `instance_id` VARCHAR(50) DEFAULT "",
+    `instance_id` VARCHAR(50) DEFAULT NULL,
     `action_type` VARCHAR(50) NOT NULL,
-    `by_username` VARCHAR(50) DEFAULT "",
+    `by_username` VARCHAR(50) DEFAULT NULL,
     `automated` BOOL NOT NULL DEFAULT 0,
     `at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
