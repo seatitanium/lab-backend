@@ -32,3 +32,12 @@ type DbUser struct {
 	UpdatedAt time.Time      `json:"updated_at" db:"updated_at"`
 	Hash      string         `db:"hash"`
 }
+
+type DbEcsAction struct {
+	Id         uint           `json:"id" db:"id"`
+	InstanceId sql.NullString `json:"instance_id" db:"instance_id"`
+	ActionType string         `json:"action_type" db:"action_type"`
+	ByUsername sql.NullString `json:"by_username" db:"by_username"`
+	Automated  bool           `json:"automated" db:"automated"`
+	At         time.Time      `json:"at" db:"at"`
+}
