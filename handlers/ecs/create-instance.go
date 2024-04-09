@@ -21,7 +21,8 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		created, err := ecs.CreateInstance()
+		conf := ecs.AConf()
+		created, err := ecs.CreateInstance(conf)
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to create instance: "+err.Error(), "创建实例时出现问题")

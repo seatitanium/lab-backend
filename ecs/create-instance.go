@@ -6,14 +6,13 @@ import (
 )
 
 // 按照 aconfig.yml 中的配置创建一个新的实例，并返回成交价格和实例 ID
-func CreateInstance() (*CreatedInstance, error) {
+func CreateInstance(conf AliyunConf) (*CreatedInstance, error) {
 	client, err := CreateClient()
 
 	if err != nil {
 		return nil, err
 	}
 
-	conf := AConf()
 	request := &ecs.CreateInstanceRequest{
 		InstanceType:            tea.String(conf.Using.InstanceType),
 		IoOptimized:             tea.String(GetIoOptimized(conf.Using.IoOptimized)),
