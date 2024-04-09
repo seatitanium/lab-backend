@@ -10,3 +10,15 @@ CREATE TABLE `seati_users`
     `hash`       VARCHAR(512) NOT NULL,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `seati_ecs`
+(
+    `id` INT unsigned NOT NULL AUTO_INCREMENT,
+    `instance_id` VARCHAR(50) NOT NULL,
+    `trade_price` FLOAT NOT NULL,
+    `active` BOOL NOT NULL DEFAULT 1,
+    `status` VARCHAR(20) NOT NULL DEFAULT 'stopped',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
