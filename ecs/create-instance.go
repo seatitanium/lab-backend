@@ -14,7 +14,7 @@ func CreateInstance(conf AliyunConf) (*CreatedInstance, error) {
 	}
 
 	request := &ecs.CreateInstanceRequest{
-		InstanceType:            tea.String(conf.Using.InstanceType),
+		RegionId:                tea.String(conf.PrimaryRegionId),
 		IoOptimized:             tea.String(GetIoOptimized(conf.Using.IoOptimized)),
 		SpotDuration:            tea.Int32(conf.Using.SpotDuration),
 		ImageId:                 tea.String(conf.Using.ImageId),
