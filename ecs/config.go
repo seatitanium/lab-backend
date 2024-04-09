@@ -60,7 +60,7 @@ type AliyunConf struct {
 }
 
 // 从 aconfig.yml 中获取数据
-func AConf() AliyunConf {
+func Conf() AliyunConf {
 	cfg := AliyunConf{}
 	cfgFile, err := os.ReadFile("./aconfig.yml")
 	utils.MustPanic(err)

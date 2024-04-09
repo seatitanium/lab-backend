@@ -21,7 +21,7 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		conf := ecs.AConf()
+		conf := ecs.Conf()
 		created, err := ecs.CreateInstance(conf)
 
 		if err != nil {

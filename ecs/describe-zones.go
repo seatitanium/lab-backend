@@ -25,7 +25,7 @@ func DescribeZones() []AvailableZone {
 	}
 
 	request := &ecs.DescribeZonesRequest{
-		RegionId: tea.String(AConf().PrimaryRegionId),
+		RegionId: tea.String(Conf().PrimaryRegionId),
 	}
 
 	resp, err := client.DescribeZones(request)

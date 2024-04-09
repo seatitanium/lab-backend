@@ -8,11 +8,11 @@ import (
 
 func CreateClient() (*ecs.Client, error) {
 	config := &openapi.Config{
-		AccessKeyId:     tea.String(AConf().AccessKeyId),
-		AccessKeySecret: tea.String(AConf().AccessKeySecret),
-		RegionId:        tea.String(AConf().PrimaryRegionId),
+		AccessKeyId:     tea.String(Conf().AccessKeyId),
+		AccessKeySecret: tea.String(Conf().AccessKeySecret),
+		RegionId:        tea.String(Conf().PrimaryRegionId),
 	}
 
-	config.Endpoint = tea.String("ecs." + AConf().PrimaryRegionId + ".aliyuncs.com")
+	config.Endpoint = tea.String("ecs." + Conf().PrimaryRegionId + ".aliyuncs.com")
 	return ecs.NewClient(config)
 }

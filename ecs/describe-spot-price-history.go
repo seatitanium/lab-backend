@@ -16,7 +16,7 @@ func DescribeSpotPriceHistory(zoneId string) []SpotPriceHistory {
 		return nil
 	}
 
-	conf := AConf()
+	conf := Conf()
 	request := &ecs.DescribeSpotPriceHistoryRequest{
 		RegionId:     tea.String(conf.PrimaryRegionId),
 		NetworkType:  tea.String(conf.Using.NetworkType),
