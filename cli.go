@@ -6,6 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"log"
 	"seatimc/backend/handlers/auth"
+	"seatimc/backend/handlers/ecs"
 	"seatimc/backend/utils"
 	"strconv"
 	"time"
@@ -38,6 +39,13 @@ func Run() {
 	authGroup := router.Group("/auth")
 	authGroup.POST("register", auth.HandleRegister(Db))
 	authGroup.POST("login", auth.HandleLogin(Db))
+
+	ecsGroup := router.Group("/ecs")
+	ecsGroup.POST("create", ecs.HandleCreateInstance(Db))
+	ecsGroup.POST("describe", ecs.HandleDescribeInstance(Db))
+	ecsGroup.POST("stop", ecs.HandleStopInstance())
+	ecsGroup.POST("start", ecs.HandleStartInstance())
+	ecsGroup.POST("reboot", ecs.HandleRebootInstance())
 
 	runErr := router.Run(":" + strconv.Itoa(utils.Conf().BindPort))
 
