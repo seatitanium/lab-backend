@@ -2,11 +2,12 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleStartInstance() gin.HandlerFunc {
+func HandleStartInstance(db *sqlx.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request CommonInstanceRequest
 
@@ -15,7 +16,14 @@ func HandleStartInstance() gin.HandlerFunc {
 			return
 		}
 
-		err := ecs.StartInstance(request.InstanceId)
+		err := utils.WriteManualEcsRecord(db, context, request.InstanceId, "start", false)
+
+		if err != nil {
+			utils.RespondNG(context, "Cannot write manual 'start' record: "+err.Error(), "无法写入操作记录")
+			return
+		}
+
+		err = ecs.StartInstance(request.InstanceId)
 
 		if err != nil {
 			utils.RespondNG(context, "StartInstance failed: "+err.Error(), "开启实例时出现问题")

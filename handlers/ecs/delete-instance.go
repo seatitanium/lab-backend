@@ -2,11 +2,12 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleDeleteInstance() gin.HandlerFunc {
+func HandleDeleteInstance(db *sqlx.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request StopInstanceRequest
 
@@ -15,7 +16,14 @@ func HandleDeleteInstance() gin.HandlerFunc {
 			return
 		}
 
-		err := ecs.DeleteInstance(request.InstanceId, request.Force)
+		err := utils.WriteManualEcsRecord(db, context, request.InstanceId, "delete", request.Force)
+
+		if err != nil {
+			utils.RespondNG(context, "Cannot write manual 'delete' record: "+err.Error(), "无法写入操作记录")
+			return
+		}
+
+		err = ecs.DeleteInstance(request.InstanceId, request.Force)
 
 		if err != nil {
 			utils.RespondNG(context, "DeleteInstance failed: "+err.Error(), "删除实例时出现问题")

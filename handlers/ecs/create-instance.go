@@ -21,6 +21,13 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
+		err = utils.WriteManualEcsRecord(db, context, "", "create", false)
+
+		if err != nil {
+			utils.RespondNG(context, "Cannot write manual 'create' record: "+err.Error(), "无法写入操作记录")
+			return
+		}
+
 		conf := ecs.Conf()
 		created, err := ecs.CreateInstance(conf)
 

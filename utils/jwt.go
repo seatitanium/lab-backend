@@ -77,3 +77,27 @@ func ExtractJWT(headerToken string) (map[string]any, error) {
 
 	return claims["data"].(map[string]any), nil
 }
+
+func ExtractJWTPayload(headerToken string) *JWTPayload {
+	var result JWTPayload
+
+	res, err := ExtractJWT(headerToken)
+
+	if err != nil {
+		return nil
+	}
+
+	var ok bool
+
+	result.Username, ok = res["username"].(string)
+	if !ok {
+		return nil
+	}
+
+	result.UpdatedAt, ok = res["updated_at"].(int64)
+	if !ok {
+		return nil
+	}
+
+	return &result
+}

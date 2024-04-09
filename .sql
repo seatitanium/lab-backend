@@ -30,3 +30,14 @@ CREATE TABLE `seati_ecs`
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `seati_ecs_actions`
+(
+    `id` INT unsigned NOT NULL AUTO_INCREMENT,
+    `instance_id` VARCHAR(50) DEFAULT "",
+    `action_type` VARCHAR(50) NOT NULL,
+    `by_username` VARCHAR(50) DEFAULT "",
+    `automated` BOOL NOT NULL DEFAULT 0,
+    `at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
