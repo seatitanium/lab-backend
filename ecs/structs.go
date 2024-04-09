@@ -1,5 +1,7 @@
 package ecs
 
+import "time"
+
 type AvailableZone struct {
 	// 该可用区内可使用的实例类型
 	AvailableInstanceTypes []string `json:"available_instance_types"`
@@ -31,4 +33,10 @@ type CreatedInstance struct {
 	TradePrice float32 `json:"trade_price"`
 	// 实例 ID
 	InstanceId string `json:"instance_id"`
+}
+
+type InstanceDescription struct {
+	Status          string    `json:"status"`
+	PublicIpAddress []string  `json:"public_ip_address"`
+	CreationTime    time.Time `json:"creation_time"`
 }
