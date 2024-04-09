@@ -39,6 +39,7 @@ func ParseJWT(headerToken string) (*jwt.Token, error) {
 // 检查参数中的 JWT 字符串是否有效。按照如下两个方面检查：
 //
 // 1. 是否可以正确解析。
+//
 // 2. 可以正确解析时，是否有效（例如是否过期等）。
 func CheckJWT(headerToken string) error {
 	token, err := ParseJWT(headerToken)
