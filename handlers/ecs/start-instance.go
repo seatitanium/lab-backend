@@ -2,12 +2,11 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleStartInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleStartInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request CommonInstanceRequest
 

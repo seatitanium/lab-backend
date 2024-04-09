@@ -2,12 +2,11 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleRebootInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleRebootInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request StopInstanceRequest
 
