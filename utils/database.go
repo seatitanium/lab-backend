@@ -3,7 +3,18 @@ package utils
 import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
+	"time"
 )
+
+func GetDb(dbConf ConfigDatabase) *sqlx.DB {
+	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@tcp("+dbConf.Host+")/"+dbConf.DbName+"?parseTime=true")
+	MustPanic(err)
+	Db.SetConnMaxLifetime(time.Minute * 3)
+	Db.SetMaxOpenConns(10)
+	Db.SetMaxIdleConns(10)
+
+	return Db
+}
 
 /*
 在 db 实例上执行语句，立即提交，并返回一个 sql.Result
