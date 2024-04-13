@@ -3,12 +3,15 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"log"
+	"os"
+	"os/signal"
 	"seatimc/backend/handlers/auth"
 	"seatimc/backend/handlers/ecs"
+	"seatimc/backend/monitor"
 	"seatimc/backend/utils"
 	"strconv"
+	"syscall"
 	"time"
 )
 
@@ -17,11 +20,7 @@ func Run() {
 
 	dbConf := utils.Conf().Database
 	log.Println("Initializing database with configuration: (mysql) " + dbConf.User + "@" + dbConf.Host + "/" + dbConf.DbName + "?parseTime=true")
-	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@tcp("+dbConf.Host+")/"+dbConf.DbName+"?parseTime=true")
-	utils.MustPanic(err)
-	Db.SetConnMaxLifetime(time.Minute * 3)
-	Db.SetMaxOpenConns(10)
-	Db.SetMaxIdleConns(10)
+	Db := utils.GetDb(dbConf)
 
 	log.Println("Using Gin " + gin.Version)
 	router := gin.New()
@@ -51,5 +50,33 @@ func Run() {
 
 	if runErr != nil {
 		log.Fatal(runErr.Error())
+	}
+}
+
+func RunMonitor(monitorName string) {
+	Db := utils.GetDb(utils.Conf().Database)
+
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+
+	b := make(chan bool)
+
+	// 当接收到中止信号时，将 b 设置为 true
+	go func() {
+		<-c
+		b <- true
+	}()
+
+	switch monitorName {
+	case "stopped-inst":
+		{
+			go monitor.RunStoppedInstanceMonitor(Db, time.Second, time.Hour, b)
+			break
+		}
+
+	default:
+		{
+			log.Printf("Monitor of name \" %v \" doesn't exist.\n", monitorName)
+		}
 	}
 }

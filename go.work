@@ -6,4 +6,5 @@ use (
 	utils
 	ecs
 	handlers/ecs
+	monitor
 )

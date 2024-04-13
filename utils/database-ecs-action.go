@@ -24,9 +24,11 @@ func WriteManualEcsRecord(db *sqlx.DB, context *gin.Context, instanceId string, 
 }
 
 func WriteAutomatedEcsRecord(db *sqlx.DB, instanceId string, actionType string, force bool) error {
+
 	if force {
 		actionType += "_force"
 	}
+
 	_, err := DbExec(db, "INSERT INTO `seati_ecs_record` (`instance_id`, `action_type`, `automated`) VALUES (?, ?, ?)", instanceId, actionType, 1)
 
 	return err
