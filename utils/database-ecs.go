@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/jmoiron/sqlx"
-	"seatimc/backend/ecs"
 )
 
 // 使用 instance id 获得数据库中的某个 instance 的记录
@@ -58,7 +57,7 @@ func HasActiveInstance(db *sqlx.DB) (bool, error) {
 // 将一个 *CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。
-func SaveNewActiveInstance(db *sqlx.DB, instance *ecs.CreatedInstance, regionId string, instanceType string) error {
+func SaveNewActiveInstance(db *sqlx.DB, instance *CreatedInstance, regionId string, instanceType string) error {
 	_, err := DbExec(db, "INSERT INTO `seati_ecs` (`instance_id`, `trade_price`, `region_id`, `instance_type`) VALUES (?, ?, ?, ?)", instance.InstanceId, instance.TradePrice, regionId, instanceType)
 
 	if err != nil {

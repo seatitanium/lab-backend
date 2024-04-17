@@ -28,13 +28,6 @@ type SpotPriceHistory struct {
 	NetworkType string `json:"network_type"`
 }
 
-type CreatedInstance struct {
-	// 成交价格
-	TradePrice float32 `json:"trade_price"`
-	// 实例 ID
-	InstanceId string `json:"instance_id"`
-}
-
 type InstanceDescription struct {
 	Retrieved InstanceDescriptionRetrieved `json:"retrieved"`
 	Local     InstanceDescriptionLocal     `json:"local"`

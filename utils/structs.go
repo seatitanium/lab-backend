@@ -41,3 +41,10 @@ type DbEcsAction struct {
 	Automated  bool           `json:"automated" db:"automated"`
 	At         time.Time      `json:"at" db:"at"`
 }
+
+type CreatedInstance struct {
+	// 成交价格
+	TradePrice float32 `json:"trade_price"`
+	// 实例 ID
+	InstanceId string `json:"instance_id"`
+}

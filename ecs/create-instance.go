@@ -3,10 +3,11 @@ package ecs
 import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
+	"seatimc/backend/utils"
 )
 
 // 按照 aconfig.yml 中的配置创建一个新的实例，并返回成交价格和实例 ID
-func CreateInstance(conf AliyunConf) (*CreatedInstance, error) {
+func CreateInstance(conf AliyunConf) (*utils.CreatedInstance, error) {
 	client, err := CreateClient()
 
 	if err != nil {
@@ -40,7 +41,7 @@ func CreateInstance(conf AliyunConf) (*CreatedInstance, error) {
 		return nil, err
 	}
 
-	return &CreatedInstance{
+	return &utils.CreatedInstance{
 		TradePrice: tea.Float32Value(resp.Body.TradePrice),
 		InstanceId: tea.StringValue(resp.Body.InstanceId),
 	}, nil
