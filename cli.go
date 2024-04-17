@@ -18,10 +18,6 @@ import (
 func Run() {
 	log.Println("Starting 🌊Tisea Backend.")
 
-	dbConf := utils.Conf().Database
-	log.Println("Initializing database with configuration: (mysql) " + dbConf.User + "@" + dbConf.Host + "/" + dbConf.DbName + "?parseTime=true")
-	Db := utils.GetDb(dbConf)
-
 	log.Println("Using Gin " + gin.Version)
 	router := gin.New()
 	router.Use(middlewares())
@@ -29,24 +25,24 @@ func Run() {
 	log.Println("Adding routes")
 
 	versionHandler := func(context *gin.Context) {
-		context.String(200, "tisea @ "+utils.Conf().Version)
+		context.String(200, "tisea @ "+utils.GlobalConfig.Version)
 	}
 	// 根目录返回信息
 	router.GET("/", versionHandler)
 	router.POST("/", versionHandler)
 
 	authGroup := router.Group("/auth")
-	authGroup.POST("register", auth.HandleRegister(Db))
-	authGroup.POST("login", auth.HandleLogin(Db))
+	authGroup.POST("register", auth.HandleRegister())
+	authGroup.POST("login", auth.HandleLogin())
 
 	ecsGroup := router.Group("/ecs")
-	ecsGroup.POST("create", ecs.HandleCreateInstance(Db))
-	ecsGroup.POST("describe", ecs.HandleDescribeInstance(Db))
-	ecsGroup.POST("stop", ecs.HandleStopInstance(Db))
-	ecsGroup.POST("start", ecs.HandleStartInstance(Db))
-	ecsGroup.POST("reboot", ecs.HandleRebootInstance(Db))
+	ecsGroup.POST("create", ecs.HandleCreateInstance())
+	ecsGroup.POST("describe", ecs.HandleDescribeInstance())
+	ecsGroup.POST("stop", ecs.HandleStopInstance())
+	ecsGroup.POST("start", ecs.HandleStartInstance())
+	ecsGroup.POST("reboot", ecs.HandleRebootInstance())
 
-	runErr := router.Run(":" + strconv.Itoa(utils.Conf().BindPort))
+	runErr := router.Run(":" + strconv.Itoa(utils.GlobalConfig.BindPort))
 
 	if runErr != nil {
 		log.Fatal(runErr.Error())
@@ -54,7 +50,6 @@ func Run() {
 }
 
 func RunMonitor(monitorName string) {
-	Db := utils.GetDb(utils.Conf().Database)
 
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -70,7 +65,7 @@ func RunMonitor(monitorName string) {
 	switch monitorName {
 	case "stopped-inst":
 		{
-			go monitor.RunStoppedInstanceMonitor(Db, time.Second, time.Hour, b)
+			go monitor.RunStoppedInstanceMonitor(time.Second, time.Hour, b)
 			break
 		}
 

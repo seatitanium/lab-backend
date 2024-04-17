@@ -1,15 +1,12 @@
 package utils
 
-import "github.com/jmoiron/sqlx"
+func GetUserByUsername(username string) (*Users, error) {
+	conn := GetDBConn()
+	var user Users
 
-func GetUserByUsername(db *sqlx.DB, username string) (*DbUser, error) {
-	tx := db.MustBegin()
-
-	var result DbUser
-
-	if err := tx.Get(&result, "SELECT * FROM `seati_users` WHERE `username`=?", username); err != nil {
-		return nil, err
+	result := conn.Where(&Users{Username: username}).Limit(1).Find(&user)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-
-	return &result, nil
+	return &user, nil
 }

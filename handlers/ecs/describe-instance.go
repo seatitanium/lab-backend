@@ -2,12 +2,11 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleDescribeInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleDescribeInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request CommonInstanceRequest
 
@@ -16,7 +15,7 @@ func HandleDescribeInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		activeInstance, err := utils.GetInstanceByInstanceId(db, request.InstanceId)
+		activeInstance, err := utils.GetInstanceByInstanceId(request.InstanceId)
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to get instance from database: "+err.Error(), "获取活跃实例时出现问题")

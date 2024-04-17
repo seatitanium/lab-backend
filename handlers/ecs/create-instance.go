@@ -2,14 +2,13 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleCreateInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		hasActive, err := utils.HasActiveInstance(db)
+		hasActive, err := utils.HasActiveInstance()
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to determine active instance: "+err.Error(), "获取活跃实例时出现问题")
@@ -21,7 +20,7 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err = utils.WriteManualEcsRecord(db, context, "", "create", false)
+		err = utils.WriteManualEcsRecord(context, "", "create", false)
 
 		if err != nil {
 			utils.RespondNG(context, "Cannot write manual 'create' record: "+err.Error(), "无法写入操作记录")
@@ -36,7 +35,7 @@ func HandleCreateInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err = utils.SaveNewActiveInstance(db, created, conf.PrimaryRegionId, conf.Using.InstanceType)
+		err = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, conf.Using.InstanceType)
 
 		if err != nil {
 			utils.RespondNG(context, "Unable to insert instance info into database: "+err.Error(), "无法保存实例")

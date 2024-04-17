@@ -7,9 +7,10 @@ import (
 
 type ConfigDatabase struct {
 	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
-	DbName   string `yaml:"dbname"`
+	DBName   string `yaml:"dbname"`
 }
 
 type ConfigToken struct {
@@ -28,12 +29,13 @@ type Config struct {
 	NeedAuthorizeHandlers []string       `yaml:"need-authorize-handlers"`
 }
 
-// 从 config.yml 中获取数据
-func Conf() Config {
-	cfg := Config{}
-	cfgFile, err := os.ReadFile("./config.yml")
+var GlobalConfig *Config
+
+func (c *Config) Load(path string) {
+	GlobalConfig = &Config{}
+	cfgFile, err := os.ReadFile(path)
 	MustPanic(err)
-	ymlErr := yaml.Unmarshal(cfgFile, &cfg)
-	MustPanic(ymlErr)
-	return cfg
+	err = yaml.Unmarshal(cfgFile, GlobalConfig)
+	MustPanic(err)
+	return
 }

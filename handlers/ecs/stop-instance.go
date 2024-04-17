@@ -2,12 +2,11 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleStopInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleStopInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request StopInstanceRequest
 
@@ -16,7 +15,7 @@ func HandleStopInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err := utils.WriteManualEcsRecord(db, context, request.InstanceId, "stop", request.Force)
+		err := utils.WriteManualEcsRecord(context, request.InstanceId, "stop", request.Force)
 
 		if err != nil {
 			utils.RespondNG(context, "Cannot write manual 'stop' record: "+err.Error(), "无法写入操作记录")

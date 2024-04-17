@@ -1,60 +1,71 @@
 package utils
 
 import (
-	"database/sql"
-	"github.com/jmoiron/sqlx"
+	"errors"
+	"fmt"
+	"log"
 	"time"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func GetDb(dbConf ConfigDatabase) *sqlx.DB {
-	Db, err := sqlx.Open("mysql", dbConf.User+":"+dbConf.Password+"@tcp("+dbConf.Host+")/"+dbConf.DbName+"?parseTime=true")
-	MustPanic(err)
-	Db.SetConnMaxLifetime(time.Minute * 3)
-	Db.SetMaxOpenConns(10)
-	Db.SetMaxIdleConns(10)
-
-	return Db
+type Database struct {
+	Conn *gorm.DB
 }
 
-/*
-在 db 实例上执行语句，立即提交，并返回一个 sql.Result
-*/
-func DbExec(db *sqlx.DB, statement string, args ...any) (sql.Result, error) {
-	tx := db.MustBegin()
-
-	result, err := tx.Exec(statement, args)
-
-	if err != nil {
-		return nil, err
+func (db *Database) open() error {
+	var dbConf = GlobalConfig.Database
+	if IsStrsHasEmpty(dbConf.Host, dbConf.User, dbConf.Password, dbConf.DBName) || dbConf.Port == 0 {
+		return errors.New("connect to database failed due to configuration error")
 	}
 
-	err = tx.Commit()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.DBName)
 
+	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return result, err
+	sqlDB, err := conn.DB()
+	if err != nil {
+		return err
+	}
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(10)
+	sqlDB.SetConnMaxLifetime(time.Minute * 3)
+
+	db.Conn = conn
+	return nil
 }
 
-/*
-在 db 实例上进行语句查询，并返回一个 *sql.Rows
-*/
-func DbQuery(db *sqlx.DB, statement string, args ...any) (*sql.Rows, error) {
-	tx := db.MustBegin()
-
-	rows, err := tx.Query(statement, args)
-
-	return rows, err
+func GetDBConn() *gorm.DB {
+	db := Database{}
+	err := db.open()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return db.Conn
 }
 
-// 使用 tx.Get 尝试从数据库中提取一行单一数据，并将其写入到 *dest 中。如果找不到结果，将会返回一个 error
-//
-// 注意：参数 desc 应为指针
-func DbGet(db *sqlx.DB, dest any, statement string, args ...any) error {
-	tx := db.MustBegin()
+func InitDB() error {
+	conn := GetDBConn()
 
-	err := tx.Get(dest, statement, args)
+	err := conn.AutoMigrate(&Users{})
+	if err != nil {
+		return err
+	}
 
-	return err
+	err = conn.AutoMigrate(&Ecs{})
+	if err != nil {
+		return err
+	}
+
+	err = conn.AutoMigrate(&EcsActions{})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

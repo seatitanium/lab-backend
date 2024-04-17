@@ -11,12 +11,12 @@ import (
 func GenerateJWT(object JWTPayload) (string, error) {
 	claims := &jwt.MapClaims{
 		"iss":  "seati",
-		"exp":  time.Now().Add(time.Duration(Conf().Token.Expiration) * time.Minute).Unix(),
+		"exp":  time.Now().Add(time.Duration(GlobalConfig.Token.Expiration) * time.Minute).Unix(),
 		"data": object,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	res, err := token.SignedString([]byte(Conf().Token.PrivateKey))
+	res, err := token.SignedString([]byte(GlobalConfig.Token.PrivateKey))
 
 	if err != nil {
 		return "", err
@@ -32,7 +32,7 @@ func ParseJWT(headerToken string) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", _token.Header["alg"])
 		}
 
-		return []byte(Conf().Token.PrivateKey), nil
+		return []byte(GlobalConfig.Token.PrivateKey), nil
 	})
 }
 
@@ -72,7 +72,7 @@ func ExtractJWT(headerToken string) (map[string]any, error) {
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if !ok {
-		return nil, fmt.Errorf("error casting token.Claims to jwt.MapClaims")
+		return nil, fmt.Errorf("errHandler casting token.Claims to jwt.MapClaims")
 	}
 
 	return claims["data"].(map[string]any), nil

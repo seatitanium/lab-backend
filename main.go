@@ -4,6 +4,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
+	"seatimc/backend/utils"
 )
 
 func main() {
@@ -30,6 +31,13 @@ func main() {
 				},
 			},
 		},
+	}
+
+	// TODO: 作为参数引入
+	utils.GlobalConfig.Load("./config.yml")
+
+	if err := utils.InitDB(); err != nil {
+		log.Fatal(err)
 	}
 
 	if err := app.Run(os.Args); err != nil {

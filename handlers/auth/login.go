@@ -2,12 +2,11 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/utils"
 	"time"
 )
 
-func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
+func HandleLogin() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var object LoginRequest
 		if err := ctx.ShouldBindJSON(&object); err != nil {
@@ -15,7 +14,7 @@ func HandleLogin(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		user, err := utils.GetUserByUsername(db, object.Username)
+		user, err := utils.GetUserByUsername(object.Username)
 
 		if err != nil {
 			utils.RespondNG(ctx, "Unable to bind user: "+err.Error(), "")

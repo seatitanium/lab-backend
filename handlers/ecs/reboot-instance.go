@@ -2,12 +2,11 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
 )
 
-func HandleRebootInstance(db *sqlx.DB) gin.HandlerFunc {
+func HandleRebootInstance() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var request StopInstanceRequest
 
@@ -16,7 +15,7 @@ func HandleRebootInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err := utils.WriteManualEcsRecord(db, context, request.InstanceId, "reboot", request.Force)
+		err := utils.WriteManualEcsRecord(context, request.InstanceId, "reboot", request.Force)
 
 		if err != nil {
 			utils.RespondNG(context, "Cannot write manual 'reboot' record: "+err.Error(), "无法写入操作记录")

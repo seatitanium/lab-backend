@@ -3,10 +3,10 @@ package utils
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 )
 
-func WriteManualEcsRecord(db *sqlx.DB, context *gin.Context, instanceId string, actionType string, force bool) error {
+func WriteManualEcsRecord(context *gin.Context, instanceId string, actionType string, force bool) error {
+	conn := GetDBConn()
 	token := context.GetHeader("JWT")
 	payload := ExtractJWTPayload(token)
 
@@ -18,18 +18,26 @@ func WriteManualEcsRecord(db *sqlx.DB, context *gin.Context, instanceId string, 
 		actionType += "_force"
 	}
 
-	_, err := DbExec(db, "INSERT INTO `seati_ecs_record` (`instance_id`, `action_type`, `by_username`) VALUES (?, ?, ?)", instanceId, actionType, payload.Username)
+	result := conn.Create(&EcsActions{
+		InstanceId: instanceId,
+		ActionType: actionType,
+		ByUsername: payload.Username,
+	})
 
-	return err
+	return result.Error
 }
 
-func WriteAutomatedEcsRecord(db *sqlx.DB, instanceId string, actionType string, force bool) error {
-
+func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) error {
+	conn := GetDBConn()
 	if force {
 		actionType += "_force"
 	}
 
-	_, err := DbExec(db, "INSERT INTO `seati_ecs_record` (`instance_id`, `action_type`, `automated`) VALUES (?, ?, ?)", instanceId, actionType, 1)
+	result := conn.Create(&EcsActions{
+		InstanceId: instanceId,
+		ActionType: actionType,
+		Automated:  true,
+	})
 
-	return err
+	return result.Error
 }

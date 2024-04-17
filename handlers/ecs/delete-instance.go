@@ -16,7 +16,7 @@ func HandleDeleteInstance(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		err := utils.WriteManualEcsRecord(db, context, request.InstanceId, "delete", request.Force)
+		err := utils.WriteManualEcsRecord(context, request.InstanceId, "delete", request.Force)
 
 		if err != nil {
 			utils.RespondNG(context, "Cannot write manual 'delete' record: "+err.Error(), "无法写入操作记录")

@@ -1,7 +1,6 @@
 package monitor
 
 import (
-	"github.com/jmoiron/sqlx"
 	"log"
 	"seatimc/backend/ecs"
 	"seatimc/backend/utils"
@@ -13,20 +12,19 @@ import (
 // 注意：必须以 gorountine 执行
 //
 // 参数：
-//   - db - 数据库对象
 //   - interval - 检测时间间隔
 //   - threshold - 删除阈值。当检测到停机时间超过该阈值时，执行强制删除
 //   - end - 控制监控器的结束状态
-func RunStoppedInstanceMonitor(db *sqlx.DB, interval time.Duration, threshold time.Duration, end <-chan bool) {
+func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, end <-chan bool) {
 	var stoppedDuration time.Duration
 
 	for {
 		var err error
 		var hasActiveInstance bool
-		var activeInstance *utils.DbInstance
+		var activeInstance *utils.Ecs
 		var retrieved *ecs.InstanceDescriptionRetrieved
 
-		hasActiveInstance, err = utils.HasActiveInstance(db)
+		hasActiveInstance, err = utils.HasActiveInstance()
 
 		if err != nil {
 			log.Println("Critical. Cannot determine active instance existence: " + err.Error())
@@ -38,7 +36,7 @@ func RunStoppedInstanceMonitor(db *sqlx.DB, interval time.Duration, threshold ti
 			goto endOfLoop
 		}
 
-		activeInstance, err = utils.GetActiveInstance(db)
+		activeInstance, err = utils.GetActiveInstance()
 
 		if err != nil {
 			log.Println("Critical. Cannot get active instance from database: " + err.Error())
@@ -63,7 +61,7 @@ func RunStoppedInstanceMonitor(db *sqlx.DB, interval time.Duration, threshold ti
 				goto endOfLoop
 			}
 
-			err = utils.WriteAutomatedEcsRecord(db, activeInstance.InstanceId, "delete", true)
+			err = utils.WriteAutomatedEcsRecord(activeInstance.InstanceId, "delete", true)
 
 			if err != nil {
 				log.Println("Critical. Unable to write automated record: " + err.Error())

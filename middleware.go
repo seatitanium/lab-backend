@@ -15,11 +15,11 @@ func middlewares() gin.HandlerFunc {
 }
 
 func midfuncCheckOrigin(ctx *gin.Context) {
-	if !utils.Conf().EnableConfigWhitelist {
+	if !utils.GlobalConfig.EnableConfigWhitelist {
 		return
 	}
 
-	if currentOrigin := ctx.Request.Header.Get("Origin"); !slices.Contains(utils.Conf().AllowedOrigins, currentOrigin) {
+	if currentOrigin := ctx.Request.Header.Get("Origin"); !slices.Contains(utils.GlobalConfig.AllowedOrigins, currentOrigin) {
 		utils.Respond(ctx, false, "Not supported origin", "", nil)
 	}
 }

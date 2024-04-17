@@ -2,12 +2,13 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	"seatimc/backend/utils"
 )
 
-func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
+func HandleRegister() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		conn := utils.GetDBConn()
+
 		var object RegisterRequest
 		if err := c.ShouldBindJSON(&object); err != nil {
 			utils.RespondNG(c, "Invalid Request Body", "")
@@ -20,11 +21,14 @@ func HandleRegister(db *sqlx.DB) gin.HandlerFunc {
 			return
 		}
 
-		_, err = utils.DbExec(db, "INSERT INTO `seati_users` (`username`, `hash`, `mcid`, `email`) VALUES (?, ?, ?, ?)",
-			object.Username, hash, object.MCID, object.Email)
-
-		if err != nil {
-			utils.RespondNG(c, "Failed to execute some statements: "+err.Error(), "")
+		result := conn.Create(&utils.Users{
+			Username: object.Username,
+			Hash:     hash,
+			MCID:     object.MCID,
+			Email:    object.Email,
+		})
+		if result.Error != nil {
+			utils.RespondNG(c, "Failed to execute some statements: "+result.Error.Error(), "")
 			return
 		}
 
