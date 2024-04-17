@@ -3,6 +3,7 @@ package monitor
 import (
 	"log"
 	"seatimc/backend/ecs"
+	"seatimc/backend/errHandler"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -19,15 +20,14 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 	var stoppedDuration time.Duration
 
 	for {
-		var err error
+		var customErr *errHandler.CustomErr
 		var hasActiveInstance bool
 		var activeInstance *utils.Ecs
 		var retrieved *ecs.InstanceDescriptionRetrieved
 
-		hasActiveInstance, err = utils.HasActiveInstance()
-
-		if err != nil {
-			log.Println("Critical. Cannot determine active instance existence: " + err.Error())
+		hasActiveInstance, customErr = utils.HasActiveInstance()
+		if customErr != nil {
+			log.Println("Critical. Cannot determine active instance existence: " + customErr.Handle().Error())
 			goto endOfLoop
 		}
 
@@ -36,17 +36,15 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 			goto endOfLoop
 		}
 
-		activeInstance, err = utils.GetActiveInstance()
-
-		if err != nil {
-			log.Println("Critical. Cannot get active instance from database: " + err.Error())
+		activeInstance, customErr = utils.GetActiveInstance()
+		if customErr != nil {
+			log.Println("Critical. Cannot get active instance from database: " + customErr.Handle().Error())
 			goto endOfLoop
 		}
 
-		retrieved, err = ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
-
-		if err != nil {
-			log.Println("Critical. Failed DescribeInstance: " + err.Error())
+		retrieved, customErr = ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+		if customErr != nil {
+			log.Println("Critical. Failed DescribeInstance: " + customErr.Handle().Error())
 			goto endOfLoop
 		}
 
@@ -55,16 +53,15 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 		}
 
 		if stoppedDuration >= threshold {
-			err = ecs.DeleteInstance(activeInstance.InstanceId, true)
-			if err != nil {
-				log.Println("Critical. Failed DeleteInstance: " + err.Error())
+			customErr = ecs.DeleteInstance(activeInstance.InstanceId, true)
+			if customErr != nil {
+				log.Println("Critical. Failed DeleteInstance: " + customErr.Handle().Error())
 				goto endOfLoop
 			}
 
-			err = utils.WriteAutomatedEcsRecord(activeInstance.InstanceId, "delete", true)
-
-			if err != nil {
-				log.Println("Critical. Unable to write automated record: " + err.Error())
+			customErr = utils.WriteAutomatedEcsRecord(activeInstance.InstanceId, "delete", true)
+			if customErr != nil {
+				log.Println("Critical. Unable to write automated record: " + customErr.Handle().Error())
 				goto endOfLoop
 			}
 		}

@@ -1,16 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"os"
 	"os/signal"
-	"seatimc/backend/handlers/auth"
-	"seatimc/backend/handlers/ecs"
+	"seatimc/backend/handlers"
 	"seatimc/backend/monitor"
 	"seatimc/backend/utils"
-	"strconv"
 	"syscall"
 	"time"
 )
@@ -18,35 +15,10 @@ import (
 func Run() {
 	log.Println("Starting 🌊Tisea Backend.")
 
-	log.Println("Using Gin " + gin.Version)
-	router := gin.New()
-	router.Use(middlewares())
+	router := handlers.Router{Port: utils.GlobalConfig.BindPort}
 
-	log.Println("Adding routes")
-
-	versionHandler := func(context *gin.Context) {
-		context.String(200, "tisea @ "+utils.GlobalConfig.Version)
-	}
-	// 根目录返回信息
-	router.GET("/", versionHandler)
-	router.POST("/", versionHandler)
-
-	authGroup := router.Group("/auth")
-	authGroup.POST("register", auth.HandleRegister())
-	authGroup.POST("login", auth.HandleLogin())
-
-	ecsGroup := router.Group("/ecs")
-	ecsGroup.POST("create", ecs.HandleCreateInstance())
-	ecsGroup.POST("describe", ecs.HandleDescribeInstance())
-	ecsGroup.POST("stop", ecs.HandleStopInstance())
-	ecsGroup.POST("start", ecs.HandleStartInstance())
-	ecsGroup.POST("reboot", ecs.HandleRebootInstance())
-
-	runErr := router.Run(":" + strconv.Itoa(utils.GlobalConfig.BindPort))
-
-	if runErr != nil {
-		log.Fatal(runErr.Error())
-	}
+	router.Init()
+	router.Run()
 }
 
 func RunMonitor(monitorName string) {

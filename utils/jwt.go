@@ -94,7 +94,7 @@ func ExtractJWTPayload(headerToken string) *JWTPayload {
 		return nil
 	}
 
-	result.UpdatedAt, ok = res["updated_at"].(int64)
+	result.UpdatedAt, ok = res["updatedAt"].(int64)
 	if !ok {
 		return nil
 	}

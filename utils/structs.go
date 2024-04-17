@@ -2,7 +2,7 @@ package utils
 
 type JWTPayload struct {
 	Username  string `json:"username"`
-	UpdatedAt int64  `json:"updated_at"`
+	UpdatedAt int64  `json:"updatedAt"`
 }
 
 /**
@@ -48,7 +48,7 @@ type EcsActions struct {
 
 type CreatedInstance struct {
 	// 成交价格
-	TradePrice float32 `json:"trade_price"`
+	TradePrice float32 `json:"tradePrice"`
 	// 实例 ID
-	InstanceId string `json:"instance_id"`
+	InstanceId string `json:"instanceId"`
 }

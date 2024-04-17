@@ -3,24 +3,23 @@ package ecs
 import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
+	"seatimc/backend/errHandler"
 	"seatimc/backend/utils"
 )
 
 // 动态获取指定 regionId 下的 instanceId 实例的实时信息
-func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionRetrieved, error) {
-	client, err := CreateClient()
-
-	if err != nil {
-		return nil, err
+func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionRetrieved, *errHandler.CustomErr) {
+	client, customErr := CreateClient()
+	if customErr != nil {
+		return nil, customErr
 	}
 
 	res, err := client.DescribeInstances(&ecs.DescribeInstancesRequest{
 		RegionId:    tea.String(regionId),
 		InstanceIds: tea.String("[" + instanceId + "]"),
 	})
-
 	if err != nil {
-		return nil, err
+		return nil, errHandler.AliyunError(err)
 	}
 
 	var result InstanceDescriptionRetrieved
@@ -30,7 +29,7 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionR
 		result.PublicIpAddress = tea.StringSliceValue(inst.PublicIpAddress.IpAddress)
 		parsedTime, err := utils.ParseTime(tea.StringValue(inst.CreationTime))
 		if err != nil {
-			return nil, err
+			return nil, errHandler.ServerError(err)
 		}
 		result.CreationTime = parsedTime
 	}

@@ -1,17 +1,17 @@
 package utils
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/errHandler"
 )
 
-func WriteManualEcsRecord(context *gin.Context, instanceId string, actionType string, force bool) error {
+func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errHandler.CustomErr {
 	conn := GetDBConn()
-	token := context.GetHeader("JWT")
+	token := ctx.GetHeader("JWT")
 	payload := ExtractJWTPayload(token)
 
 	if payload == nil {
-		return fmt.Errorf("JWT_TOKEN")
+		return errHandler.UnAuth()
 	}
 
 	if force {
@@ -24,10 +24,10 @@ func WriteManualEcsRecord(context *gin.Context, instanceId string, actionType st
 		ByUsername: payload.Username,
 	})
 
-	return result.Error
+	return errHandler.DbError(result.Error)
 }
 
-func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) error {
+func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *errHandler.CustomErr {
 	conn := GetDBConn()
 	if force {
 		actionType += "_force"
@@ -39,5 +39,5 @@ func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) e
 		Automated:  true,
 	})
 
-	return result.Error
+	return errHandler.DbError(result.Error)
 }

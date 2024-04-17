@@ -18,9 +18,9 @@ func DescribeZoneIds() []string {
 
 // 获取 aconfig.yml 中设定的区域的所有可用区信息，返回一个 AvailableZone 数组
 func DescribeZones() []AvailableZone {
-	client, err := CreateClient()
+	client, customErr := CreateClient()
 
-	if err != nil {
+	if customErr != nil {
 		return nil
 	}
 

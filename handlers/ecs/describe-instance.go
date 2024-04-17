@@ -3,40 +3,36 @@ package ecs
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/ecs"
+	"seatimc/backend/errHandler"
+	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleDescribeInstance() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		var request CommonInstanceRequest
+func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
+	var request CommonInstanceRequest
 
-		if err := context.ShouldBindJSON(&request); err != nil {
-			utils.RespondNG(context, "Invalid Request Body", "")
-			return
-		}
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		return errHandler.WrongParam()
+	}
 
-		activeInstance, err := utils.GetInstanceByInstanceId(request.InstanceId)
+	activeInstance, customErr := utils.GetInstanceByInstanceId(request.InstanceId)
+	if customErr != nil {
+		return customErr
+	}
 
-		if err != nil {
-			utils.RespondNG(context, "Unable to get instance from database: "+err.Error(), "获取活跃实例时出现问题")
-			return
-		}
+	retrieved, customErr := ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+	if customErr != nil {
+		return customErr
+	}
 
-		retrieved, err := ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
-		local := ecs.InstanceDescriptionLocal{
+	ecsDesc := ecs.InstanceDescription{
+		Local: ecs.InstanceDescriptionLocal{
 			InstanceId:   activeInstance.InstanceId,
 			RegionId:     activeInstance.RegionId,
 			InstanceType: activeInstance.InstanceType,
-		}
-
-		if err != nil {
-			utils.RespondNG(context, "DescribeInstance failed: "+err.Error(), "获取实例信息时出现问题")
-			return
-		}
-
-		utils.ReturnOK(context, "Successfully got instance info.", "成功获取到实例信息", ecs.InstanceDescription{
-			Local:     local,
-			Retrieved: *retrieved,
-		})
+		},
+		Retrieved: *retrieved,
 	}
+	middleware.RespSuccess(ctx, ecsDesc)
+	return nil
 }
