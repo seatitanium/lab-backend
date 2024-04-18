@@ -1,43 +1,31 @@
 package main
 
 import (
-	"github.com/urfave/cli/v2"
+	cliv2 "github.com/urfave/cli/v2"
 	"log"
 	"os"
+	"seatimc/backend/cli"
 	"seatimc/backend/utils"
 )
 
 func main() {
-	app := &cli.App{
+	app := &cliv2.App{
 		Name:  "tisea",
 		Usage: "Take control of the backend.",
-		Commands: []*cli.Command{
-			{
-				Name:    "run",
-				Aliases: []string{"boot"},
-				Usage:   "Start the backend service",
-				Action: func(context *cli.Context) error {
-					Run()
-					return nil
-				},
-			},
-			{
-				Name:  "monitor",
-				Usage: "Start one of the monitors of backend",
-				Action: func(context *cli.Context) error {
-					monitorName := context.Args().Get(0)
-					RunMonitor(monitorName)
-					return nil
-				},
-			},
+		Commands: []*cliv2.Command{
+			&cli.CommandRun,
+			&cli.CommandMonitor,
+			&cli.CommandInit,
+			&cli.CommandHelp,
 		},
-	}
-
-	// TODO: 作为参数引入
-	utils.GlobalConfig.Load("./config.yml")
-
-	if err := utils.InitDB(); err != nil {
-		log.Fatal(err)
+		Flags: []cliv2.Flag{
+			&cli.FlagConfig,
+			&cli.FlagHelp,
+		},
+		Before: func(ctx *cliv2.Context) error {
+			utils.GlobalConfig.Load(cli.FlagConfigVar)
+			return nil
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {

@@ -2,9 +2,13 @@ go 1.21.6
 
 use (
 	.
-	handlers/auth
-	utils
+	cli
 	ecs
+	errHandler
+	handlers/auth
+	handlers/common
 	handlers/ecs
+	middleware
 	monitor
+	utils
 )
