@@ -79,12 +79,14 @@ func ResNotExist() *CustomErr {
 	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeResNotExist, RespErrMsgNotExist)
 }
 
-func TokenExpired() *CustomErr {
-	return newCustomError(ErrTypeUser, http.StatusUnauthorized, RespErrCodeTokenExpired, RespErrMsgTokenExpired)
-}
-
+// 无效 token 错误。当 token 出现过期等情况时使用。
 func InvalidToken() *CustomErr {
 	return newCustomError(ErrTypeUser, http.StatusUnauthorized, RespErrCodeInvalidToken, RespErrMsgInvalidToken)
+}
+
+// 不良 token 错误。当 token 无法正确解析时使用。
+func BadToken() *CustomErr {
+	return newCustomError(ErrTypeUser, http.StatusUnauthorized, RespErrCodeBadToken, RespErrMsgBadToken)
 }
 
 func ServerError(err error) *CustomErr {

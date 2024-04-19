@@ -37,11 +37,11 @@ const (
 	RespErrCodeForbidden = 1202
 	RespErrMsgForbidden  = "No permission"
 
-	RespErrCodeTokenExpired = 1203
-	RespErrMsgTokenExpired  = "Token expired"
-
-	RespErrCodeInvalidToken = 1204
+	RespErrCodeInvalidToken = 1203
 	RespErrMsgInvalidToken  = "Invalid token"
+
+	RespErrCodeBadToken = 1204
+	RespErrMsgBadToken  = "Bad token"
 )
 
 // Response code 13xx for server side error
