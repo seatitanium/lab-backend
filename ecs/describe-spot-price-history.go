@@ -9,7 +9,8 @@ import (
 )
 
 // 按照 aconfig.yml 中的配置获取参数中给定的 zoneId 对应的可用区的竞价数值历史，返回一个 SpotPriceHistory 数组
-func DescribeSpotPriceHistory(zoneId string) []SpotPriceHistory {
+//   - 注：startTime 和 endTime 采用 yyyy-MM-ddTHH:mm:ssZ 格式，时区 UTC+0
+func DescribeSpotPriceHistory(zoneId string, startTime string, endTime string) []SpotPriceHistory {
 	client, customErr := CreateClient()
 
 	if customErr != nil {
@@ -25,6 +26,8 @@ func DescribeSpotPriceHistory(zoneId string) []SpotPriceHistory {
 		ZoneId:       tea.String(zoneId),
 		SpotDuration: tea.Int32(conf.Using.SpotDuration),
 		OSType:       tea.String(conf.Using.OSType),
+		StartTime:    tea.String(startTime),
+		EndTime:      tea.String(endTime),
 	}
 
 	resp, err := client.DescribeSpotPriceHistory(request)
