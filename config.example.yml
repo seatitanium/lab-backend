@@ -1,18 +1,29 @@
+# 服务部署到的域名
 domain: seati.cc
+# Gin 的绑定端口
 bind-port: 9090
+# 对外展示的版本号
 version: 0.10
+# 是否启用跨域白名单
 enable-origin-whitelist: true
+# 前提：启用了跨域白名单
+# 允许的来源 Origin 列表
 allowed-origins:
   - https://seati.cc
   - https://lab.seati.cc
+# 数据库相关配置
 database:
   host: localhost
   port: 3306
   user: ~
   password: ~
   dbname: ~
+# JWT 生成相关设置
 token:
-  expiration: 1440 # 单位：分钟
+  # Token 有效期限，单位：分钟
+  expiration: 1440
+  # Token 生成时使用的私钥
   private-key: ~
+# 需要验证 JWT 有效性的 endpoint handler 名称
 need-authorize-handlers:
   - ExampleHandler
