@@ -26,7 +26,7 @@ func HandleLogin(ctx *gin.Context) *errHandler.CustomErr {
 		})
 
 		if err != nil {
-			return errHandler.ServerError(err)
+			return err
 		}
 
 		middleware.RespSuccess(ctx, jwt)

@@ -12,7 +12,5 @@ func TokenCheck(ctx *gin.Context) {
 
 	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
 
-	if checkErr != nil {
-		RespInvalidToken(ctx)
-	}
+	RespTokenError(ctx, checkErr.Code, checkErr.Msg)
 }

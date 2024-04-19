@@ -3,7 +3,6 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"seatimc/backend/errHandler"
 )
 
 type Response struct {
@@ -38,12 +37,4 @@ func RespTokenError(ctx *gin.Context, errCode int, errMsg string) {
 		Data:     false,
 	}
 	ctx.JSON(resp.HttpCode, resp)
-}
-
-func RespInvalidToken(c *gin.Context) {
-	RespTokenError(c, errHandler.RespErrCodeInvalidToken, errHandler.RespErrMsgInvalidToken)
-}
-
-func RespTokenExpired(c *gin.Context) {
-	RespTokenError(c, errHandler.RespErrCodeTokenExpired, errHandler.RespErrMsgTokenExpired)
 }
