@@ -6,7 +6,7 @@ import "strings"
 func NeedAuthorize(handlerName string) bool {
 	needs := GlobalConfig.NeedAuthorizeHandlers
 	for i := 0; i < len(needs); i++ {
-		if strings.HasPrefix(handlerName, needs[i]) {
+		if strings.Contains(handlerName, needs[i]) {
 			return true
 		}
 	}
