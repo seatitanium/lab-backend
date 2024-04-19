@@ -9,22 +9,22 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
 ## Lab 开发事项
 
 - Auth 统一认证
-  - [x] 注册 · *POST* `/register`
-  - [x] 登录+Token 生成与发放 · *POST* `/login`
+  - [x] *POST* `/register` 注册
+  - [x] *POST* `/login` 登录+Token 生成与发放
 - ECS Aliyun 交互
-  - 实例状态查询 DescribeInstance · *POST* `/ecs/describe`
+  - *POST* `/ecs/describe` 实例状态查询 DescribeInstance
       - [x] 实现
       - [ ] 测试
-  - 创建实例 CreateInstance · *POST* `/ecs/create`
+  - *POST* `/ecs/create` 创建实例 CreateInstance
     - [x] 实现
     - [ ] 测试
-  - 删除实例 DeleteInstance · *POST* `/ecs/delete`
+  - *POST* `/ecs/delete` 删除实例 DeleteInstance
     - [x] 实现
     - [ ] 测试
-  - 开启、关闭和重启实例 StartInstance, StopInstance, RebootInstance · *POST* `/ecs/start`, `/ecs/stop`, `/ecs/reboot`
+  - *POST* `/ecs/start`, `/ecs/stop`, `/ecs/reboot` 开启、关闭和重启实例 StartInstance, StopInstance, RebootInstance
     - [x] 实现
     - [ ] 测试
-  - 抢占式价格查询 DescribeSpotPriceHistory · *POST* `/ecs/price-history`
+  - *POST* `/ecs/price-history` 抢占式价格查询 DescribeSpotPriceHistory
     - [ ] 实现
     - [ ] 测试
 - Monitor 监控与自动化任务
