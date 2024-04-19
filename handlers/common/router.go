@@ -51,6 +51,7 @@ func (r *Router) Run() {
 	ecsGroup.POST("stop", wrapper(ecs.HandleStopInstance))
 	ecsGroup.POST("start", wrapper(ecs.HandleStartInstance))
 	ecsGroup.POST("reboot", wrapper(ecs.HandleRebootInstance))
+	ecsGroup.POST("delete", wrapper(ecs.HandleDeleteInstance))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)
