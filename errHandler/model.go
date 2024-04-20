@@ -42,6 +42,9 @@ const (
 
 	RespErrCodeBadToken = 1204
 	RespErrMsgBadToken  = "Bad token"
+
+	RespErrCodeDuplicatedUser = 1205
+	RespErrMsgDuplicatedUser  = "Duplicated User Registration"
 )
 
 // Response code 13xx for server side error

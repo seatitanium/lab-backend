@@ -15,7 +15,18 @@ func HandleRegister(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
+	exists, customErr := utils.IsUsernameUsed(object.Username)
+
+	if customErr != nil {
+		return customErr
+	}
+
+	if exists {
+		return errHandler.DuplicatedUser()
+	}
+
 	hash, err := utils.GenerateHash(object.Password)
+
 	if err != nil {
 		return errHandler.ServerError(err)
 	}
@@ -26,6 +37,7 @@ func HandleRegister(ctx *gin.Context) *errHandler.CustomErr {
 		MCID:     object.MCID,
 		Email:    object.Email,
 	})
+
 	if result.Error != nil {
 		return errHandler.DbError(result.Error)
 	}

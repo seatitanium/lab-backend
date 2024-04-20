@@ -105,6 +105,10 @@ func UnAuth() *CustomErr {
 	return newCustomError(ErrTypeUser, http.StatusUnauthorized, RespErrCodeUnauth, RespErrMsgUnauth)
 }
 
+func DuplicatedUser() *CustomErr {
+	return newCustomError(ErrTypeUser, http.StatusBadRequest, RespErrCodeDuplicatedUser, RespErrMsgDuplicatedUser)
+}
+
 func Forbidden() *CustomErr {
 	return newCustomError(ErrTypeHttp, http.StatusForbidden, RespErrCodeForbidden, RespErrMsgForbidden)
 }
