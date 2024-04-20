@@ -6,7 +6,6 @@ import (
 )
 
 func TokenCheck(ctx *gin.Context) {
-
 	if !utils.NeedAuthorize(ctx.Request.RequestURI) {
 		return
 	}
@@ -15,5 +14,7 @@ func TokenCheck(ctx *gin.Context) {
 
 	if checkErr != nil {
 		RespTokenError(ctx, checkErr.Code, checkErr.Msg)
+		ctx.Abort()
+		return
 	}
 }
