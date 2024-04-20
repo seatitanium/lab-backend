@@ -6,11 +6,14 @@ import (
 )
 
 func TokenCheck(ctx *gin.Context) {
-	if !utils.NeedAuthorize(ctx.HandlerName()) {
+
+	if !utils.NeedAuthorize(ctx.Request.RequestURI) {
 		return
 	}
 
 	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
 
-	RespTokenError(ctx, checkErr.Code, checkErr.Msg)
+	if checkErr != nil {
+		RespTokenError(ctx, checkErr.Code, checkErr.Msg)
+	}
 }
