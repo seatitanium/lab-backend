@@ -19,14 +19,14 @@ type ConfigToken struct {
 }
 
 type Config struct {
-	Domain                string         `yaml:"domain"`
-	AllowedOrigins        []string       `yaml:"allowed-origins"`
-	Database              ConfigDatabase `yaml:"database"`
-	Token                 ConfigToken    `yaml:"token"`
-	BindPort              int            `yaml:"bind-port"`
-	Version               string         `yaml:"version"`
-	EnableConfigWhitelist bool           `yaml:"enable-config-whitelist"`
-	NeedAuthorizeHandlers []string       `yaml:"need-authorize-handlers"`
+	Domain                 string         `yaml:"domain"`
+	AllowedOrigins         []string       `yaml:"allowed-origins"`
+	Database               ConfigDatabase `yaml:"database"`
+	Token                  ConfigToken    `yaml:"token"`
+	BindPort               int            `yaml:"bind-port"`
+	Version                string         `yaml:"version"`
+	EnableConfigWhitelist  bool           `yaml:"enable-config-whitelist"`
+	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 }
 
 var GlobalConfig *Config

@@ -24,6 +24,7 @@ token:
   expiration: 1440
   # Token 生成时使用的私钥
   private-key: ~
-# 需要验证 JWT 有效性的 endpoint handler 名称
-need-authorize-handlers:
-  - ExampleHandler
+# 需要验证 JWT 有效性的 endpoint 位置（按前缀）
+# 以 / 开头
+need-authorize-endpoints:
+  - /to/example/endpoint
