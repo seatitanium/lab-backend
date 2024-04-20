@@ -4,15 +4,15 @@ import "seatimc/backend/errHandler"
 
 func IsUsernameUsed(username string) (bool, *errHandler.CustomErr) {
 	conn := GetDBConn()
-	var exists bool
+	var count int64
 
-	result := conn.Model(&Users{}).Select("count(*) > 0").Where(&Users{Username: username}).Find(&exists)
+	result := conn.Model(&Users{}).Where(&Users{Username: username}).Count(&count)
 
 	if result.Error != nil {
 		return false, errHandler.DbError(result.Error)
 	}
 
-	return exists, nil
+	return count > 0, nil
 }
 
 func GetUserByUsername(username string) (*Users, *errHandler.CustomErr) {

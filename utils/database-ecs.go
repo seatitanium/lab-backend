@@ -17,7 +17,7 @@ func GetInstanceByInstanceId(instanceId string) (*Ecs, *errHandler.CustomErr) {
 
 // 获取当前的 active instance
 //
-// 使用前必须先检验是否存在 active instance，否则会产生 errHandler
+// 使用前必须先检验是否存在 active instance，否则会产生 customErr
 func GetActiveInstance() (*Ecs, *errHandler.CustomErr) {
 	conn := GetDBConn()
 	var ecs Ecs
@@ -31,13 +31,13 @@ func GetActiveInstance() (*Ecs, *errHandler.CustomErr) {
 }
 
 // 检查当前是否存在 active instance
-//
-// 注意：第一个返回值为 false 时，不一定表示不存在，也有可能是发生了错误
 func HasActiveInstance() (bool, *errHandler.CustomErr) {
 	conn := GetDBConn()
 	var ecsCount int64
 
-	result := conn.Where(&Ecs{Active: true}).Count(&ecsCount)
+	// fixed 04.20:
+	// [Database 1302] Msg: [unsupported data type: 0x1400036013e: Table not set, please set it like: db.Model(&user) or db.Table("users")]
+	result := conn.Model(&Ecs{}).Where(&Ecs{Active: true}).Count(&ecsCount)
 	if result.Error != nil {
 		return false, errHandler.DbError(result.Error)
 	}
