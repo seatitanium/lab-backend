@@ -32,7 +32,7 @@ const (
 // Response codes 12xx for auth error
 const (
 	RespErrCodeUnauth = 1201
-	RespErrMsgUnauth  = "Please login first"
+	RespErrMsgUnauth  = "Authentication Failed"
 
 	RespErrCodeForbidden = 1202
 	RespErrMsgForbidden  = "No permission"
