@@ -46,12 +46,12 @@ func (r *Router) Run() {
 	authGroup.POST("login", wrapper(auth.HandleLogin))
 
 	ecsGroup := r.Router.Group("/ecs")
-	ecsGroup.POST("create", wrapper(ecs.HandleCreateInstance))
-	ecsGroup.POST("describe", wrapper(ecs.HandleDescribeInstance))
-	ecsGroup.POST("stop", wrapper(ecs.HandleStopInstance))
-	ecsGroup.POST("start", wrapper(ecs.HandleStartInstance))
-	ecsGroup.POST("reboot", wrapper(ecs.HandleRebootInstance))
-	ecsGroup.POST("delete", wrapper(ecs.HandleDeleteInstance))
+	ecsGroup.GET("create", wrapper(ecs.HandleCreateInstance))
+	ecsGroup.GET("describe", wrapper(ecs.HandleDescribeInstance))
+	ecsGroup.GET("stop", wrapper(ecs.HandleStopInstance))
+	ecsGroup.GET("start", wrapper(ecs.HandleStartInstance))
+	ecsGroup.GET("reboot", wrapper(ecs.HandleRebootInstance))
+	ecsGroup.DELETE("delete", wrapper(ecs.HandleDeleteInstance))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

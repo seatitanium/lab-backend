@@ -11,7 +11,10 @@ import (
 func HandleRebootInstance(ctx *gin.Context) *errHandler.CustomErr {
 	var request StopInstanceRequest
 
-	if err := ctx.ShouldBindJSON(&request); err != nil {
+	request.InstanceId = ctx.Query("instanceId")
+	request.Force = utils.IsTrue(ctx.Query("force"))
+
+	if request.InstanceId == "" {
 		return errHandler.WrongParam()
 	}
 

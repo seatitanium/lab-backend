@@ -9,9 +9,9 @@ import (
 )
 
 func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
-	var request CommonInstanceRequest
+	instanceId := ctx.Query("instanceId")
 
-	if err := ctx.ShouldBindJSON(&request); err != nil {
+	if instanceId == "" {
 		return errHandler.WrongParam()
 	}
 
@@ -25,7 +25,7 @@ func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.ResNotExist()
 	}
 
-	activeInstance, customErr := utils.GetInstanceByInstanceId(request.InstanceId)
+	activeInstance, customErr := utils.GetInstanceByInstanceId(instanceId)
 	if customErr != nil {
 		return customErr
 	}

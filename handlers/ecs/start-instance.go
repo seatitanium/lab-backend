@@ -9,18 +9,18 @@ import (
 )
 
 func HandleStartInstance(ctx *gin.Context) *errHandler.CustomErr {
-	var request CommonInstanceRequest
+	instanceId := ctx.Query("instanceId")
 
-	if err := ctx.ShouldBindJSON(&request); err != nil {
+	if instanceId == "" {
 		return errHandler.WrongParam()
 	}
 
-	customErr := utils.WriteManualEcsRecord(ctx, request.InstanceId, "start", false)
+	customErr := utils.WriteManualEcsRecord(ctx, instanceId, "start", false)
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = ecs.StartInstance(request.InstanceId)
+	customErr = ecs.StartInstance(instanceId)
 	if customErr != nil {
 		return customErr
 	}

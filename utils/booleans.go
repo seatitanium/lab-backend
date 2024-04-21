@@ -14,3 +14,7 @@ func NeedAuthorize(uri string) bool {
 
 	return false
 }
+
+func IsTrue(boolean string) bool {
+	return strings.EqualFold(boolean, "true")
+}
