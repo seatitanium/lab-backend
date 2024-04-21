@@ -7,7 +7,7 @@ import (
 
 func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errHandler.CustomErr {
 	conn := GetDBConn()
-	token := ctx.GetHeader("JWT")
+	token := ctx.GetHeader("Token")
 	payload := ExtractJWTPayload(token)
 
 	if payload == nil {
