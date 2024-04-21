@@ -18,11 +18,6 @@ func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.OperateNotApplied()
 	}
 
-	customErr = utils.WriteManualEcsRecord(ctx, "", "create", false)
-	if customErr != nil {
-		return customErr
-	}
-
 	conf := ecs.AliyunConfig
 	created, customErr := ecs.CreateInstance(conf)
 	if customErr != nil {
@@ -30,6 +25,11 @@ func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
 	}
 
 	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, conf.Using.InstanceType)
+	if customErr != nil {
+		return customErr
+	}
+
+	customErr = utils.WriteManualEcsRecord(ctx, "", "create", false)
 	if customErr != nil {
 		return customErr
 	}

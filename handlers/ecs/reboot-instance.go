@@ -18,12 +18,12 @@ func HandleRebootInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
-	customErr := utils.WriteManualEcsRecord(ctx, request.InstanceId, "reboot", request.Force)
+	customErr := ecs.RebootInstance(request.InstanceId, request.Force)
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = ecs.RebootInstance(request.InstanceId, request.Force)
+	customErr = utils.WriteManualEcsRecord(ctx, request.InstanceId, "reboot", request.Force)
 	if customErr != nil {
 		return customErr
 	}

@@ -18,12 +18,12 @@ func HandleStopInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
-	customErr := utils.WriteManualEcsRecord(ctx, request.InstanceId, "stop", request.Force)
+	customErr := ecs.StopInstance(request.InstanceId, request.Force)
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = ecs.StopInstance(request.InstanceId, request.Force)
+	customErr = utils.WriteManualEcsRecord(ctx, request.InstanceId, "stop", request.Force)
 	if customErr != nil {
 		return customErr
 	}

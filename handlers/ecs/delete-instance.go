@@ -18,13 +18,12 @@ func HandleDeleteInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
-	customErr := utils.WriteManualEcsRecord(ctx, request.InstanceId, "delete", request.Force)
-
+	customErr := ecs.DeleteInstance(request.InstanceId, request.Force)
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = ecs.DeleteInstance(request.InstanceId, request.Force)
+	customErr = utils.WriteManualEcsRecord(ctx, request.InstanceId, "delete", request.Force)
 	if customErr != nil {
 		return customErr
 	}

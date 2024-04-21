@@ -15,12 +15,12 @@ func HandleStartInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
-	customErr := utils.WriteManualEcsRecord(ctx, instanceId, "start", false)
+	customErr := ecs.StartInstance(instanceId)
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = ecs.StartInstance(instanceId)
+	customErr = utils.WriteManualEcsRecord(ctx, instanceId, "start", false)
 	if customErr != nil {
 		return customErr
 	}
