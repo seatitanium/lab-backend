@@ -8,10 +8,10 @@ import (
 func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errHandler.CustomErr {
 	conn := GetDBConn()
 	token := ctx.GetHeader("Token")
-	payload := ExtractJWTPayload(token)
+	payload, err := GetPayloadFromToken(token)
 
-	if payload == nil {
-		return errHandler.UnAuth()
+	if err != nil {
+		return err
 	}
 
 	if force {
@@ -24,7 +24,11 @@ func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string
 		ByUsername: payload.Username,
 	})
 
-	return errHandler.DbError(result.Error)
+	if result.Error != nil {
+		return errHandler.DbError(result.Error)
+	}
+
+	return nil
 }
 
 func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *errHandler.CustomErr {
@@ -39,5 +43,9 @@ func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *
 		Automated:  true,
 	})
 
-	return errHandler.DbError(result.Error)
+	if result.Error != nil {
+		return errHandler.DbError(result.Error)
+	}
+
+	return nil
 }

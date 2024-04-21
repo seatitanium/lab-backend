@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"seatimc/backend/errHandler"
 	"time"
@@ -10,11 +11,16 @@ import (
 
 // 生成一个 JSON Web Token 文本，Claim 的 data 部分为参数 object
 func GenerateJWT(object JWTPayload) (string, *errHandler.CustomErr) {
-	claims := &jwt.MapClaims{
-		"iss":  "seati",
-		"exp":  time.Now().Add(time.Duration(GlobalConfig.Token.Expiration) * time.Minute).Unix(),
-		"data": object,
+
+	claims := &JWTClaims{
+		StandardClaims: jwt.StandardClaims{
+			Issuer:    "seati",
+			ExpiresAt: time.Now().Add(time.Duration(GlobalConfig.Token.Expiration) * time.Minute).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		Payload: object,
 	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	res, err := token.SignedString([]byte(GlobalConfig.Token.PrivateKey))
@@ -56,8 +62,8 @@ func CheckJWT(headerToken string) *errHandler.CustomErr {
 	return nil
 }
 
-// 尝试从 JWT Token 字符串中解析出 payload，返回一个 map[string]any
-func ExtractJWT(headerToken string) (map[string]any, *errHandler.CustomErr) {
+// 提取出 JWT Token 字符串中的 claims 部分，返回一个 jwt.MapClaims（相当于 map[string]any）
+func GetClaimsFromToken(headerToken string) (jwt.MapClaims, *errHandler.CustomErr) {
 	checkErr := CheckJWT(headerToken)
 
 	if checkErr != nil {
@@ -73,33 +79,33 @@ func ExtractJWT(headerToken string) (map[string]any, *errHandler.CustomErr) {
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if !ok {
-		return nil, errHandler.ServerError(fmt.Errorf("errHandler casting token.Claims to jwt.MapClaims"))
+		return nil, errHandler.ServerError(fmt.Errorf("cannot convert claims"))
 	}
 
-	return claims["data"].(map[string]any), nil
+	return claims, nil
 }
 
-// 尝试从 JWT Token 字符串中解析出 payload，并尝试将其转换为 *JWTPayload。如果转换失败，返回 nil
-func ExtractJWTPayload(headerToken string) *JWTPayload {
-	var result JWTPayload
+func GetPayloadFromToken(headerToken string) (*JWTPayload, *errHandler.CustomErr) {
+	claims, customErr := GetClaimsFromToken(headerToken)
 
-	res, err := ExtractJWT(headerToken)
+	payloadData := claims["payload"].(map[string]any)
+	payload := JWTPayload{}
+
+	marshaled, err := json.Marshal(payloadData)
 
 	if err != nil {
-		return nil
+		return nil, errHandler.ServerError(err)
 	}
 
-	var ok bool
+	err = json.Unmarshal(marshaled, &payload)
 
-	result.Username, ok = res["username"].(string)
-	if !ok {
-		return nil
+	if err != nil {
+		return nil, errHandler.ServerError(err)
 	}
 
-	result.UpdatedAt, ok = res["updatedAt"].(int64)
-	if !ok {
-		return nil
+	if customErr != nil {
+		return nil, customErr
 	}
 
-	return &result
+	return &payload, nil
 }

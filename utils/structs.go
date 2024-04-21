@@ -1,8 +1,15 @@
 package utils
 
+import "github.com/golang-jwt/jwt"
+
 type JWTPayload struct {
 	Username  string `json:"username"`
-	UpdatedAt int64  `json:"updatedAt"`
+	UpdatedAt string `json:"updatedAt"`
+}
+
+type JWTClaims struct {
+	jwt.StandardClaims
+	Payload JWTPayload `json:"payload"`
 }
 
 /**

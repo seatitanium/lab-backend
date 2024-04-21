@@ -22,7 +22,7 @@ func HandleLogin(ctx *gin.Context) *errHandler.CustomErr {
 	if utils.VerifyHash([]byte(user.Hash), []byte(object.Password)) {
 		jwt, customErr := utils.GenerateJWT(utils.JWTPayload{
 			Username:  object.Username,
-			UpdatedAt: time.Now().UnixMilli(),
+			UpdatedAt: time.Now().String(),
 		})
 
 		if customErr != nil {
