@@ -15,6 +15,16 @@ func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.WrongParam()
 	}
 
+	hasActiveInstance, customErr := utils.HasActiveInstance()
+
+	if customErr != nil {
+		return customErr
+	}
+
+	if hasActiveInstance == false {
+		return errHandler.ResNotExist()
+	}
+
 	activeInstance, customErr := utils.GetInstanceByInstanceId(request.InstanceId)
 	if customErr != nil {
 		return customErr
