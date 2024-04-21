@@ -44,6 +44,7 @@ func (r *Router) Run() {
 	authGroup := r.Router.Group("/auth")
 	authGroup.POST("register", wrapper(auth.HandleRegister))
 	authGroup.POST("login", wrapper(auth.HandleLogin))
+	authGroup.GET("check", wrapper(auth.HandleCheck))
 
 	ecsGroup := r.Router.Group("/ecs")
 	ecsGroup.GET("create", wrapper(ecs.HandleCreateInstance))
