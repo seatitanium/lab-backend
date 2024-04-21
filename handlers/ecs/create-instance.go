@@ -23,7 +23,7 @@ func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return customErr
 	}
 
-	conf := ecs.Conf()
+	conf := ecs.AliyunConfig
 	created, customErr := ecs.CreateInstance(conf)
 	if customErr != nil {
 		return customErr

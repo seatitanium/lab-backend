@@ -10,12 +10,13 @@ type MonitorConf struct {
 	Enabled bool `yaml:"enabled"`
 }
 
-// 从 aconfig.yml 中获取数据
-func Conf() MonitorConf {
-	cfg := MonitorConf{}
-	cfgFile, err := os.ReadFile("./monitor.yml")
+var MonitorConfig *MonitorConf
+
+func (c *MonitorConf) Load(path string) {
+	MonitorConfig = &MonitorConf{}
+	cfgFile, err := os.ReadFile(path)
 	utils.MustPanic(err)
-	ymlErr := yaml.Unmarshal(cfgFile, &cfg)
+	ymlErr := yaml.Unmarshal(cfgFile, MonitorConfig)
 	utils.MustPanic(ymlErr)
-	return cfg
+	return
 }

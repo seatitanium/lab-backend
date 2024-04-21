@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"seatimc/backend/cli"
+	"seatimc/backend/ecs"
+	"seatimc/backend/monitor"
 	"seatimc/backend/utils"
 )
 
@@ -19,11 +21,15 @@ func main() {
 			&cli.CommandHelp,
 		},
 		Flags: []cliv2.Flag{
-			&cli.FlagConfig,
+			&cli.FlagGlobalConfig,
+			&cli.FlagMonitorConfig,
+			&cli.FlagAliyunConfig,
 			&cli.FlagHelp,
 		},
 		Before: func(ctx *cliv2.Context) error {
-			utils.GlobalConfig.Load(cli.FlagConfigVar)
+			utils.GlobalConfig.Load(cli.FlagGlobalConfigVar)
+			monitor.MonitorConfig.Load(cli.FlagMonitorConfigVar)
+			ecs.AliyunConfig.Load(cli.FlagAliyunConfigVar)
 			return nil
 		},
 	}

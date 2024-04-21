@@ -6,16 +6,34 @@ import (
 )
 
 var (
-	FlagConfigVar string
+	FlagGlobalConfigVar  string
+	FlagMonitorConfigVar string
+	FlagAliyunConfigVar  string
 )
 
 var (
-	FlagConfig = cliv2.PathFlag{
+	FlagGlobalConfig = cliv2.PathFlag{
 		Name:        "config",
 		Aliases:     []string{"c"},
 		Value:       "./config.yml",
 		Usage:       "Configuration file path",
-		Destination: &FlagConfigVar,
+		Destination: &FlagGlobalConfigVar,
+	}
+
+	FlagMonitorConfig = cliv2.PathFlag{
+		Name:        "monitor-config",
+		Aliases:     []string{"cm"},
+		Value:       "./monitor/monitor.yml",
+		Usage:       "Monitor configuration file path",
+		Destination: &FlagMonitorConfigVar,
+	}
+
+	FlagAliyunConfig = cliv2.PathFlag{
+		Name:        "aliyun-config",
+		Aliases:     []string{"ca"},
+		Value:       "./ecs/aconfig.yml",
+		Usage:       "Aliyun configuration file path",
+		Destination: &FlagAliyunConfigVar,
 	}
 
 	FlagHelp = cliv2.BoolFlag{

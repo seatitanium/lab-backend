@@ -8,7 +8,7 @@ import (
 )
 
 // 按照 aconfig.yml 中的配置创建一个新的实例，并返回成交价格和实例 ID
-func CreateInstance(conf AliyunConf) (*utils.CreatedInstance, *errHandler.CustomErr) {
+func CreateInstance(conf *AliyunConf) (*utils.CreatedInstance, *errHandler.CustomErr) {
 	client, customErr := CreateClient()
 	if customErr != nil {
 

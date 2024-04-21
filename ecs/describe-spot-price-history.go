@@ -17,7 +17,7 @@ func DescribeSpotPriceHistory(zoneId string, startTime string, endTime string) [
 		return nil
 	}
 
-	conf := Conf()
+	conf := AliyunConfig
 	request := &ecs.DescribeSpotPriceHistoryRequest{
 		RegionId:     tea.String(conf.PrimaryRegionId),
 		NetworkType:  tea.String(conf.Using.NetworkType),

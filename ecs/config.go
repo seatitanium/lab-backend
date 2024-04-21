@@ -59,12 +59,13 @@ type AliyunConf struct {
 	Using AliyunUsingConf `yaml:"using"`
 }
 
-// 从 aconfig.yml 中获取数据
-func Conf() AliyunConf {
-	cfg := AliyunConf{}
-	cfgFile, err := os.ReadFile("./aconfig.yml")
+var AliyunConfig *AliyunConf
+
+func (c *AliyunConf) Load(path string) {
+	AliyunConfig = &AliyunConf{}
+	cfgFile, err := os.ReadFile(path)
 	utils.MustPanic(err)
-	ymlErr := yaml.Unmarshal(cfgFile, &cfg)
+	ymlErr := yaml.Unmarshal(cfgFile, AliyunConfig)
 	utils.MustPanic(ymlErr)
-	return cfg
+	return
 }
