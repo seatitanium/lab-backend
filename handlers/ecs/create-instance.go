@@ -29,7 +29,7 @@ func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return customErr
 	}
 
-	customErr = utils.WriteManualEcsRecord(ctx, "", "create", false)
+	customErr = utils.WriteManualEcsRecord(ctx, created.InstanceId, "create", false)
 	if customErr != nil {
 		return customErr
 	}
