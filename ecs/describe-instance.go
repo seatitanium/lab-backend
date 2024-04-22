@@ -16,8 +16,9 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionR
 
 	res, err := client.DescribeInstances(&ecs.DescribeInstancesRequest{
 		RegionId:    tea.String(regionId),
-		InstanceIds: tea.String("[" + instanceId + "]"),
+		InstanceIds: tea.String("['" + instanceId + "']"),
 	})
+
 	if err != nil {
 		return nil, errHandler.AliyunError(err)
 	}
