@@ -7,7 +7,7 @@ func GetInstanceByInstanceId(instanceId string) (*Ecs, *errHandler.CustomErr) {
 	conn := GetDBConn()
 	var ecs Ecs
 
-	result := conn.Where(&Ecs{InstanceId: instanceId}).Limit(1).Find(ecs)
+	result := conn.Where(&Ecs{InstanceId: instanceId}).Limit(1).Find(&ecs)
 	if result.Error != nil {
 		return nil, errHandler.DbError(result.Error)
 	}
