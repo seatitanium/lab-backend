@@ -22,6 +22,7 @@ func CreateInstance(conf *AliyunConf) (*utils.CreatedInstance, *errHandler.Custo
 		ImageId:                 tea.String(conf.Using.ImageId),
 		SecurityGroupId:         tea.String(conf.Using.SecurityGroupId),
 		InstanceName:            tea.String(conf.Using.InstanceName),
+		InstanceType:            tea.String(conf.Using.InstanceType),
 		InternetChargeType:      tea.String(conf.Using.InternetChargeType),
 		InternetMaxBandwidthOut: tea.Int32(conf.Using.InternetMaxBandwidthOut),
 		Password:                tea.String(conf.Using.Password),
