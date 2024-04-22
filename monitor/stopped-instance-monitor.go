@@ -67,9 +67,10 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 		}
 
 	endOfLoop:
-		if <-end {
+		select {
+		case <-end:
 			break
-		} else {
+		default:
 			time.Sleep(interval)
 			continue
 		}
