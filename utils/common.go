@@ -12,5 +12,11 @@ func MustPanic(mustPanic error) {
 }
 
 func ParseTime(str string) (time.Time, error) {
-	return time.Parse(time.RFC3339, str)
+	res, err := time.Parse(time.RFC3339, str)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return time.Parse("2006-01-02T15:04Z", str)
 }
