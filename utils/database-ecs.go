@@ -42,7 +42,7 @@ func HasActiveInstance() (bool, *errHandler.CustomErr) {
 		return false, errHandler.DbError(result.Error)
 	}
 
-	return ecsCount > 1, nil
+	return ecsCount > 0, nil
 }
 
 // 将一个 *CreatedInstance 插入数据库，并将其设定为 active
