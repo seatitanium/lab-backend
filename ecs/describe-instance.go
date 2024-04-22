@@ -25,6 +25,8 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionR
 
 	var result InstanceDescriptionRetrieved
 
+	result.Exist = false
+
 	for _, inst := range res.Body.Instances.Instance {
 		result.Status = tea.StringValue(inst.Status)
 		result.PublicIpAddress = tea.StringSliceValue(inst.PublicIpAddress.IpAddress)
@@ -33,6 +35,7 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionR
 			return nil, errHandler.ServerError(err)
 		}
 		result.CreationTime = parsedTime
+		result.Exist = true
 	}
 
 	return &result, nil

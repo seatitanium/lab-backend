@@ -34,6 +34,7 @@ type InstanceDescription struct {
 }
 
 type InstanceDescriptionRetrieved struct {
+	Exist           bool      `json:"exist"`
 	Status          string    `json:"status"`
 	PublicIpAddress []string  `json:"public_ip_address"`
 	CreationTime    time.Time `json:"creation_time"`
