@@ -15,16 +15,16 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
 - ECS Aliyun 交互
   - *POST* `/ecs/describe` 实例状态查询 DescribeInstance
       - [x] 实现
-      - [ ] 测试
+      - [x] 测试
   - *POST* `/ecs/create` 创建实例 CreateInstance
     - [x] 实现
-    - [ ] 测试
+    - [x] 测试
   - *POST* `/ecs/delete` 删除实例 DeleteInstance
     - [x] 实现
-    - [ ] 测试
+    - [x] 测试
   - *POST* `/ecs/start`, `/ecs/stop`, `/ecs/reboot` <br/> 开启、关闭和重启实例 StartInstance, StopInstance, RebootInstance
     - [x] 实现
-    - [ ] 测试
+    - [x] 测试
   - *POST* `/ecs/price-history` 抢占式价格查询 DescribeSpotPriceHistory
     - [ ] 实现
     - [ ] 测试
@@ -41,7 +41,7 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
     - [ ] 测试
   - 实例停机空闲检测任务 StoppedInstanceMonitor
     - [x] 实现
-    - [ ] 测试
+    - [x] 测试
   - 抢占式价格记录任务 SpotPriceRecordMonitor
     - [ ] 实现
     - [ ] 测试
