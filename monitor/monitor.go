@@ -1,11 +1,39 @@
 package monitor
 
 import (
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
-func Run() {
-	runStoppedInstanceEnd := make(<-chan bool)
+func RunMonitor(monitorName string) {
 
-	go RunStoppedInstanceMonitor(time.Second*2, time.Hour*1, runStoppedInstanceEnd)
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+
+	b := make(chan bool)
+
+	// 当接收到中止信号时，将 b 设置为 true
+	go func() {
+		<-c
+		b <- true
+	}()
+
+	switch monitorName {
+	case "stopped-inst":
+		{
+			go RunStoppedInstanceMonitor(time.Second*5, time.Second*10, b)
+			break
+		}
+
+	default:
+		{
+			log.Printf("Monitor of name \"%v\" doesn't exist.\n", monitorName)
+		}
+	}
+
+	<-b
+	log.Printf("\nStopping monitor \"%v\"\n", monitorName)
 }

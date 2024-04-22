@@ -3,13 +3,9 @@ package cli
 import (
 	cliv2 "github.com/urfave/cli/v2"
 	"log"
-	"os"
-	"os/signal"
 	"seatimc/backend/handlers/common"
 	"seatimc/backend/monitor"
 	"seatimc/backend/utils"
-	"syscall"
-	"time"
 )
 
 var (
@@ -31,7 +27,7 @@ var (
 		Usage: "Start one of the monitors of backend",
 		Action: func(ctx *cliv2.Context) error {
 			monitorName := ctx.Args().Get(0)
-			runMonitor(monitorName)
+			monitor.RunMonitor(monitorName)
 			return nil
 		},
 	}
@@ -59,31 +55,3 @@ var (
 		},
 	}
 )
-
-// FIXME: Move to monitor/monitor.go
-func runMonitor(monitorName string) {
-
-	c := make(chan os.Signal)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-
-	b := make(chan bool)
-
-	// 当接收到中止信号时，将 b 设置为 true
-	go func() {
-		<-c
-		b <- true
-	}()
-
-	switch monitorName {
-	case "stopped-inst":
-		{
-			go monitor.RunStoppedInstanceMonitor(time.Second, time.Hour, b)
-			break
-		}
-
-	default:
-		{
-			log.Printf("Monitor of name \" %v \" doesn't exist.\n", monitorName)
-		}
-	}
-}
