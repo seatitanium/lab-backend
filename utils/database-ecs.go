@@ -56,7 +56,12 @@ func SaveNewActiveInstance(instance *CreatedInstance, regionId string, instanceT
 		TradePrice:   instance.TradePrice,
 		RegionId:     regionId,
 		InstanceType: instanceType,
+		Status:       "Pending",
 	})
 
-	return errHandler.DbError(result.Error)
+	if result.Error != nil {
+		return errHandler.DbError(result.Error)
+	}
+
+	return nil
 }
