@@ -28,7 +28,7 @@ type Ecs struct {
 	RegionId     string  `json:"regionId" gorm:"size:20;NOT NULL"`
 	InstanceType string  `json:"instanceType" gorm:"size:20;NOT NULL"`
 	Active       bool    `json:"active" gorm:"NOT NULL;default:true"`
-	Status       string  `json:"status" gorm:"size:1;NOT NULL;default:1"`
+	Status       string  `json:"status" gorm:"size:20;NOT NULL;"`
 	CreatedAt    int64   `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
 	UpdatedAt    int64   `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
 }
