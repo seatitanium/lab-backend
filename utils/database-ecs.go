@@ -65,3 +65,18 @@ func SaveNewActiveInstance(instance *CreatedInstance, regionId string, instanceT
 
 	return nil
 }
+
+func SetActive(instanceId string, active bool) *errHandler.CustomErr {
+	conn := GetDBConn()
+
+	// Note: Must use map[string]any instead of struct itself here.
+	// Reference: "When update with struct, GORM will only update non-zero fields, you might want to use map to update attributes or use Select to specify fields to update"
+	// https://stackoverflow.com/questions/56653423/gorm-doesnt-update-boolean-field-to-false
+	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(map[string]any{"active": active})
+
+	if result.Error != nil {
+		return errHandler.DbError(result.Error)
+	}
+
+	return nil
+}
