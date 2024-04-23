@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"seatimc/backend/handlers/auth"
+	"seatimc/backend/handlers/bss"
 	"seatimc/backend/handlers/ecs"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
@@ -53,6 +54,9 @@ func (r *Router) Run() {
 	ecsGroup.GET("start", wrapper(ecs.HandleStartInstance))
 	ecsGroup.GET("reboot", wrapper(ecs.HandleRebootInstance))
 	ecsGroup.DELETE("delete", wrapper(ecs.HandleDeleteInstance))
+
+	bssGroup := r.Router.Group("/bss")
+	bssGroup.GET("balance", wrapper(bss.HandleQueryAccountBalance))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

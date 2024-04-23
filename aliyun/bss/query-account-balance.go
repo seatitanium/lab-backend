@@ -20,7 +20,7 @@ func QueryAccountBalance() (*aliyun.AvailableBalance, *errHandler.CustomErr) {
 		return nil, errHandler.AliyunError(err)
 	}
 
-	var result *aliyun.AvailableBalance
+	var result = &aliyun.AvailableBalance{}
 
 	result.AvailableAmount, err = strconv.ParseFloat(tea.StringValue(resp.Body.Data.AvailableAmount), 32)
 
