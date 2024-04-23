@@ -31,7 +31,7 @@ var (
 	FlagAliyunConfig = cliv2.PathFlag{
 		Name:        "aliyun-config",
 		Aliases:     []string{"ca"},
-		Value:       "./aliyun/common/aconfig.yml",
+		Value:       "./aliyun/aconfig.yml",
 		Usage:       "Aliyun configuration file path",
 		Destination: &FlagAliyunConfigVar,
 	}
