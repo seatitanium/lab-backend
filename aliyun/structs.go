@@ -52,3 +52,8 @@ type CreatedInstance struct {
 	// 实例 ID
 	InstanceId string `json:"instanceId"`
 }
+
+type AvailableBalance struct {
+	AvailableAmount     float64 `json:"availableAmount"`
+	AvailableCashAmount float64 `json:"availableCashAmount"`
+}

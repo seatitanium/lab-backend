@@ -19,7 +19,7 @@ func DescribeZoneIds() []string {
 
 // 获取 aconfig.yml 中设定的区域的所有可用区信息，返回一个 AvailableZone 数组
 func DescribeZones() []aliyun.AvailableZone {
-	client, customErr := aliyun.CreateClient()
+	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
 		return nil

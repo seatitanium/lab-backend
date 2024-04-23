@@ -8,7 +8,7 @@ import (
 )
 
 func DeleteInstance(instanceId string, force bool) *errHandler.CustomErr {
-	client, customErr := aliyun.CreateClient()
+	client, customErr := aliyun.CreateEcsClient()
 	if customErr != nil {
 		return customErr
 	}

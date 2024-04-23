@@ -10,7 +10,7 @@ import (
 
 // 动态获取指定 regionId 下的 instanceId 实例的实时信息
 func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescriptionRetrieved, *errHandler.CustomErr) {
-	client, customErr := aliyun.CreateClient()
+	client, customErr := aliyun.CreateEcsClient()
 	if customErr != nil {
 		return nil, customErr
 	}

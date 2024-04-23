@@ -12,7 +12,7 @@ import (
 // 按照 aconfig.yml 中的配置获取参数中给定的 zoneId 对应的可用区的竞价数值历史，返回一个 SpotPriceHistory 数组
 //   - 注：startTime 和 endTime 采用 yyyy-MM-ddTHH:mm:ssZ 格式，时区 UTC+0
 func DescribeSpotPriceHistory(zoneId string, startTime string, endTime string) []aliyun.SpotPriceHistory {
-	client, customErr := aliyun.CreateClient()
+	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
 		return nil
