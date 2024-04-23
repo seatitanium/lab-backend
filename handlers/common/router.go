@@ -57,6 +57,7 @@ func (r *Router) Run() {
 
 	bssGroup := r.Router.Group("/bss")
 	bssGroup.GET("balance", wrapper(bss.HandleQueryAccountBalance))
+	bssGroup.GET("bill", wrapper(bss.HandleQueryBill))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

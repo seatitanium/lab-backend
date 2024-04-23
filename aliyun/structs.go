@@ -57,3 +57,10 @@ type AvailableBalance struct {
 	AvailableAmount     float64 `json:"availableAmount"`
 	AvailableCashAmount float64 `json:"availableCashAmount"`
 }
+
+type Bill struct {
+	ProductCode   string  `json:"productCode"`
+	ProductName   string  `json:"productName"`
+	PaymentAmount float32 `json:"paymentAmount"`
+	PretaxAmount  float32 `json:"pretaxAmount"`
+}
