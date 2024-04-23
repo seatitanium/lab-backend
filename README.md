@@ -30,7 +30,7 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
     - [ ] 测试
 - BSS Aliyun 交互
   - *GET* `/bss/balance` 账户余额 [参考 API: QueryAccountBalance](https://api.aliyun.com/api/BssOpenApi/2017-12-14/QueryAccountBalance)
-    - [ ] 实现
+    - [x] 实现
     - [ ] 测试
   - *GET* `/bss/bill` 消费记录 [参考 API: QueryBill](https://api.aliyun.com/api/BssOpenApi/2017-12-14/QueryBill)
     - [ ] 实现
