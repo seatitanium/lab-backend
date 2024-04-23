@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"log"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/utils"
@@ -26,7 +27,7 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 		var customErr *errHandler.CustomErr
 		var hasActiveInstance bool
 		var activeInstance *utils.Ecs
-		var retrieved *ecs.InstanceDescriptionRetrieved
+		var retrieved *aliyun.InstanceDescriptionRetrieved
 
 		hasActiveInstance, customErr = utils.HasActiveInstance()
 

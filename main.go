@@ -4,8 +4,8 @@ import (
 	cliv2 "github.com/urfave/cli/v2"
 	"log"
 	"os"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/cli"
-	"seatimc/backend/ecs"
 	"seatimc/backend/monitor"
 	"seatimc/backend/utils"
 )
@@ -29,7 +29,7 @@ func main() {
 		Before: func(ctx *cliv2.Context) error {
 			utils.GlobalConfig.Load(cli.FlagGlobalConfigVar)
 			monitor.MonitorConfig.Load(cli.FlagMonitorConfigVar)
-			ecs.AliyunConfig.Load(cli.FlagAliyunConfigVar)
+			aliyun.AliyunConfig.Load(cli.FlagAliyunConfigVar)
 			return nil
 		},
 	}

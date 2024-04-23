@@ -1,4 +1,4 @@
-package ecs
+package aliyun
 
 import "time"
 
@@ -44,4 +44,11 @@ type InstanceDescriptionLocal struct {
 	InstanceId   string `json:"instance_id"`
 	RegionId     string `json:"region_id"`
 	InstanceType string `json:"instance_type"`
+}
+
+type CreatedInstance struct {
+	// 成交价格
+	TradePrice float32 `json:"tradePrice"`
+	// 实例 ID
+	InstanceId string `json:"instanceId"`
 }

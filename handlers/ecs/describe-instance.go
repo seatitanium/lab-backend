@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/middleware"
@@ -35,8 +36,8 @@ func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return customErr
 	}
 
-	ecsDesc := ecs.InstanceDescription{
-		Local: ecs.InstanceDescriptionLocal{
+	ecsDesc := aliyun.InstanceDescription{
+		Local: aliyun.InstanceDescriptionLocal{
 			InstanceId:   activeInstance.InstanceId,
 			RegionId:     activeInstance.RegionId,
 			InstanceType: activeInstance.InstanceType,

@@ -52,10 +52,3 @@ type EcsActions struct {
 	Automated  bool   `json:"automated" gorm:"NOT NULL;default:false"`
 	At         int64  `json:"at" gorm:"autoCreateTime:milli;NOT NULL"`
 }
-
-type CreatedInstance struct {
-	// 成交价格
-	TradePrice float32 `json:"tradePrice"`
-	// 实例 ID
-	InstanceId string `json:"instanceId"`
-}

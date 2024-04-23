@@ -1,9 +1,9 @@
-package ecs
+package aliyun
 
 import (
 	"gopkg.in/yaml.v3"
+	"log"
 	"os"
-	"seatimc/backend/utils"
 )
 
 type InstanceDiskConf struct {
@@ -64,8 +64,15 @@ var AliyunConfig *AliyunConf
 func (c *AliyunConf) Load(path string) {
 	AliyunConfig = &AliyunConf{}
 	cfgFile, err := os.ReadFile(path)
-	utils.MustPanic(err)
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
 	ymlErr := yaml.Unmarshal(cfgFile, AliyunConfig)
-	utils.MustPanic(ymlErr)
+
+	if ymlErr != nil {
+		log.Fatal(ymlErr.Error())
+	}
 	return
 }

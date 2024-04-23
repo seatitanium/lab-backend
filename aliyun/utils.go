@@ -1,4 +1,4 @@
-package ecs
+package aliyun
 
 func GetIoOptimized(boolean bool) string {
 	if boolean {

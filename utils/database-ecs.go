@@ -1,6 +1,9 @@
 package utils
 
-import "seatimc/backend/errHandler"
+import (
+	"seatimc/backend/aliyun"
+	"seatimc/backend/errHandler"
+)
 
 // 使用 instance id 获得数据库中的某个 instance 的记录
 func GetInstanceByInstanceId(instanceId string) (*Ecs, *errHandler.CustomErr) {
@@ -45,10 +48,10 @@ func HasActiveInstance() (bool, *errHandler.CustomErr) {
 	return ecsCount > 0, nil
 }
 
-// 将一个 *CreatedInstance 插入数据库，并将其设定为 active
+// 将一个 *aliyun.CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。
-func SaveNewActiveInstance(instance *CreatedInstance, regionId string, instanceType string) *errHandler.CustomErr {
+func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, instanceType string) *errHandler.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Create(&Ecs{

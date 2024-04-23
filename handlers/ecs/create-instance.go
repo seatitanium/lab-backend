@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/middleware"
@@ -18,7 +19,7 @@ func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return errHandler.OperateNotApplied()
 	}
 
-	conf := ecs.AliyunConfig
+	conf := aliyun.AliyunConfig
 	created, customErr := ecs.CreateInstance(conf)
 	if customErr != nil {
 		return customErr

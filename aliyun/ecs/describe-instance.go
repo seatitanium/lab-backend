@@ -3,13 +3,14 @@ package ecs
 import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/utils"
 )
 
 // 动态获取指定 regionId 下的 instanceId 实例的实时信息
-func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionRetrieved, *errHandler.CustomErr) {
-	client, customErr := CreateClient()
+func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescriptionRetrieved, *errHandler.CustomErr) {
+	client, customErr := aliyun.CreateClient()
 	if customErr != nil {
 		return nil, customErr
 	}
@@ -23,7 +24,7 @@ func DescribeInstance(instanceId string, regionId string) (*InstanceDescriptionR
 		return nil, errHandler.AliyunError(err)
 	}
 
-	var result InstanceDescriptionRetrieved
+	var result aliyun.InstanceDescriptionRetrieved
 
 	result.Exist = false
 

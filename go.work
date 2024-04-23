@@ -3,7 +3,7 @@ go 1.21.6
 use (
 	.
 	cli
-	ecs
+	./aliyun/ecs
 	errHandler
 	handlers/auth
 	handlers/common
