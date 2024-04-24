@@ -1,16 +1,14 @@
 package bss
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/aliyun/bss"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/middleware"
 	"strconv"
-	"time"
 )
 
-func HandleQueryBill(ctx *gin.Context) *errHandler.CustomErr {
+func HandleQueryAccountTransactions(ctx *gin.Context) *errHandler.CustomErr {
 	pagenum := ctx.Query("pagenum")
 	pagesize := ctx.Query("pagesize")
 
@@ -49,7 +47,7 @@ func HandleQueryBill(ctx *gin.Context) *errHandler.CustomErr {
 	var pagenumN = int32(_pagenumN)
 	var pagesizeN = int32(_pagesizeN)
 
-	result, customErr := bss.QueryBill(fmt.Sprintf("%d-%02d", time.Now().Year(), time.Now().Month()), pagenumN, pagesizeN)
+	result, customErr := bss.QueryAccountTransactions(pagenumN, pagesizeN)
 
 	if err != nil {
 		return customErr

@@ -58,9 +58,9 @@ type AvailableBalance struct {
 	AvailableCashAmount float64 `json:"availableCashAmount"`
 }
 
-type Bill struct {
-	ProductCode   string  `json:"productCode"`
-	ProductName   string  `json:"productName"`
-	PaymentAmount float32 `json:"paymentAmount"`
-	PretaxAmount  float32 `json:"pretaxAmount"`
+type Transaction struct {
+	BillingCycle    string    `json:"billingCycle"`
+	TransactionTime time.Time `json:"transactionTime"`
+	Amount          float64   `json:"amount"`
+	IsIncome        bool      `json:"isIncome"`
 }
