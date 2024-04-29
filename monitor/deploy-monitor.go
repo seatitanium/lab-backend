@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"log"
+	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errHandler"
 	"seatimc/backend/utils"
@@ -16,6 +17,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 		var hasActiveInstance bool
 		var customErr *errHandler.CustomErr
 		var activeInstance *utils.Ecs
+		var retrieved *aliyun.InstanceDescriptionRetrieved
 
 		hasActiveInstance, customErr = utils.HasActiveInstance()
 
@@ -40,17 +42,39 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 			goto endOfLoop
 		}
 
-		if activeInstance.Status == "Pending" {
+		retrieved, customErr = ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+
+		if customErr != nil {
+			log.Println("Critical. Failed DescribeInstance: " + customErr.Handle().Error())
+			goto endOfLoop
+		}
+
+		if !retrieved.Exist {
+			log.Println("Skipped. No result retrieved.")
+			goto endOfLoop
+		}
+
+		if retrieved.Status == "Pending" {
 			log.Println("Waiting for instance to be ready...")
 			goto endOfLoop
 		}
 
-		if activeInstance.Status == "Stopped" || activeInstance.Status == "Stopping" || activeInstance.Status == "Starting" {
+		if retrieved.Status == "Stopped" {
+			log.Println("Starting instance.")
+			customErr = ecs.StartInstance(activeInstance.InstanceId)
+
+			if customErr != nil {
+				log.Println("Critical. Cannot start instance: " + customErr.Handle().Error())
+				goto endOfLoop
+			}
+		}
+
+		if retrieved.Status == "Stopping" || retrieved.Status == "Starting" {
 			log.Printf("Warn: The instance is %v but not deployed. Please check if this situation is normal.\n", activeInstance.Status)
 			goto endOfLoop
 		}
 
-		if activeInstance.Status == "Running" {
+		if retrieved.Status == "Running" {
 			log.Println("Detected Running status. Checking cloud assistant status...")
 
 			var assistantStatusTried = 0
@@ -74,7 +98,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 					break
 				}
 
-				time.Sleep(time.Second * 2)
+				time.Sleep(time.Second * 5)
 
 				if assistantStatusTried >= 5 {
 					log.Println("Reaching maximum trying times. Ending current deployment attempt.")
