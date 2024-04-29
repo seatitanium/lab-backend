@@ -9,15 +9,13 @@ import (
 	"time"
 )
 
-// 实例停止监控器
-//
-// 注意：必须以 gorountine 执行
+// 实例状态监控器
 //
 // 参数：
 //   - interval - 检测时间间隔
-//   - threshold - 删除阈值。当检测到停机时间超过该阈值时，执行强制删除
+//   - threshold - 删除阈值。当检测到停机时间超过该阈值时，执行强制删除。警告：阈值不宜过低（一分钟以上即可），否则可能导致实例在不恰当的时机被删除。
 //   - end - 控制监控器的结束状态
-func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, end <-chan bool) {
+func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, end <-chan bool) {
 	var stoppedDuration time.Duration
 
 	log.Printf("Stopped Instance Monitor\n")
@@ -57,6 +55,13 @@ func RunStoppedInstanceMonitor(interval time.Duration, threshold time.Duration, 
 
 		if !retrieved.Exist {
 			log.Println("Skipped. No result retrieved.")
+			goto endOfLoop
+		}
+
+		customErr = utils.SetStatus(activeInstance.InstanceId, retrieved.Status)
+
+		if customErr != nil {
+			log.Println("Critical. Cannot update instance status: " + customErr.Handle().Error())
 			goto endOfLoop
 		}
 
