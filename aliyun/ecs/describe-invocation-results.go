@@ -16,8 +16,9 @@ func DescribeInvocationResults(invokeId string) (string, *errHandler.CustomErr) 
 	}
 
 	res, err := client.DescribeInvocationResults(&ecs.DescribeInvocationResultsRequest{
-		RegionId: tea.String(aliyun.AliyunConfig.PrimaryRegionId),
-		InvokeId: tea.String(invokeId),
+		RegionId:        tea.String(aliyun.AliyunConfig.PrimaryRegionId),
+		InvokeId:        tea.String(invokeId),
+		ContentEncoding: tea.String("PlainText"),
 	})
 
 	if err != nil {
