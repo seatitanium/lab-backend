@@ -1,6 +1,7 @@
 access-key-id: ~
 access-key-secret: ~
 primary-region-id: cn-shenzhen
+deploy-command-id: ~
 using:
   # 是否为预检
   dry-run: true

@@ -67,5 +67,10 @@ func InitDB() error {
 		return err
 	}
 
+	err = conn.AutoMigrate(&EcsInvokes{})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

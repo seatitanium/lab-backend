@@ -52,3 +52,11 @@ type EcsActions struct {
 	Automated  bool   `json:"automated" gorm:"NOT NULL;default:false"`
 	At         int64  `json:"at" gorm:"autoCreateTime:milli;NOT NULL"`
 }
+
+type EcsInvokes struct {
+	Id         uint   `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
+	InstanceId string `json:"instanceId" gorm:"size:50;NOT NULL"`
+	InvokeId   string `json:"invokeId" gorm:"size:256;NOT NULL"`
+	CommandId  string `json:"commandId" gorm:"size:256;NOT NULL"`
+	At         int64  `json:"at" gorm:"autoCreateTime:milli;NOT NULL"`
+}
