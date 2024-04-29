@@ -28,6 +28,11 @@ func HandleDeleteInstance(ctx *gin.Context) *errHandler.CustomErr {
 		return customErr
 	}
 
+	customErr = utils.SetActive(request.InstanceId, false)
+	if customErr != nil {
+		return customErr
+	}
+
 	middleware.RespSuccess(ctx)
 	return nil
 }
