@@ -5,13 +5,20 @@ import (
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/errHandler"
-	ecs2 "seatimc/backend/handlers/ecs"
 	"seatimc/backend/utils"
 	"time"
 )
 
+type InvocationResult struct {
+	Status       string    `json:"status"`
+	Content      string    `json:"content"`
+	ErrorInfo    string    `json:"errorInfo"`
+	StartTime    time.Time `json:"startTime"`
+	FinishedTime time.Time `json:"finishedTime"`
+}
+
 // 获取指定 invokeId 的执行结果
-func DescribeInvocationResults(invokeId string) (*ecs2.InvocationResult, *errHandler.CustomErr) {
+func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
@@ -47,7 +54,7 @@ func DescribeInvocationResults(invokeId string) (*ecs2.InvocationResult, *errHan
 			return nil, errHandler.ServerError(err)
 		}
 
-		return &ecs2.InvocationResult{
+		return &InvocationResult{
 			Status:       tea.StringValue(item.InvocationStatus),
 			Content:      tea.StringValue(item.Output),
 			ErrorInfo:    tea.StringValue(item.ErrorInfo),
