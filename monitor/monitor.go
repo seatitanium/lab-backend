@@ -24,7 +24,13 @@ func RunMonitor(monitorName string) {
 	switch monitorName {
 	case "stopped-inst":
 		{
-			go RunStoppedInstanceMonitor(time.Second*5, time.Second*10, b)
+			go RunInstanceStatusMonitor(time.Second*5, time.Hour*1, b)
+			break
+		}
+
+	case "deploy-inst":
+		{
+			go RunDeployMonitor(time.Second*5, b)
 			break
 		}
 
