@@ -15,7 +15,23 @@ func HandleDeleteInstance(ctx *gin.Context) *errHandler.CustomErr {
 	request.Force = utils.IsTrue(ctx.Query("force"))
 
 	if request.InstanceId == "" {
-		return errHandler.WrongParam()
+		hasActiveInstance, customErr := utils.HasActiveInstance()
+
+		if customErr != nil {
+			return customErr
+		}
+
+		if !hasActiveInstance {
+			return errHandler.NotFound()
+		}
+
+		activeInstance, customErr := utils.GetActiveInstance()
+
+		if customErr != nil {
+			return customErr
+		}
+
+		request.InstanceId = activeInstance.InstanceId
 	}
 
 	customErr := ecs.DeleteInstance(request.InstanceId, request.Force)
