@@ -30,6 +30,10 @@ func main() {
 			utils.GlobalConfig.Load(cli.FlagGlobalConfigVar)
 			monitor.MonitorConfig.Load(cli.FlagMonitorConfigVar)
 			aliyun.AliyunConfig.Load(cli.FlagAliyunConfigVar)
+			err := utils.DB.Load()
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}

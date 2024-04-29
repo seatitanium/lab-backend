@@ -3,7 +3,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	"gorm.io/driver/mysql"
@@ -14,7 +13,9 @@ type Database struct {
 	Conn *gorm.DB
 }
 
-func (db *Database) open() error {
+var DB *Database
+
+func (db *Database) Load() error {
 	var dbConf = GlobalConfig.Database
 	if IsStrsHasEmpty(dbConf.Host, dbConf.User, dbConf.Password, dbConf.DBName) || dbConf.Port == 0 {
 		return errors.New("connect to database failed due to configuration error")
@@ -32,42 +33,36 @@ func (db *Database) open() error {
 	if err != nil {
 		return err
 	}
-	sqlDB.SetMaxIdleConns(20)
-	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(10)
 	sqlDB.SetConnMaxLifetime(time.Minute * 3)
 
-	db.Conn = conn
+	DB = &Database{}
+	DB.Conn = conn
 	return nil
 }
 
 func GetDBConn() *gorm.DB {
-	db := Database{}
-	err := db.open()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return db.Conn
+	return DB.Conn
 }
 
 func InitDB() error {
-	conn := GetDBConn()
-
-	err := conn.AutoMigrate(&Users{})
+	err := GetDBConn().AutoMigrate(&Users{})
 	if err != nil {
 		return err
 	}
 
-	err = conn.AutoMigrate(&Ecs{})
+	err = GetDBConn().AutoMigrate(&Ecs{})
 	if err != nil {
 		return err
 	}
 
-	err = conn.AutoMigrate(&EcsActions{})
+	err = GetDBConn().AutoMigrate(&EcsActions{})
 	if err != nil {
 		return err
 	}
 
-	err = conn.AutoMigrate(&EcsInvokes{})
+	err = GetDBConn().AutoMigrate(&EcsInvokes{})
 	if err != nil {
 		return err
 	}
