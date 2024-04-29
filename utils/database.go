@@ -32,8 +32,8 @@ func (db *Database) open() error {
 	if err != nil {
 		return err
 	}
-	sqlDB.SetMaxIdleConns(50)
-	sqlDB.SetMaxOpenConns(50)
+	sqlDB.SetMaxIdleConns(20)
+	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Minute * 3)
 
 	db.Conn = conn
