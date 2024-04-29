@@ -33,3 +33,15 @@ func HasInvokedOn(instanceId string) bool {
 
 	return invokedCount > 0
 }
+
+func GetLastInvokeId(instanceId string) (string, *errHandler.CustomErr) {
+	conn := GetDBConn()
+	var invoke EcsInvokes
+
+	result := conn.Where(&EcsInvokes{InstanceId: instanceId}).Limit(1).Find(&invoke)
+	if result.Error != nil {
+		return "", errHandler.DbError(result.Error)
+	}
+
+	return invoke.InvokeId, nil
+}

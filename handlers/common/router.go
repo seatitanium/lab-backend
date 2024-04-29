@@ -54,6 +54,7 @@ func (r *Router) Run() {
 	ecsGroup.GET("start", wrapper(ecs.HandleStartInstance))
 	ecsGroup.GET("reboot", wrapper(ecs.HandleRebootInstance))
 	ecsGroup.DELETE("delete", wrapper(ecs.HandleDeleteInstance))
+	ecsGroup.GET("last-invoke", wrapper(ecs.HandleGetInvocationResult))
 
 	bssGroup := r.Router.Group("/bss")
 	bssGroup.GET("balance", wrapper(bss.HandleQueryAccountBalance))
