@@ -69,6 +69,18 @@ func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, in
 	return nil
 }
 
+func SetStatus(instanceId string, status string) *errHandler.CustomErr {
+	conn := GetDBConn()
+
+	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{Status: status})
+
+	if result.Error != nil {
+		return errHandler.DbError(result.Error)
+	}
+
+	return nil
+}
+
 func SetActive(instanceId string, active bool) *errHandler.CustomErr {
 	conn := GetDBConn()
 
