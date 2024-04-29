@@ -36,8 +36,8 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
     - [x] 实现
     - [x] 测试
 - Monitor 监控与自动化任务
-  - 实例初始化完毕检测任务 PendingInstanceMonitor
-    - [ ] 实现
+  - 自动部署任务 DeployMonitor
+    - [x] 实现
     - [ ] 测试
   - 实例停机空闲检测任务 StoppedInstanceMonitor
     - [x] 实现
