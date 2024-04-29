@@ -5,14 +5,17 @@ import (
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/errHandler"
+	ecs2 "seatimc/backend/handlers/ecs"
+	"seatimc/backend/utils"
+	"time"
 )
 
 // 获取指定 invokeId 的执行结果
-func DescribeInvocationResults(invokeId string) (string, *errHandler.CustomErr) {
+func DescribeInvocationResults(invokeId string) (*ecs2.InvocationResult, *errHandler.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
-		return "", customErr
+		return nil, customErr
 	}
 
 	res, err := client.DescribeInvocationResults(&ecs.DescribeInvocationResultsRequest{
@@ -22,12 +25,36 @@ func DescribeInvocationResults(invokeId string) (string, *errHandler.CustomErr) 
 	})
 
 	if err != nil {
-		return "", errHandler.AliyunError(err)
+		return nil, errHandler.AliyunError(err)
 	}
 
 	for _, item := range res.Body.Invocation.InvocationResults.InvocationResult {
-		return tea.StringValue(item.Output), nil
+		var startTime time.Time
+		var finishedTime time.Time
+
+		startTimeStr := tea.StringValue(item.StartTime)
+		finishedTimeStr := tea.StringValue(item.FinishedTime)
+
+		startTime, err = utils.ParseTime(startTimeStr)
+
+		if err != nil {
+			return nil, errHandler.ServerError(err)
+		}
+
+		finishedTime, err = utils.ParseTime(finishedTimeStr)
+
+		if err != nil {
+			return nil, errHandler.ServerError(err)
+		}
+
+		return &ecs2.InvocationResult{
+			Status:       tea.StringValue(item.InvocationStatus),
+			Content:      tea.StringValue(item.Output),
+			ErrorInfo:    tea.StringValue(item.ErrorInfo),
+			StartTime:    finishedTime,
+			FinishedTime: startTime,
+		}, nil
 	}
 
-	return "", errHandler.ResNotExist()
+	return nil, errHandler.ResNotExist()
 }
