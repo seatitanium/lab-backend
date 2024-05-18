@@ -24,5 +24,10 @@ func GetUserByUsername(username string) (*Users, *errHandler.CustomErr) {
 	if result.Error != nil {
 		return nil, errHandler.DbError(result.Error)
 	}
+
+	if user.Hash == "" {
+		return nil, errHandler.TargetNotExist()
+	}
+
 	return &user, nil
 }
