@@ -114,7 +114,7 @@ func Forbidden() *CustomErr {
 }
 
 func OperateNotApplied() *CustomErr {
-	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeOperateNotApplied, RespErrMsgOperateNotApplied)
+	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeOperationNotApplied, RespErrMsgOperationNotApplied)
 }
 
 func DbError(err error) *CustomErr {

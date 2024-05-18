@@ -58,8 +58,8 @@ const (
 	RespErrCodeAliyunErr = 1303
 	RespErrMsgAliyunErr  = "Aliyun Error"
 
-	RespErrCodeOperateNotApplied = 1304
-	RespErrMsgOperateNotApplied  = "Database Operate Not Applied"
+	RespErrCodeOperationNotApplied = 1304
+	RespErrMsgOperationNotApplied  = "Operation Not Applied"
 )
 
 func ErrConfWrongPort(port string) error {
