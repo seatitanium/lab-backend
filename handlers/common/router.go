@@ -29,7 +29,6 @@ func (r *Router) Init() {
 	r.Router.Use(cors.New(cors.Config{
 		AllowOrigins:     utils.GlobalConfig.AllowedOrigins,
 		AllowMethods:     []string{"POST", "GET"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Accept", "Token"},
 		AllowCredentials: true,
 		MaxAge:           time.Duration(utils.GlobalConfig.Token.Expiration) * time.Minute,
 	}))
