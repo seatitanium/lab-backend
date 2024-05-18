@@ -29,7 +29,10 @@ func HandleLogin(ctx *gin.Context) *errHandler.CustomErr {
 			return customErr
 		}
 
-		middleware.RespSuccess(ctx, jwt)
+		middleware.RespSuccess(ctx, LoginResponse{
+			Username: object.Username,
+			Token:    jwt,
+		})
 	} else {
 		return errHandler.UnAuth()
 	}
