@@ -8,6 +8,7 @@ import (
 	"seatimc/backend/handlers/auth"
 	"seatimc/backend/handlers/bss"
 	"seatimc/backend/handlers/ecs"
+	"seatimc/backend/handlers/user"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 	"time"
@@ -58,6 +59,9 @@ func (r *Router) Run() {
 	bssGroup := r.Router.Group("/bss")
 	bssGroup.GET("balance", wrapper(bss.HandleQueryAccountBalance))
 	bssGroup.GET("transactions", wrapper(bss.HandleQueryAccountTransactions))
+
+	userGroup := r.Router.Group("/user")
+	userGroup.GET("/profile/:username", wrapper(user.HandleUserProfile))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)
