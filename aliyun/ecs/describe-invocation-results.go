@@ -63,5 +63,5 @@ func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.
 		}, nil
 	}
 
-	return nil, errHandler.ResNotExist()
+	return nil, errHandler.TargetNotExist()
 }

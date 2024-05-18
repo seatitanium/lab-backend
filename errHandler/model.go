@@ -25,8 +25,8 @@ const (
 	RespErrCodeNotFound = 1102
 	RespErrMsgNotFound  = "Not Found"
 
-	RespErrCodeResNotExist = 1103
-	RespErrMsgNotExist     = "Resource not exist"
+	RespErrCodeTargetNotExist = 1103
+	RespErrMsgTargetNotExist  = "Target not exist"
 )
 
 // Response codes 12xx for auth error

@@ -75,8 +75,8 @@ func NotFound() *CustomErr {
 	return newCustomError(ErrTypeHttp, http.StatusNotFound, RespErrCodeNotFound, RespErrMsgNotFound)
 }
 
-func ResNotExist() *CustomErr {
-	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeResNotExist, RespErrMsgNotExist)
+func TargetNotExist() *CustomErr {
+	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeTargetNotExist, RespErrMsgTargetNotExist)
 }
 
 // 无效 token 错误。当 token 出现过期等情况时使用。
@@ -119,7 +119,7 @@ func OperateNotApplied() *CustomErr {
 
 func DbError(err error) *CustomErr {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return ResNotExist()
+		return TargetNotExist()
 	}
 	return newCustomError(ErrTypeDb, http.StatusInternalServerError, RespErrCodeDBErr, err.Error())
 }

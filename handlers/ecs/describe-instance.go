@@ -23,7 +23,7 @@ func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 	}
 
 	if hasActiveInstance == false {
-		return errHandler.ResNotExist()
+		return errHandler.TargetNotExist()
 	}
 
 	activeInstance, customErr := utils.GetInstanceByInstanceId(instanceId)

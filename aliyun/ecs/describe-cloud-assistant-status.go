@@ -28,5 +28,5 @@ func DescribeCloudAssistantStatus(instanceId string) (bool, *errHandler.CustomEr
 		return tea.StringValue(item.CloudAssistantStatus) == "true", nil
 	}
 
-	return false, errHandler.ResNotExist()
+	return false, errHandler.TargetNotExist()
 }
