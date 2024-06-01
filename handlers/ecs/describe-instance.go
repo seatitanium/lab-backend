@@ -11,36 +11,31 @@ import (
 
 func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 	instanceId := ctx.Query("instanceId")
+	var customErr *errHandler.CustomErr
 
 	if instanceId == "" {
-		return errHandler.WrongParam()
+		instanceId, customErr = utils.GetActiveInstanceId()
+
+		if customErr != nil {
+			return customErr
+		}
 	}
 
-	hasActiveInstance, customErr := utils.HasActiveInstance()
-
+	targetInstance, customErr := utils.GetInstanceByInstanceId(instanceId)
 	if customErr != nil {
 		return customErr
 	}
 
-	if hasActiveInstance == false {
-		return errHandler.TargetNotExist()
-	}
-
-	activeInstance, customErr := utils.GetInstanceByInstanceId(instanceId)
-	if customErr != nil {
-		return customErr
-	}
-
-	retrieved, customErr := ecs.DescribeInstance(activeInstance.InstanceId, activeInstance.RegionId)
+	retrieved, customErr := ecs.DescribeInstance(targetInstance.InstanceId, targetInstance.RegionId)
 	if customErr != nil {
 		return customErr
 	}
 
 	ecsDesc := aliyun.InstanceDescription{
 		Local: aliyun.InstanceDescriptionLocal{
-			InstanceId:   activeInstance.InstanceId,
-			RegionId:     activeInstance.RegionId,
-			InstanceType: activeInstance.InstanceType,
+			InstanceId:   targetInstance.InstanceId,
+			RegionId:     targetInstance.RegionId,
+			InstanceType: targetInstance.InstanceType,
 		},
 		Retrieved: *retrieved,
 	}

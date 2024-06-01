@@ -48,6 +48,26 @@ func HasActiveInstance() (bool, *errHandler.CustomErr) {
 	return ecsCount > 0, nil
 }
 
+func GetActiveInstanceId() (string, *errHandler.CustomErr) {
+	hasActiveInstance, customErr := HasActiveInstance()
+
+	if customErr != nil {
+		return "", customErr
+	}
+
+	if !hasActiveInstance {
+		return "", errHandler.NotFound()
+	}
+
+	activeInstance, customErr := GetActiveInstance()
+
+	if customErr != nil {
+		return "", customErr
+	}
+
+	return activeInstance.InstanceId, nil
+}
+
 // 将一个 *aliyun.CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。

@@ -10,15 +10,20 @@ import (
 
 func HandleStopInstance(ctx *gin.Context) *errHandler.CustomErr {
 	var request StopInstanceRequest
+	var customErr *errHandler.CustomErr
 
 	request.InstanceId = ctx.Query("instanceId")
 	request.Force = utils.IsTrue(ctx.Query("force"))
 
 	if request.InstanceId == "" {
-		return errHandler.WrongParam()
+		request.InstanceId, customErr = utils.GetActiveInstanceId()
+
+		if customErr != nil {
+			return customErr
+		}
 	}
 
-	customErr := ecs.StopInstance(request.InstanceId, request.Force)
+	customErr = ecs.StopInstance(request.InstanceId, request.Force)
 	if customErr != nil {
 		return customErr
 	}

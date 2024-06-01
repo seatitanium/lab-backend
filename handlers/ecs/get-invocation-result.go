@@ -10,28 +10,19 @@ import (
 
 func HandleGetInvocationResult(ctx *gin.Context) *errHandler.CustomErr {
 	var invokeId string
+	var customErr *errHandler.CustomErr
 
 	invokeId = ctx.Query("invokeId")
 
 	if invokeId == "" {
 
-		hasActiveInstance, customErr := utils.HasActiveInstance()
+		activeInstanceId, customErr := utils.GetActiveInstanceId()
 
 		if customErr != nil {
 			return customErr
 		}
 
-		if !hasActiveInstance {
-			return errHandler.NotFound()
-		}
-
-		activeInstance, customErr := utils.GetActiveInstance()
-
-		if customErr != nil {
-			return customErr
-		}
-
-		invokeId, customErr = utils.GetLastInvokeId(activeInstance.InstanceId)
+		invokeId, customErr = utils.GetLastInvokeId(activeInstanceId)
 
 		if customErr != nil {
 			return customErr

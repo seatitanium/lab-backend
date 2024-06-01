@@ -10,12 +10,17 @@ import (
 
 func HandleStartInstance(ctx *gin.Context) *errHandler.CustomErr {
 	instanceId := ctx.Query("instanceId")
+	var customErr *errHandler.CustomErr
 
 	if instanceId == "" {
-		return errHandler.WrongParam()
+		instanceId, customErr = utils.GetActiveInstanceId()
+
+		if customErr != nil {
+			return customErr
+		}
 	}
 
-	customErr := ecs.StartInstance(instanceId)
+	customErr = ecs.StartInstance(instanceId)
 	if customErr != nil {
 		return customErr
 	}
