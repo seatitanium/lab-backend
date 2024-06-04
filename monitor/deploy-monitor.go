@@ -81,7 +81,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 
 			for {
 				assistantStatusTried++
-				log.Printf("Trying to get cloud assistant status (%v/%v)\n", assistantStatusTried, 5)
+				log.Printf("Trying to get cloud assistant status (%v/%v)\n", assistantStatusTried, 10)
 
 				assistantStatus, customErr := ecs.DescribeCloudAssistantStatus(activeInstance.InstanceId)
 
@@ -100,7 +100,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 
 				time.Sleep(time.Second * 5)
 
-				if assistantStatusTried >= 5 {
+				if assistantStatusTried >= 10 {
 					log.Println("Reaching maximum trying times. Ending current deployment attempt.")
 					goto endOfLoop
 				}
