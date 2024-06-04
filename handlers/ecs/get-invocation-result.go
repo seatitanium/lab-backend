@@ -27,6 +27,10 @@ func HandleGetInvocationResult(ctx *gin.Context) *errHandler.CustomErr {
 		if customErr != nil {
 			return customErr
 		}
+
+		if invokeId == "" {
+			return errHandler.TargetNotExist()
+		}
 	}
 
 	res, customErr := ecs.DescribeInvocationResults(invokeId)
