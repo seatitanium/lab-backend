@@ -5,16 +5,14 @@ import (
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/errHandler"
-	"seatimc/backend/utils"
-	"time"
 )
 
 type InvocationResult struct {
-	Status       string    `json:"status"`
-	Content      string    `json:"content"`
-	ErrorInfo    string    `json:"errorInfo"`
-	StartTime    time.Time `json:"startTime"`
-	FinishedTime time.Time `json:"finishedTime"`
+	Status       string `json:"status"`
+	Content      string `json:"content"`
+	ErrorInfo    string `json:"errorInfo"`
+	StartTime    string `json:"startTime"`
+	FinishedTime string `json:"finishedTime"`
 }
 
 // 获取指定 invokeId 的执行结果
@@ -36,30 +34,12 @@ func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.
 	}
 
 	for _, item := range res.Body.Invocation.InvocationResults.InvocationResult {
-		var startTime time.Time
-		var finishedTime time.Time
-
-		startTimeStr := tea.StringValue(item.StartTime)
-		finishedTimeStr := tea.StringValue(item.FinishedTime)
-
-		startTime, err = utils.ParseTime(startTimeStr)
-
-		if err != nil {
-			return nil, errHandler.ServerError(err)
-		}
-
-		finishedTime, err = utils.ParseTime(finishedTimeStr)
-
-		if err != nil {
-			return nil, errHandler.ServerError(err)
-		}
-
 		return &InvocationResult{
 			Status:       tea.StringValue(item.InvocationStatus),
 			Content:      tea.StringValue(item.Output),
 			ErrorInfo:    tea.StringValue(item.ErrorInfo),
-			StartTime:    finishedTime,
-			FinishedTime: startTime,
+			StartTime:    tea.StringValue(item.StartTime),
+			FinishedTime: tea.StringValue(item.FinishedTime),
 		}, nil
 	}
 
