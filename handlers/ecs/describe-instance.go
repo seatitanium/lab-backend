@@ -7,13 +7,34 @@ import (
 	"seatimc/backend/errHandler"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
+	"time"
 )
 
 func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
 	instanceId := ctx.Query("instanceId")
 	var customErr *errHandler.CustomErr
+	var hasActiveInstance bool
 
 	if instanceId == "" {
+		hasActiveInstance, customErr = utils.HasActiveInstance()
+
+		if hasActiveInstance == false {
+			middleware.RespSuccess(ctx, aliyun.InstanceDescription{
+				Retrieved: aliyun.InstanceDescriptionRetrieved{
+					Exist:           false,
+					Status:          "",
+					PublicIpAddress: nil,
+					CreationTime:    time.Time{},
+				},
+				Local: aliyun.InstanceDescriptionLocal{
+					InstanceId:   "",
+					RegionId:     "",
+					InstanceType: "",
+				},
+			})
+			return nil
+		}
+
 		instanceId, customErr = utils.GetActiveInstanceId()
 
 		if customErr != nil {
