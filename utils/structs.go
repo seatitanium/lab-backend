@@ -32,6 +32,7 @@ type Ecs struct {
 	DeployStatus string  `json:"deployStatus" gorm:"size:20;NOT NULL;"`
 	CreatedAt    int64   `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
 	UpdatedAt    int64   `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
+	Ip           string  `json:"ip" gorm:"size:30;default:''"`
 }
 
 type Users struct {

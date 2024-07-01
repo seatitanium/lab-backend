@@ -127,3 +127,15 @@ func SetActive(instanceId string, active bool) *errors.CustomErr {
 
 	return nil
 }
+
+func SetIp(instanceId string, ip string) *errors.CustomErr {
+	conn := GetDBConn()
+
+	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{Ip: ip})
+
+	if result.Error != nil {
+		return errors.DbError(result.Error)
+	}
+
+	return nil
+}

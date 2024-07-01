@@ -75,7 +75,27 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 		}
 
 		if retrieved.Status == "Running" {
-			log.Println("Detected Running status. Checking cloud assistant status...")
+			log.Println("Detected Running status.")
+			log.Println("Starting step 1: IP Address Allocation")
+
+			ip, customErr := ecs.AllocatePublicIpAddress(activeInstance.InstanceId)
+
+			if customErr != nil {
+				log.Println(customErr.Handle().Error())
+				log.Println("Critical. Cannot allocate ip address. Please try again manually. Skipped.")
+			} else {
+				log.Printf("Successfully allocated ip address %v for instance %v.", ip, activeInstance.InstanceId)
+				customErr = utils.SetIp(activeInstance.InstanceId, ip)
+				if customErr != nil {
+					log.Println("Critical. Cannot save IP address to database.")
+					log.Println(customErr.Handle().Error())
+				} else {
+					log.Println("Saved IP address to database.")
+				}
+			}
+
+			log.Println("Starting step 2: Service Deployment.")
+			log.Println("Checking cloud assistant status...")
 
 			var assistantStatusTried = 0
 
