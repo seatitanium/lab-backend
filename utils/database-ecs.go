@@ -38,7 +38,7 @@ func HasActiveInstance() (bool, *errors.CustomErr) {
 	conn := GetDBConn()
 	var ecsCount int64
 
-	// fixed 04.20:
+	// fixed 24.04.20:
 	// [Database 1302] Msg: [unsupported data type: 0x1400036013e: Table not set, please set it like: db.Model(&user) or db.Table("users")]
 	result := conn.Model(&Ecs{}).Where(&Ecs{Active: true}).Count(&ecsCount)
 	if result.Error != nil {
