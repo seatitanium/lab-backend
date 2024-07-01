@@ -28,6 +28,9 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
   - *GET* `/ecs/price-history` 抢占式价格查询 DescribeSpotPriceHistory
     - [ ] 实现
     - [ ] 测试
+  - *GET* `/ecs/deploy-status` 部署状态查询
+    - [x] 实现
+    - [x] 测试
 - BSS Aliyun 交互
   - *GET* `/bss/balance` 账户余额
     - [x] 实现
@@ -38,10 +41,10 @@ Tisea Backend 分为两大平台，目前正在开发的是 Lab（2024.4-）
 - Monitor 监控与自动化任务
   - 自动部署任务 DeployMonitor
     - [x] 实现
-    - [ ] 测试
+    - [x] 测试
   - 实例停机空闲检测任务 StoppedInstanceMonitor
     - [x] 实现
     - [x] 测试
-  - 抢占式价格记录任务 SpotPriceRecordMonitor
-    - [ ] 实现
-    - [ ] 测试
+  - 实例部署状态自动更新任务 DeployStatusMonitor
+    - [x] 实现
+    - [x] 测试
