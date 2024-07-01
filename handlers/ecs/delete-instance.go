@@ -33,7 +33,7 @@ func HandleDeleteInstance(ctx *gin.Context) *errors.CustomErr {
 		return customErr
 	}
 
-	customErr = utils.SetActive(request.InstanceId, false)
+	customErr = utils.SetInstanceActive(request.InstanceId, false)
 	if customErr != nil {
 		return customErr
 	}

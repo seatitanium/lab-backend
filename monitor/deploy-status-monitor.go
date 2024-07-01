@@ -57,7 +57,7 @@ func RunDeployStatusMonitor(interval time.Duration, end <-chan bool) {
 			goto endOfLoop
 		}
 
-		customErr = utils.SetDeployStatus(activeInstance.InstanceId, invocationResult.Status)
+		customErr = utils.SetInstanceDeployStatus(activeInstance.InstanceId, invocationResult.Status)
 
 		if customErr != nil {
 			log.Printf("Critical. Cannot set deploy status to %v.\n", invocationResult.Status)

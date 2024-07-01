@@ -89,7 +89,7 @@ func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, in
 	return nil
 }
 
-func SetStatus(instanceId string, status string) *errors.CustomErr {
+func SetInstanceStatus(instanceId string, status string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{Status: status})
@@ -101,7 +101,7 @@ func SetStatus(instanceId string, status string) *errors.CustomErr {
 	return nil
 }
 
-func SetDeployStatus(instanceId string, status string) *errors.CustomErr {
+func SetInstanceDeployStatus(instanceId string, status string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{DeployStatus: status})
@@ -113,7 +113,7 @@ func SetDeployStatus(instanceId string, status string) *errors.CustomErr {
 	return nil
 }
 
-func SetActive(instanceId string, active bool) *errors.CustomErr {
+func SetInstanceActive(instanceId string, active bool) *errors.CustomErr {
 	conn := GetDBConn()
 
 	// Note: Must use map[string]any instead of struct itself here.
@@ -128,7 +128,7 @@ func SetActive(instanceId string, active bool) *errors.CustomErr {
 	return nil
 }
 
-func SetIp(instanceId string, ip string) *errors.CustomErr {
+func SetInstanceIp(instanceId string, ip string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{Ip: ip})

@@ -58,7 +58,7 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 			goto endOfLoop
 		}
 
-		customErr = utils.SetStatus(activeInstance.InstanceId, retrieved.Status)
+		customErr = utils.SetInstanceStatus(activeInstance.InstanceId, retrieved.Status)
 
 		if customErr != nil {
 			log.Println("Critical. Cannot update instance status: " + customErr.Handle().Error())
@@ -88,7 +88,7 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 				goto endOfLoop
 			}
 
-			customErr = utils.SetActive(activeInstance.InstanceId, false)
+			customErr = utils.SetInstanceActive(activeInstance.InstanceId, false)
 			if customErr != nil {
 				log.Println("Critical. Unable to set instance active state.")
 				goto endOfLoop

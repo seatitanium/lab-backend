@@ -85,7 +85,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 				log.Println("Critical. Cannot allocate ip address. Please try again manually. Skipped.")
 			} else {
 				log.Printf("Successfully allocated ip address %v for instance %v.", ip, activeInstance.InstanceId)
-				customErr = utils.SetIp(activeInstance.InstanceId, ip)
+				customErr = utils.SetInstanceIp(activeInstance.InstanceId, ip)
 				if customErr != nil {
 					log.Println("Critical. Cannot save IP address to database.")
 					log.Println(customErr.Handle().Error())
