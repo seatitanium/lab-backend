@@ -3,12 +3,12 @@ package bss
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/aliyun/bss"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"strconv"
 )
 
-func HandleQueryAccountTransactions(ctx *gin.Context) *errHandler.CustomErr {
+func HandleQueryAccountTransactions(ctx *gin.Context) *errors.CustomErr {
 	pagenum := ctx.Query("pagenum")
 	pagesize := ctx.Query("pagesize")
 
@@ -22,11 +22,11 @@ func HandleQueryAccountTransactions(ctx *gin.Context) *errHandler.CustomErr {
 		_pagenumN, err = strconv.ParseInt(pagenum, 10, 32)
 
 		if err != nil {
-			return errHandler.WrongParam()
+			return errors.WrongParam()
 		}
 
 		if _pagenumN <= 0 {
-			return errHandler.WrongParam()
+			return errors.WrongParam()
 		}
 	}
 
@@ -36,11 +36,11 @@ func HandleQueryAccountTransactions(ctx *gin.Context) *errHandler.CustomErr {
 		_pagesizeN, err = strconv.ParseInt(pagesize, 10, 32)
 
 		if err != nil {
-			return errHandler.WrongParam()
+			return errors.WrongParam()
 		}
 
 		if _pagesizeN <= 0 {
-			return errHandler.WrongParam()
+			return errors.WrongParam()
 		}
 	}
 

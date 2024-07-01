@@ -4,12 +4,12 @@ import (
 	client2 "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/utils"
 )
 
 // 在 instanceId 所指向的实例上执行预先设定的云助手指令，并写入 invoke 记录
-func InvokeCommand(instanceId string) *errHandler.CustomErr {
+func InvokeCommand(instanceId string) *errors.CustomErr {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
@@ -23,7 +23,7 @@ func InvokeCommand(instanceId string) *errHandler.CustomErr {
 	})
 
 	if err != nil {
-		return errHandler.AliyunError(err)
+		return errors.AliyunError(err)
 	}
 
 	customErr = utils.WriteInvokeRecord(instanceId, tea.StringValue(res.Body.InvokeId))

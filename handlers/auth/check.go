@@ -2,16 +2,16 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleCheck(ctx *gin.Context) *errHandler.CustomErr {
+func HandleCheck(ctx *gin.Context) *errors.CustomErr {
 	token := ctx.Query("token")
 
 	if token == "" {
-		return errHandler.UnAuth()
+		return errors.UnAuth()
 	}
 
 	err := utils.CheckJWT(token)

@@ -3,14 +3,14 @@ package ecs
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleStartInstance(ctx *gin.Context) *errHandler.CustomErr {
+func HandleStartInstance(ctx *gin.Context) *errors.CustomErr {
 	instanceId := ctx.Query("instanceId")
-	var customErr *errHandler.CustomErr
+	var customErr *errors.CustomErr
 
 	if instanceId == "" {
 		instanceId, customErr = utils.GetActiveInstanceId()

@@ -2,16 +2,16 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 	"time"
 )
 
-func HandleLogin(ctx *gin.Context) *errHandler.CustomErr {
+func HandleLogin(ctx *gin.Context) *errors.CustomErr {
 	var object LoginRequest
 	if err := ctx.ShouldBindJSON(&object); err != nil {
-		return errHandler.WrongParam()
+		return errors.WrongParam()
 	}
 
 	user, customErr := utils.GetUserByUsername(object.Username)
@@ -34,7 +34,7 @@ func HandleLogin(ctx *gin.Context) *errHandler.CustomErr {
 			Token:    jwt,
 		})
 	} else {
-		return errHandler.UnAuth()
+		return errors.UnAuth()
 	}
 
 	return nil

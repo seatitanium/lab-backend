@@ -4,7 +4,7 @@ import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
 type InvocationResult struct {
@@ -16,7 +16,7 @@ type InvocationResult struct {
 }
 
 // 获取指定 invokeId 的执行结果
-func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.CustomErr) {
+func DescribeInvocationResults(invokeId string) (*InvocationResult, *errors.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
@@ -30,7 +30,7 @@ func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.
 	})
 
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	for _, item := range res.Body.Invocation.InvocationResults.InvocationResult {
@@ -43,5 +43,5 @@ func DescribeInvocationResults(invokeId string) (*InvocationResult, *errHandler.
 		}, nil
 	}
 
-	return nil, errHandler.TargetNotExist()
+	return nil, errors.TargetNotExist()
 }

@@ -2,17 +2,17 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleRegister(ctx *gin.Context) *errHandler.CustomErr {
+func HandleRegister(ctx *gin.Context) *errors.CustomErr {
 	conn := utils.GetDBConn()
 
 	var object RegisterRequest
 	if err := ctx.ShouldBindJSON(&object); err != nil {
-		return errHandler.WrongParam()
+		return errors.WrongParam()
 	}
 
 	exists, customErr := utils.IsUsernameUsed(object.Username)
@@ -22,13 +22,13 @@ func HandleRegister(ctx *gin.Context) *errHandler.CustomErr {
 	}
 
 	if exists {
-		return errHandler.DuplicatedUser()
+		return errors.DuplicatedUser()
 	}
 
 	hash, err := utils.GenerateHash(object.Password)
 
 	if err != nil {
-		return errHandler.ServerError(err)
+		return errors.ServerError(err)
 	}
 
 	result := conn.Create(&utils.Users{
@@ -39,7 +39,7 @@ func HandleRegister(ctx *gin.Context) *errHandler.CustomErr {
 	})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	middleware.RespSuccess(ctx)

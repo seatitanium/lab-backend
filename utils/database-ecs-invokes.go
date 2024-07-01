@@ -2,10 +2,10 @@ package utils
 
 import (
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
-func WriteInvokeRecord(instanceId string, invokeId string) *errHandler.CustomErr {
+func WriteInvokeRecord(instanceId string, invokeId string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Create(&EcsInvokes{
@@ -15,7 +15,7 @@ func WriteInvokeRecord(instanceId string, invokeId string) *errHandler.CustomErr
 	})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil
@@ -34,13 +34,13 @@ func HasInvokedOn(instanceId string) bool {
 	return invokedCount > 0
 }
 
-func GetLastInvokeId(instanceId string) (string, *errHandler.CustomErr) {
+func GetLastInvokeId(instanceId string) (string, *errors.CustomErr) {
 	conn := GetDBConn()
 	var invoke EcsInvokes
 
 	result := conn.Where(&EcsInvokes{InstanceId: instanceId}).Limit(1).Find(&invoke)
 	if result.Error != nil {
-		return "", errHandler.DbError(result.Error)
+		return "", errors.DbError(result.Error)
 	}
 
 	return invoke.InvokeId, nil

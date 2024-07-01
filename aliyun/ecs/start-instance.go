@@ -4,10 +4,10 @@ import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
-func StartInstance(instanceId string) *errHandler.CustomErr {
+func StartInstance(instanceId string) *errors.CustomErr {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
@@ -19,7 +19,7 @@ func StartInstance(instanceId string) *errHandler.CustomErr {
 	})
 
 	if err != nil {
-		return errHandler.AliyunError(err)
+		return errors.AliyunError(err)
 	}
 
 	return nil

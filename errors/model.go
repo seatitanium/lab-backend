@@ -1,4 +1,4 @@
-package errHandler
+package errors
 
 const (
 	ErrTypeServer int = iota

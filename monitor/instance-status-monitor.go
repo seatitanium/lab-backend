@@ -4,7 +4,7 @@ import (
 	"log"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -22,7 +22,7 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 	log.Printf("Running with argument: interval=%v, threshold=%v\n", interval, threshold)
 
 	for {
-		var customErr *errHandler.CustomErr
+		var customErr *errors.CustomErr
 		var hasActiveInstance bool
 		var activeInstance *utils.Ecs
 		var retrieved *aliyun.InstanceDescriptionRetrieved

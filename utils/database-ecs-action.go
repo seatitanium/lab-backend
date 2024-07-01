@@ -2,10 +2,10 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
-func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errHandler.CustomErr {
+func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errors.CustomErr {
 	conn := GetDBConn()
 	token := ctx.GetHeader("Token")
 	payload, err := GetPayloadFromToken(token)
@@ -25,13 +25,13 @@ func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string
 	})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil
 }
 
-func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *errHandler.CustomErr {
+func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *errors.CustomErr {
 	conn := GetDBConn()
 	if force {
 		actionType += "_force"
@@ -44,7 +44,7 @@ func WriteAutomatedEcsRecord(instanceId string, actionType string, force bool) *
 	})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil

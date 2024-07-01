@@ -3,11 +3,11 @@ package bss
 import (
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"strconv"
 )
 
-func QueryAccountBalance() (*aliyun.AvailableBalance, *errHandler.CustomErr) {
+func QueryAccountBalance() (*aliyun.AvailableBalance, *errors.CustomErr) {
 	client, customErr := aliyun.CreateBssClient()
 
 	if customErr != nil {
@@ -17,7 +17,7 @@ func QueryAccountBalance() (*aliyun.AvailableBalance, *errHandler.CustomErr) {
 	resp, err := client.QueryAccountBalance()
 
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	var result = &aliyun.AvailableBalance{}
@@ -25,13 +25,13 @@ func QueryAccountBalance() (*aliyun.AvailableBalance, *errHandler.CustomErr) {
 	result.AvailableAmount, err = strconv.ParseFloat(tea.StringValue(resp.Body.Data.AvailableAmount), 32)
 
 	if err != nil {
-		return nil, errHandler.ServerError(err)
+		return nil, errors.ServerError(err)
 	}
 
 	result.AvailableCashAmount, err = strconv.ParseFloat(tea.StringValue(resp.Body.Data.AvailableCashAmount), 32)
 
 	if err != nil {
-		return nil, errHandler.ServerError(err)
+		return nil, errors.ServerError(err)
 	}
 
 	return result, nil

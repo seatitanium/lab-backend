@@ -3,14 +3,14 @@ package ecs
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleGetInvocationResult(ctx *gin.Context) *errHandler.CustomErr {
+func HandleGetInvocationResult(ctx *gin.Context) *errors.CustomErr {
 	var invokeId string
-	var customErr *errHandler.CustomErr
+	var customErr *errors.CustomErr
 
 	invokeId = ctx.Query("invokeId")
 
@@ -29,7 +29,7 @@ func HandleGetInvocationResult(ctx *gin.Context) *errHandler.CustomErr {
 		}
 
 		if invokeId == "" {
-			return errHandler.TargetNotExist()
+			return errors.TargetNotExist()
 		}
 	}
 

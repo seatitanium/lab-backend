@@ -3,14 +3,14 @@ package ecs
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleRebootInstance(ctx *gin.Context) *errHandler.CustomErr {
+func HandleRebootInstance(ctx *gin.Context) *errors.CustomErr {
 	var request StopInstanceRequest
-	var customErr *errHandler.CustomErr
+	var customErr *errors.CustomErr
 
 	request.InstanceId = ctx.Query("instanceId")
 	request.Force = utils.IsTrue(ctx.Query("force"))

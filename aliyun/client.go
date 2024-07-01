@@ -6,10 +6,10 @@ import (
 	openapiv2 "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	aliyunEcs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
-func CreateEcsClient() (*aliyunEcs.Client, *errHandler.CustomErr) {
+func CreateEcsClient() (*aliyunEcs.Client, *errors.CustomErr) {
 	config := &openapi.Config{
 		AccessKeyId:     tea.String(AliyunConfig.AccessKeyId),
 		AccessKeySecret: tea.String(AliyunConfig.AccessKeySecret),
@@ -20,13 +20,13 @@ func CreateEcsClient() (*aliyunEcs.Client, *errHandler.CustomErr) {
 
 	ecsClient, err := aliyunEcs.NewClient(config)
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	return ecsClient, nil
 }
 
-func CreateBssClient() (*aliyunBss.Client, *errHandler.CustomErr) {
+func CreateBssClient() (*aliyunBss.Client, *errors.CustomErr) {
 	config := &openapiv2.Config{
 		AccessKeyId:     tea.String(AliyunConfig.AccessKeyId),
 		AccessKeySecret: tea.String(AliyunConfig.AccessKeySecret),
@@ -37,7 +37,7 @@ func CreateBssClient() (*aliyunBss.Client, *errHandler.CustomErr) {
 
 	bssClient, err := aliyunBss.NewClient(config)
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	return bssClient, nil

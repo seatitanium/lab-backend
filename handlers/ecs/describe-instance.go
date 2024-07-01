@@ -4,15 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 	"time"
 )
 
-func HandleDescribeInstance(ctx *gin.Context) *errHandler.CustomErr {
+func HandleDescribeInstance(ctx *gin.Context) *errors.CustomErr {
 	instanceId := ctx.Query("instanceId")
-	var customErr *errHandler.CustomErr
+	var customErr *errors.CustomErr
 	var hasActiveInstance bool
 
 	if instanceId == "" {

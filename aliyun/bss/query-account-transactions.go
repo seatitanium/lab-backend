@@ -4,13 +4,13 @@ import (
 	openapi "github.com/alibabacloud-go/bssopenapi-20171214/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/utils"
 	"strconv"
 	"time"
 )
 
-func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transaction, *errHandler.CustomErr) {
+func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transaction, *errors.CustomErr) {
 	client, customErr := aliyun.CreateBssClient()
 
 	var bills []aliyun.Transaction
@@ -30,7 +30,7 @@ func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transacti
 	})
 
 	if err != nil {
-		return bills, errHandler.AliyunError(err)
+		return bills, errors.AliyunError(err)
 	}
 
 	for _, item := range res.Body.Data.AccountTransactionsList.AccountTransactionsList {
@@ -39,7 +39,7 @@ func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transacti
 		parsedTime, err := utils.ParseTime(rawTime)
 
 		if err != nil {
-			return nil, errHandler.ServerError(err)
+			return nil, errors.ServerError(err)
 		}
 
 		rawAmount := tea.StringValue(item.Amount)
@@ -47,7 +47,7 @@ func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transacti
 		parsedAmount, err := strconv.ParseFloat(rawAmount, 64)
 
 		if err != nil {
-			return nil, errHandler.ServerError(err)
+			return nil, errors.ServerError(err)
 		}
 
 		bills = append(bills, aliyun.Transaction{

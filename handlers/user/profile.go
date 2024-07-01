@@ -2,16 +2,16 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleUserProfile(ctx *gin.Context) *errHandler.CustomErr {
+func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.Param("username")
 
 	if username == "" {
-		return errHandler.TargetNotExist()
+		return errors.TargetNotExist()
 	}
 
 	user, customErr := utils.GetUserByUsername(username)

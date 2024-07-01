@@ -4,7 +4,7 @@ import (
 	"log"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -15,7 +15,7 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 
 	for {
 		var hasActiveInstance bool
-		var customErr *errHandler.CustomErr
+		var customErr *errors.CustomErr
 		var activeInstance *utils.Ecs
 		var retrieved *aliyun.InstanceDescriptionRetrieved
 

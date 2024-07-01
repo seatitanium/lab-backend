@@ -2,17 +2,17 @@ package utils
 
 import (
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
 // 使用 instance id 获得数据库中的某个 instance 的记录
-func GetInstanceByInstanceId(instanceId string) (*Ecs, *errHandler.CustomErr) {
+func GetInstanceByInstanceId(instanceId string) (*Ecs, *errors.CustomErr) {
 	conn := GetDBConn()
 	var ecs Ecs
 
 	result := conn.Where(&Ecs{InstanceId: instanceId}).Limit(1).Find(&ecs)
 	if result.Error != nil {
-		return nil, errHandler.DbError(result.Error)
+		return nil, errors.DbError(result.Error)
 	}
 
 	return &ecs, nil
@@ -21,20 +21,20 @@ func GetInstanceByInstanceId(instanceId string) (*Ecs, *errHandler.CustomErr) {
 // 获取当前的 active instance
 //
 // 使用前必须先检验是否存在 active instance，否则会产生 customErr
-func GetActiveInstance() (*Ecs, *errHandler.CustomErr) {
+func GetActiveInstance() (*Ecs, *errors.CustomErr) {
 	conn := GetDBConn()
 	var ecs Ecs
 
 	result := conn.Where(&Ecs{Active: true}).Limit(1).Find(&ecs)
 	if result.Error != nil {
-		return nil, errHandler.DbError(result.Error)
+		return nil, errors.DbError(result.Error)
 	}
 
 	return &ecs, nil
 }
 
 // 检查当前是否存在 active instance
-func HasActiveInstance() (bool, *errHandler.CustomErr) {
+func HasActiveInstance() (bool, *errors.CustomErr) {
 	conn := GetDBConn()
 	var ecsCount int64
 
@@ -42,13 +42,13 @@ func HasActiveInstance() (bool, *errHandler.CustomErr) {
 	// [Database 1302] Msg: [unsupported data type: 0x1400036013e: Table not set, please set it like: db.Model(&user) or db.Table("users")]
 	result := conn.Model(&Ecs{}).Where(&Ecs{Active: true}).Count(&ecsCount)
 	if result.Error != nil {
-		return false, errHandler.DbError(result.Error)
+		return false, errors.DbError(result.Error)
 	}
 
 	return ecsCount > 0, nil
 }
 
-func GetActiveInstanceId() (string, *errHandler.CustomErr) {
+func GetActiveInstanceId() (string, *errors.CustomErr) {
 	hasActiveInstance, customErr := HasActiveInstance()
 
 	if customErr != nil {
@@ -56,7 +56,7 @@ func GetActiveInstanceId() (string, *errHandler.CustomErr) {
 	}
 
 	if !hasActiveInstance {
-		return "", errHandler.NotFound()
+		return "", errors.NotFound()
 	}
 
 	activeInstance, customErr := GetActiveInstance()
@@ -71,7 +71,7 @@ func GetActiveInstanceId() (string, *errHandler.CustomErr) {
 // 将一个 *aliyun.CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。
-func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, instanceType string) *errHandler.CustomErr {
+func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, instanceType string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Create(&Ecs{
@@ -83,25 +83,25 @@ func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, in
 	})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil
 }
 
-func SetStatus(instanceId string, status string) *errHandler.CustomErr {
+func SetStatus(instanceId string, status string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{Status: status})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil
 }
 
-func SetActive(instanceId string, active bool) *errHandler.CustomErr {
+func SetActive(instanceId string, active bool) *errors.CustomErr {
 	conn := GetDBConn()
 
 	// Note: Must use map[string]any instead of struct itself here.
@@ -110,7 +110,7 @@ func SetActive(instanceId string, active bool) *errHandler.CustomErr {
 	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(map[string]any{"active": active})
 
 	if result.Error != nil {
-		return errHandler.DbError(result.Error)
+		return errors.DbError(result.Error)
 	}
 
 	return nil

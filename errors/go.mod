@@ -1,4 +1,4 @@
-module seatimc/backend/errHandler
+module seatimc/backend/errors
 
 go 1.21.6
 

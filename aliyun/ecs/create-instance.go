@@ -4,11 +4,11 @@ import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 )
 
 // 按照 aconfig.yml 中的配置创建一个新的实例，并返回成交价格和实例 ID
-func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errHandler.CustomErr) {
+func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errors.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 	if customErr != nil {
 
@@ -39,7 +39,7 @@ func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errHandl
 
 	resp, err := client.CreateInstance(request)
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	return &aliyun.CreatedInstance{

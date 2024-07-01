@@ -4,19 +4,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
 )
 
-func HandleCreateInstance(ctx *gin.Context) *errHandler.CustomErr {
+func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 	hasActive, customErr := utils.HasActiveInstance()
 	if customErr != nil {
 		return customErr
 	}
 
 	if hasActive == true {
-		return errHandler.OperateNotApplied()
+		return errors.OperateNotApplied()
 	}
 
 	conf := aliyun.AliyunConfig

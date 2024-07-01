@@ -4,12 +4,12 @@ import (
 	ecs "github.com/alibabacloud-go/ecs-20140526/v4/client"
 	"github.com/alibabacloud-go/tea/tea"
 	"seatimc/backend/aliyun"
-	"seatimc/backend/errHandler"
+	"seatimc/backend/errors"
 	"seatimc/backend/utils"
 )
 
 // 动态获取指定 regionId 下的 instanceId 实例的实时信息
-func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescriptionRetrieved, *errHandler.CustomErr) {
+func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescriptionRetrieved, *errors.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 	if customErr != nil {
 		return nil, customErr
@@ -21,7 +21,7 @@ func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescr
 	})
 
 	if err != nil {
-		return nil, errHandler.AliyunError(err)
+		return nil, errors.AliyunError(err)
 	}
 
 	var result aliyun.InstanceDescriptionRetrieved
@@ -33,7 +33,7 @@ func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescr
 		result.PublicIpAddress = tea.StringSliceValue(inst.PublicIpAddress.IpAddress)
 		parsedTime, err := utils.ParseTime(tea.StringValue(inst.CreationTime))
 		if err != nil {
-			return nil, errHandler.ServerError(err)
+			return nil, errors.ServerError(err)
 		}
 		result.CreationTime = parsedTime
 		result.Exist = true
