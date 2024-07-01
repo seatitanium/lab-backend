@@ -1,10 +1,5 @@
 package errHandler
 
-import (
-	"errors"
-	"fmt"
-)
-
 const (
 	ErrTypeServer int = iota
 	ErrTypeHttp
@@ -61,15 +56,3 @@ const (
 	RespErrCodeOperationNotApplied = 1304
 	RespErrMsgOperationNotApplied  = "Operation Not Applied"
 )
-
-func ErrConfWrongPort(port string) error {
-	return errors.New(fmt.Sprintf("cannot start server with port: [%s]", port))
-}
-
-func ErrDbConfig() error {
-	return errors.New("incorrect database configuration")
-}
-
-func ErrDbConn() error {
-	return errors.New("cannot connect to database")
-}

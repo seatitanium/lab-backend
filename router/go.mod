@@ -1,4 +1,4 @@
-module seatimc/backend/handlers/common
+module seatimc/backend/router
 
 go 1.21.6
 

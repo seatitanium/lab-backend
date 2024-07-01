@@ -3,8 +3,8 @@ package cli
 import (
 	cliv2 "github.com/urfave/cli/v2"
 	"log"
-	"seatimc/backend/handlers/common"
 	"seatimc/backend/monitor"
+	"seatimc/backend/router"
 	"seatimc/backend/utils"
 )
 
@@ -15,7 +15,7 @@ var (
 		Usage:   "Start the backend service",
 		Action: func(ctx *cliv2.Context) error {
 			log.Println("Starting 🌊Tisea Backend.")
-			router := common.Router{Port: utils.GlobalConfig.BindPort}
+			router := router.Router{Port: utils.GlobalConfig.BindPort}
 			router.Init()
 			router.Run()
 			return nil

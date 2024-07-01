@@ -6,9 +6,9 @@ use (
 	./aliyun/ecs
 	errHandler
 	handlers/auth
-	handlers/common
 	handlers/ecs
 	middleware
 	monitor
 	utils
+	router
 )
