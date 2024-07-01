@@ -1,10 +1,11 @@
-package router
+package main
 
 import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
+	"seatimc/backend/errors"
 	"seatimc/backend/handlers/auth"
 	"seatimc/backend/handlers/bss"
 	"seatimc/backend/handlers/ecs"
@@ -17,6 +18,40 @@ import (
 type Router struct {
 	Port   int
 	Router *gin.Engine
+}
+
+type HandlerFunc func(c *gin.Context) *errors.CustomErr
+
+func requestInfo(c *gin.Context) string {
+	return fmt.Sprintf("%s %s", c.Request.Method, c.Request.URL.String())
+}
+
+func wrapper(handler HandlerFunc) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		customErr := handler(c)
+		if customErr != nil {
+			var exception *errors.ApiException
+			exception = customErr.Handle()
+			exception.Request = requestInfo(c)
+			c.JSON(exception.HttpCode, exception)
+		}
+	}
+}
+
+func handleNotFound(ctx *gin.Context) {
+	handleErr := errors.NotFound()
+	handleErr.Request = requestInfo(ctx)
+	ctx.JSON(handleErr.HttpCode, handleErr)
+}
+
+func handleVersion(ctx *gin.Context) {
+	ctx.String(200, "tisea @ "+utils.GlobalConfig.Version)
+}
+
+func handleUnauth(ctx *gin.Context) {
+	handleErr := errors.UnAuth()
+	handleErr.Request = requestInfo(ctx)
+	ctx.JSON(handleErr.HttpCode, handleErr)
 }
 
 func (r *Router) Init() {
