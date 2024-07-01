@@ -22,15 +22,21 @@ func RunMonitor(monitorName string) {
 	}()
 
 	switch monitorName {
-	case "inst-status":
+	case "instance-status":
 		{
 			go RunInstanceStatusMonitor(time.Second*5, time.Hour*1, b)
 			break
 		}
 
-	case "deploy-inst":
+	case "deploy":
 		{
 			go RunDeployMonitor(time.Second*5, b)
+			break
+		}
+
+	case "deploy-status":
+		{
+			go RunDeployStatusMonitor(time.Second*5, b)
 			break
 		}
 

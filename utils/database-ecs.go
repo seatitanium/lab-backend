@@ -101,6 +101,18 @@ func SetStatus(instanceId string, status string) *errors.CustomErr {
 	return nil
 }
 
+func SetDeployStatus(instanceId string, status string) *errors.CustomErr {
+	conn := GetDBConn()
+
+	result := conn.Model(&Ecs{}).Where(&Ecs{InstanceId: instanceId}).Updates(&Ecs{DeployStatus: status})
+
+	if result.Error != nil {
+		return errors.DbError(result.Error)
+	}
+
+	return nil
+}
+
 func SetActive(instanceId string, active bool) *errors.CustomErr {
 	conn := GetDBConn()
 

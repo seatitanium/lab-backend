@@ -88,6 +88,7 @@ func (r *Router) Run() {
 	ecsGroup.GET("stop", wrapper(ecs.HandleStopInstance))
 	ecsGroup.GET("start", wrapper(ecs.HandleStartInstance))
 	ecsGroup.GET("reboot", wrapper(ecs.HandleRebootInstance))
+	ecsGroup.GET("deploy-status", wrapper(ecs.HandleGetDeployStatus))
 	ecsGroup.DELETE("delete", wrapper(ecs.HandleDeleteInstance))
 	ecsGroup.GET("last-invoke", wrapper(ecs.HandleGetInvocationResult))
 
