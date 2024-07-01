@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 )
 
@@ -20,6 +20,6 @@ func HandleCheck(ctx *gin.Context) *errors.CustomErr {
 		return err
 	}
 
-	middleware.RespSuccess(ctx)
+	handlers.RespSuccess(ctx)
 	return nil
 }

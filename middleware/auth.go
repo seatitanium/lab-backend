@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 )
 
@@ -13,7 +14,7 @@ func TokenCheck(ctx *gin.Context) {
 	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
 
 	if checkErr != nil {
-		RespTokenError(ctx, checkErr.Code, checkErr.Msg)
+		handlers.RespTokenError(ctx, checkErr.Code, checkErr.Msg)
 		ctx.Abort()
 		return
 	}

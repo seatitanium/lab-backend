@@ -5,7 +5,7 @@ import (
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -19,7 +19,7 @@ func HandleDescribeInstance(ctx *gin.Context) *errors.CustomErr {
 		hasActiveInstance, customErr = utils.HasActiveInstance()
 
 		if hasActiveInstance == false {
-			middleware.RespSuccess(ctx, aliyun.InstanceDescription{
+			handlers.RespSuccess(ctx, aliyun.InstanceDescription{
 				Retrieved: aliyun.InstanceDescriptionRetrieved{
 					Exist:           false,
 					Status:          "",
@@ -61,6 +61,6 @@ func HandleDescribeInstance(ctx *gin.Context) *errors.CustomErr {
 		Retrieved: *retrieved,
 	}
 
-	middleware.RespSuccess(ctx, ecsDesc)
+	handlers.RespSuccess(ctx, ecsDesc)
 	return nil
 }

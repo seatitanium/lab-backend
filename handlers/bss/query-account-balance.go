@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/aliyun/bss"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 )
 
 func HandleQueryAccountBalance(ctx *gin.Context) *errors.CustomErr {
@@ -14,7 +14,7 @@ func HandleQueryAccountBalance(ctx *gin.Context) *errors.CustomErr {
 		return customErr
 	}
 
-	middleware.RespSuccess(ctx, result)
+	handlers.RespSuccess(ctx, result)
 
 	return nil
 }

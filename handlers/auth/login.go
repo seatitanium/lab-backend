@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 	"time"
 )
@@ -29,7 +29,7 @@ func HandleLogin(ctx *gin.Context) *errors.CustomErr {
 			return customErr
 		}
 
-		middleware.RespSuccess(ctx, LoginResponse{
+		handlers.RespSuccess(ctx, LoginResponse{
 			Username: object.Username,
 			Token:    jwt,
 		})

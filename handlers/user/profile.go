@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 )
 
@@ -20,7 +20,7 @@ func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
 		return customErr
 	}
 
-	middleware.RespSuccess(ctx, PublicUser{
+	handlers.RespSuccess(ctx, PublicUser{
 		Id:        user.Id,
 		Username:  user.Username,
 		Nickname:  user.Nickname,

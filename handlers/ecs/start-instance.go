@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errors"
-	"seatimc/backend/middleware"
+	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
 )
 
@@ -30,6 +30,6 @@ func HandleStartInstance(ctx *gin.Context) *errors.CustomErr {
 		return customErr
 	}
 
-	middleware.RespSuccess(ctx)
+	handlers.RespSuccess(ctx)
 	return nil
 }
