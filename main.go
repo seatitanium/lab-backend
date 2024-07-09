@@ -37,7 +37,7 @@ func main() {
 			var statsDbConf = utils.GlobalConfig.StatsDatabase
 			var err error
 
-			if utils.IsStrsHasEmpty(dbConf.Host, dbConf.User, dbConf.Password, dbConf.DBName) || dbConf.Port == 0 || utils.IsStrsHasEmpty(statsDbConf.Host, statsDbConf.User, statsDbConf.Password, statsDbConf.DBName) || statsDbConf.Port == 0 {
+			if utils.EmptyIn(dbConf.Host, dbConf.User, dbConf.Password, dbConf.DBName) || dbConf.Port == 0 || utils.EmptyIn(statsDbConf.Host, statsDbConf.User, statsDbConf.Password, statsDbConf.DBName) || statsDbConf.Port == 0 {
 				return errors.New("failed to connect to database due to invalid configuration")
 			}
 
