@@ -32,7 +32,7 @@ type Config struct {
 
 var GlobalConfig *Config
 
-func (c *Config) Load(path string) {
+func LoadGlobalConfig(path string) {
 	GlobalConfig = &Config{}
 	cfgFile, err := os.ReadFile(path)
 	MustPanic(err)

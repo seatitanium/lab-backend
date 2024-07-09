@@ -12,7 +12,7 @@ type MonitorConf struct {
 
 var MonitorConfig *MonitorConf
 
-func (c *MonitorConf) Load(path string) {
+func LoadMonitorConfig(path string) {
 	MonitorConfig = &MonitorConf{}
 	cfgFile, err := os.ReadFile(path)
 	utils.MustPanic(err)

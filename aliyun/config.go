@@ -63,7 +63,7 @@ type AliyunConf struct {
 
 var AliyunConfig *AliyunConf
 
-func (c *AliyunConf) Load(path string) {
+func LoadAliyunConfig(path string) {
 	AliyunConfig = &AliyunConf{}
 	cfgFile, err := os.ReadFile(path)
 

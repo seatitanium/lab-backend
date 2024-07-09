@@ -29,9 +29,9 @@ func main() {
 			&cli.FlagHelp,
 		},
 		Before: func(ctx *cliv2.Context) error {
-			utils.GlobalConfig.Load(cli.FlagGlobalConfigVar)
-			monitor.MonitorConfig.Load(cli.FlagMonitorConfigVar)
-			aliyun.AliyunConfig.Load(cli.FlagAliyunConfigVar)
+			utils.LoadGlobalConfig(cli.FlagGlobalConfigVar)
+			monitor.LoadMonitorConfig(cli.FlagMonitorConfigVar)
+			aliyun.LoadAliyunConfig(cli.FlagAliyunConfigVar)
 
 			var dbConf = utils.GlobalConfig.Database
 			var statsDbConf = utils.GlobalConfig.StatsDatabase
