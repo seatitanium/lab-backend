@@ -98,6 +98,9 @@ func (r *Router) Run() {
 
 	userGroup := r.Router.Group("/user")
 	userGroup.GET("/profile/:username", wrapper(user.HandleUserProfile))
+	userGroup.GET("/stats/playtime", wrapper(user.HandleUserPlaytime))
+	userGroup.GET("/stats/login", wrapper(user.HandleUserLoginRecord))
+	userGroup.GET("/stats/login/count", wrapper(user.HandleUserLoginRecordCount))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

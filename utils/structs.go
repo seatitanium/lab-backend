@@ -1,6 +1,9 @@
 package utils
 
-import "github.com/golang-jwt/jwt"
+import (
+	"github.com/golang-jwt/jwt"
+	"time"
+)
 
 type JWTPayload struct {
 	Username  string `json:"username"`
@@ -61,4 +64,21 @@ type EcsInvokes struct {
 	InvokeId   string `json:"invokeId" gorm:"size:256;NOT NULL"`
 	CommandId  string `json:"commandId" gorm:"size:256;NOT NULL"`
 	At         int64  `json:"at" gorm:"autoCreateTime:milli;NOT NULL"`
+}
+
+type LoginRecord struct {
+	Id         uint      `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
+	ActionType bool      `json:"actionType" gorm:"NOT NULL"`
+	CreatedAt  time.Time `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
+	Tag        string    `json:"tag" gorm:"size:20;NOT NULL"`
+	Player     string    `json:"player" gorm:"size:20;NOT NULL"`
+}
+
+type PlaytimeRecord struct {
+	Id        uint      `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
+	Total     int32     `json:"total" gorm:"NOT NULL;default:0"`
+	Afk       int32     `json:"afk" gorm:"NOT NULL;default:0"`
+	UpdatedAt time.Time `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
+	Tag       string    `json:"tag" gorm:"size:20;NOT NULL"`
+	Player    string    `json:"player" gorm:"size:20;NOT NULL"`
 }

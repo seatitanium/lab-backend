@@ -22,6 +22,7 @@ type Config struct {
 	Domain                 string         `yaml:"domain"`
 	AllowedOrigins         []string       `yaml:"allowed-origins"`
 	Database               ConfigDatabase `yaml:"database"`
+	StatsDatabase          ConfigDatabase `yaml:"stats-database"`
 	Token                  ConfigToken    `yaml:"token"`
 	BindPort               int            `yaml:"bind-port"`
 	Version                string         `yaml:"version"`
