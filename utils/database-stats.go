@@ -40,7 +40,7 @@ func GetLoginRecordCount(playername string, tag string) (int64, *errors.CustomEr
 	}
 
 	// Note: Must Find before Count
-	result := conn.Where(&LoginRecord{Player: playername, Tag: tag}).Find(&loginRecord).Count(&count)
+	result := conn.Where(&LoginRecord{Player: playername, Tag: tag, ActionType: true}).Find(&loginRecord).Count(&count)
 	if result.Error != nil {
 		return 0, errors.DbError(result.Error)
 	}
