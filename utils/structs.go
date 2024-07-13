@@ -82,3 +82,10 @@ type PlaytimeRecord struct {
 	Tag       string    `json:"tag" gorm:"size:20;NOT NULL"`
 	Player    string    `json:"player" gorm:"size:20;NOT NULL"`
 }
+
+type SnapshotOnlinePlayers struct {
+	Id        uint      `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
+	Count     int       `json:"count" gorm:"NOT NULL;default:0"`
+	Names     string    `json:"names" gorm:"NOT NULL;default:''"`
+	CreatedAt time.Time `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
+}

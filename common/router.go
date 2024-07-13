@@ -9,6 +9,7 @@ import (
 	"seatimc/backend/handlers/auth"
 	"seatimc/backend/handlers/bss"
 	"seatimc/backend/handlers/ecs"
+	"seatimc/backend/handlers/server"
 	"seatimc/backend/handlers/user"
 	"seatimc/backend/middleware"
 	"seatimc/backend/utils"
@@ -101,6 +102,10 @@ func (r *Router) Run() {
 	userGroup.GET("/stats/playtime", wrapper(user.HandleUserPlaytime))
 	userGroup.GET("/stats/login", wrapper(user.HandleUserLoginRecord))
 	userGroup.GET("/stats/login/count", wrapper(user.HandleUserLoginRecordCount))
+
+	serverGroup := r.Router.Group("/server")
+	serverGroup.GET("/online-history", wrapper(server.HandleOnlineHistory))
+	serverGroup.GET("/peak-online-history", wrapper(server.HandlePeakOnlineHistory))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

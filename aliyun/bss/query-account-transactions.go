@@ -36,7 +36,7 @@ func QueryAccountTransactions(pagenum int32, pagesize int32) ([]aliyun.Transacti
 	for _, item := range res.Body.Data.AccountTransactionsList.AccountTransactionsList {
 		rawTime := tea.StringValue(item.TransactionTime)
 
-		parsedTime, err := utils.ParseTimeATBZ(rawTime)
+		parsedTime, err := utils.ParseTimeRFC3339(rawTime)
 
 		if err != nil {
 			return nil, errors.ServerError(err)
