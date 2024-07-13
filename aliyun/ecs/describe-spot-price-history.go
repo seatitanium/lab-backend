@@ -41,7 +41,7 @@ func DescribeSpotPriceHistory(zoneId string, startTime string, endTime string) [
 
 	historys := resp.Body.SpotPrices.SpotPriceType
 	for _, history := range historys {
-		parsedTime, err := utils.ParseTime(tea.StringValue(history.Timestamp))
+		parsedTime, err := utils.ParseTimeATBZ(tea.StringValue(history.Timestamp))
 		if err != nil {
 			log.Println("Warning in DescribeSpotPriceHistory: Cannot parse RFC3339 / ISO8601 time string in response. Replacing with timestamp 0.")
 			parsedTime = time.UnixMilli(0)

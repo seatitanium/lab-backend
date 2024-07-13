@@ -11,7 +11,7 @@ func MustPanic(mustPanic error) {
 	}
 }
 
-func ParseTime(str string) (time.Time, error) {
+func ParseTimeATBZ(str string) (time.Time, error) {
 	res, err := time.Parse(time.RFC3339, str)
 
 	if err == nil {
