@@ -1,10 +1,11 @@
 package utils
 
-func EmptyIn(strs ...string) bool {
+func AnyMatch(match string, strs ...string) bool {
 	for _, str := range strs {
-		if len(str) == 0 {
+		if str == match {
 			return true
 		}
 	}
+
 	return false
 }
