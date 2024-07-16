@@ -106,6 +106,7 @@ func (r *Router) Run() {
 	serverGroup := r.Router.Group("/server")
 	serverGroup.GET("/online-history", wrapper(server.HandleOnlineHistory))
 	serverGroup.GET("/peak-online-history", wrapper(server.HandlePeakOnlineHistory))
+	serverGroup.GET("/status", wrapper(server.HandleServerStatus))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)

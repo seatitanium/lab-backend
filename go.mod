@@ -10,6 +10,7 @@ require (
 	github.com/alibabacloud-go/tea v1.2.1
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
+	github.com/mcstatus-io/mcutil/v3 v3.6.0
 	github.com/urfave/cli/v2 v2.27.1
 	gopkg.in/yaml.v3 v3.0.1
 )
