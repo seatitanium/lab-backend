@@ -9,3 +9,7 @@ func AnyMatch(match string, strs ...string) bool {
 
 	return false
 }
+
+func NoneMatch(match string, strs ...string) bool {
+	return !AnyMatch(match, strs...)
+}

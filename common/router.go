@@ -98,7 +98,8 @@ func (r *Router) Run() {
 	bssGroup.GET("transactions", wrapper(bss.HandleQueryAccountTransactions))
 
 	userGroup := r.Router.Group("/user")
-	userGroup.GET("/profile/:username", wrapper(user.HandleUserProfile))
+	userGroup.GET("/profile", wrapper(user.HandleUserProfile))
+	userGroup.PATCH("/profile", wrapper(user.HandleUpdateUserProfile))
 	userGroup.GET("/stats/playtime", wrapper(user.HandleUserPlaytime))
 	userGroup.GET("/stats/login", wrapper(user.HandleUserLoginRecord))
 	userGroup.GET("/stats/login/count", wrapper(user.HandleUserLoginRecordCount))

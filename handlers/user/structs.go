@@ -9,3 +9,7 @@ type PublicUser struct {
 	CreatedAt int64  `json:"createdAt"`
 	UpdatedAt int64  `json:"updatedAt"`
 }
+
+type UpdateUserRequest struct {
+	Value string `json:"value"`
+}

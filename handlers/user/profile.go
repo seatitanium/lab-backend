@@ -8,7 +8,7 @@ import (
 )
 
 func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
-	username := ctx.Param("username")
+	username := ctx.DefaultQuery("username", "")
 
 	if username == "" {
 		return errors.TargetNotExist()

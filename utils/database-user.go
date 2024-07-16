@@ -31,3 +31,16 @@ func GetUserByUsername(username string) (*Users, *errors.CustomErr) {
 
 	return &user, nil
 }
+
+// Note: the second argument must be of type map[string]any.
+func UpdateUserByUsername(username string, updates map[string]any) *errors.CustomErr {
+	conn := GetDBConn()
+
+	result := conn.Model(&Users{}).Where(&Users{Username: username}).Updates(updates)
+
+	if result.Error != nil {
+		return errors.DbError(result.Error)
+	}
+
+	return nil
+}
