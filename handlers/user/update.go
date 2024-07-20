@@ -28,6 +28,23 @@ func HandleUpdateUserProfile(ctx *gin.Context) *errors.CustomErr {
 		}
 	}
 
+	if utils.HasKey(updateRequest, "mc_id") {
+
+		// Check if already bound
+		used, customErr := utils.IsMCIDUsed(updateRequest["mc_id"].(string))
+
+		if customErr != nil {
+			return customErr
+		}
+
+		if used {
+			return errors.DuplicatedMCIDBinding()
+		}
+
+		// Reset mc_id_verified state if updating mc_id directly
+		updateRequest["mc_id_verified"] = false
+	}
+
 	customErr := utils.UpdateUserByUsername(username, updateRequest)
 
 	if customErr != nil {

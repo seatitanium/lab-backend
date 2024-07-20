@@ -15,6 +15,19 @@ func IsUsernameUsed(username string) (bool, *errors.CustomErr) {
 	return count > 0, nil
 }
 
+func IsMCIDUsed(mcid string) (bool, *errors.CustomErr) {
+	conn := GetDBConn()
+	var count int64
+
+	result := conn.Model(&Users{}).Where(&Users{MCID: mcid}).Count(&count)
+
+	if result.Error != nil {
+		return false, errors.DbError(result.Error)
+	}
+
+	return count > 0, nil
+}
+
 func GetUserByUsername(username string) (*Users, *errors.CustomErr) {
 	conn := GetDBConn()
 	var user Users
@@ -37,6 +50,18 @@ func UpdateUserByUsername(username string, updates map[string]any) *errors.Custo
 	conn := GetDBConn()
 
 	result := conn.Model(&Users{}).Where(&Users{Username: username}).Updates(updates)
+
+	if result.Error != nil {
+		return errors.DbError(result.Error)
+	}
+
+	return nil
+}
+
+func UpdateUserByMCID(mcid string, updates map[string]any) *errors.CustomErr {
+	conn := GetDBConn()
+
+	result := conn.Model(&Users{}).Where(&Users{MCID: mcid}).Updates(updates)
 
 	if result.Error != nil {
 		return errors.DbError(result.Error)

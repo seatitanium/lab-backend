@@ -22,7 +22,7 @@ func HandleRegister(ctx *gin.Context) *errors.CustomErr {
 	}
 
 	if exists {
-		return errors.DuplicatedUser()
+		return errors.DuplicatedUserRegistration()
 	}
 
 	hash, err := utils.GenerateHash(object.Password)

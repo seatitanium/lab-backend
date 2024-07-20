@@ -39,14 +39,15 @@ type Ecs struct {
 }
 
 type Users struct {
-	Id        uint   `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
-	Username  string `json:"username" gorm:"size:50;NOT NULL"`
-	Nickname  string `json:"nickname" gorm:"size:50;default:NULL"`
-	Email     string `json:"email" gorm:"size:100;NOT NULL"`
-	MCID      string `json:"mcid" gorm:"size:30;NOT NULL"`
-	CreatedAt int64  `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
-	UpdatedAt int64  `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
-	Hash      string `json:"hash" gorm:"size:512;NOT NULL"`
+	Id           uint   `json:"id" gorm:"primaryKey,NOT NULL,AUTO_INCREMENT"`
+	Username     string `json:"username" gorm:"size:50;NOT NULL"`
+	Nickname     string `json:"nickname" gorm:"size:50;NOT NULL;default:''"`
+	Email        string `json:"email" gorm:"size:100;NOT NULL"`
+	MCID         string `json:"mcid" gorm:"size:30;NOT NULL;default:''"`
+	CreatedAt    int64  `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
+	UpdatedAt    int64  `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
+	Hash         string `json:"hash" gorm:"size:512;NOT NULL"`
+	MCIDVerified bool   `json:"mcidVerified" gorm:"NOT NULL;default:false"`
 }
 
 type EcsActions struct {

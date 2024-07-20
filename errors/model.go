@@ -38,8 +38,11 @@ const (
 	RespErrCodeBadToken = 1204
 	RespErrMsgBadToken  = "Bad token"
 
-	RespErrCodeDuplicatedUser = 1205
-	RespErrMsgDuplicatedUser  = "Duplicated User Registration"
+	RespErrCodeDuplicatedUserRegistration = 1205
+	RespErrMsgDuplicatedUserRegistration  = "Duplicated User Registration"
+
+	RespErrCodeDuplicatedMCIDBinding = 1206
+	RespErrMsgDuplicatedMCIDBinding  = "Duplicated MCID Binding"
 )
 
 // Response code 13xx for server side error

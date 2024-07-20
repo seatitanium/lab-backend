@@ -21,13 +21,14 @@ func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
 	}
 
 	handlers.RespSuccess(ctx, PublicUser{
-		Id:        user.Id,
-		Username:  user.Username,
-		Nickname:  user.Nickname,
-		Email:     user.Email,
-		MCID:      user.MCID,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
+		Id:           user.Id,
+		Username:     user.Username,
+		Nickname:     user.Nickname,
+		Email:        user.Email,
+		MCID:         user.MCID,
+		CreatedAt:    user.CreatedAt,
+		UpdatedAt:    user.UpdatedAt,
+		MCIDVerified: user.MCIDVerified,
 	})
 
 	return nil
