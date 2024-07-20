@@ -65,11 +65,12 @@ func (r *Router) Init() {
 
 	r.Router.Use(cors.New(cors.Config{
 		AllowOrigins:     utils.GlobalConfig.AllowedOrigins,
-		AllowMethods:     []string{"POST", "GET"},
+		AllowMethods:     []string{"POST", "GET", "PATCH", "DELETE"},
 		AllowCredentials: true,
 		MaxAge:           time.Duration(utils.GlobalConfig.Token.Expiration) * time.Minute,
 	}))
 	r.Router.Use(middleware.TokenCheck)
+	r.Router.Use(middleware.ServerCheck)
 }
 
 func (r *Router) Run() {

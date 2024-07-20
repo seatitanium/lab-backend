@@ -30,7 +30,7 @@ const (
 	RespErrMsgUnauth  = "Authentication Failed"
 
 	RespErrCodeForbidden = 1202
-	RespErrMsgForbidden  = "No permission"
+	RespErrMsgForbidden  = "Forbidden"
 
 	RespErrCodeInvalidToken = 1203
 	RespErrMsgInvalidToken  = "Invalid token"

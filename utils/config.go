@@ -28,6 +28,8 @@ type Config struct {
 	Version                string         `yaml:"version"`
 	EnableConfigWhitelist  bool           `yaml:"enable-config-whitelist"`
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
+	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
+	ServerSecret           string         `yaml:"server-secret"`
 }
 
 var GlobalConfig *Config

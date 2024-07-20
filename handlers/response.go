@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"seatimc/backend/errors"
 )
 
 type Response struct {
@@ -34,6 +35,16 @@ func RespTokenError(ctx *gin.Context, errCode int, errMsg string) {
 		HttpCode: http.StatusUnauthorized,
 		Code:     errCode,
 		Msg:      errMsg,
+		Data:     false,
+	}
+	ctx.JSON(resp.HttpCode, resp)
+}
+
+func RespForbidden(ctx *gin.Context) {
+	resp := Response{
+		HttpCode: http.StatusForbidden,
+		Code:     errors.RespErrCodeForbidden,
+		Msg:      errors.RespErrMsgForbidden,
 		Data:     false,
 	}
 	ctx.JSON(resp.HttpCode, resp)

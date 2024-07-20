@@ -7,7 +7,7 @@ import (
 	"seatimc/backend/utils"
 )
 
-func HandleVerifyMCID(ctx *gin.Context) *errors.CustomErr {
+func HandleMCIDVerify(ctx *gin.Context) *errors.CustomErr {
 	playername := ctx.DefaultQuery("playername", "")
 
 	if playername == "" {

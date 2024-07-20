@@ -1,6 +1,10 @@
 package utils
 
-import "seatimc/backend/errors"
+import (
+	errs "errors"
+	"gorm.io/gorm"
+	"seatimc/backend/errors"
+)
 
 func IsUsernameUsed(username string) (bool, *errors.CustomErr) {
 	conn := GetDBConn()
@@ -26,6 +30,30 @@ func IsMCIDUsed(mcid string) (bool, *errors.CustomErr) {
 	}
 
 	return count > 0, nil
+}
+
+func GetMCIDUsage(mcid string) (*MCIDUsage, *errors.CustomErr) {
+	conn := GetDBConn()
+	var user Users
+
+	result := conn.Model(&Users{}).Where(&Users{MCID: mcid}).First(&user)
+
+	if result.Error != nil {
+		if errs.Is(result.Error, gorm.ErrRecordNotFound) {
+			return &MCIDUsage{
+				Used:     false,
+				Verified: false,
+				With:     "",
+			}, nil
+		}
+		return nil, errors.DbError(result.Error)
+	}
+
+	return &MCIDUsage{
+		Used:     true,
+		Verified: user.MCIDVerified,
+		With:     user.Username,
+	}, nil
 }
 
 func GetUserByUsername(username string) (*Users, *errors.CustomErr) {

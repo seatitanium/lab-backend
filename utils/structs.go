@@ -15,6 +15,12 @@ type JWTClaims struct {
 	Payload JWTPayload `json:"payload"`
 }
 
+type MCIDUsage struct {
+	Used     bool   `json:"used"`
+	Verified bool   `json:"verified"`
+	With     string `json:"with"`
+}
+
 /**
  * Status:
  * 1 - Pending - 创建中
