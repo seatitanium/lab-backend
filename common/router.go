@@ -103,7 +103,8 @@ func (r *Router) Run() {
 	userGroup.GET("/stats/playtime", wrapper(user.HandleUserPlaytime))
 	userGroup.GET("/stats/login", wrapper(user.HandleUserLoginRecord))
 	userGroup.GET("/stats/login/count", wrapper(user.HandleUserLoginRecordCount))
-	userGroup.GET("/verify-mcid", wrapper(user.HandleVerifyMCID))
+	userGroup.GET("/mcid-verify", wrapper(user.HandleMCIDVerify))
+	userGroup.GET("/mcid-usage", wrapper(user.HandleMCIDUsage))
 
 	serverGroup := r.Router.Group("/server")
 	serverGroup.GET("/online-history", wrapper(server.HandleOnlineHistory))
