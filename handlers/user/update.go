@@ -45,6 +45,17 @@ func HandleUpdateUserProfile(ctx *gin.Context) *errors.CustomErr {
 		updateRequest["mc_id_verified"] = false
 	}
 
+	if utils.HasKey(updateRequest, "password") {
+		hash, err := utils.GenerateHash(updateRequest["password"].(string))
+
+		if err != nil {
+			return errors.ServerError(err)
+		}
+
+		updateRequest["hash"] = hash
+		delete(updateRequest, "password")
+	}
+
 	customErr := utils.UpdateUserByUsername(username, updateRequest)
 
 	if customErr != nil {
