@@ -21,6 +21,12 @@ type MCIDUsage struct {
 	With     string `json:"with"`
 }
 
+type LoginRecordBoard struct {
+	Player        string    `json:"player"`
+	Count         int       `json:"count"`
+	LastCreatedAt time.Time `json:"lastCreatedAt"`
+}
+
 /**
  * Status:
  * 1 - Pending - 创建中

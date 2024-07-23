@@ -96,3 +96,43 @@ func GetLoginHistory(startTime time.Time, endTime time.Time) ([]LoginRecord, *er
 
 	return loginRecord, nil
 }
+
+func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+	var loginRecord []LoginRecord
+
+	result := conn.Where(&LoginRecord{Tag: tag}).Find(&loginRecord)
+
+	if result.Error != nil {
+		return nil, errors.DbError(result.Error)
+	}
+
+	var loginRecordBoard = make([]LoginRecordBoard, 0)
+	var indexs = make(map[string]int)
+	i := 0
+
+	for _, y := range loginRecord {
+		if y.ActionType == false {
+			continue
+		}
+
+		if !HasKey(indexs, y.Player) {
+			loginRecordBoard = append(loginRecordBoard, LoginRecordBoard{
+				Player:        y.Player,
+				Count:         1,
+				LastCreatedAt: y.CreatedAt,
+			})
+			indexs[y.Player] = i
+			i += 1
+		} else {
+			loginRecordBoard[indexs[y.Player]].Count += 1
+			loginRecordBoard[indexs[y.Player]].LastCreatedAt = y.CreatedAt
+		}
+	}
+
+	if len(limit) == 0 || limit[0] > len(loginRecordBoard) {
+		return loginRecordBoard, nil
+	} else {
+		return loginRecordBoard[:limit[0]], nil
+	}
+}
