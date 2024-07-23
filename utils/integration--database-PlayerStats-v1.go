@@ -111,22 +111,22 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 	var indexs = make(map[string]int)
 	i := 0
 
-	for _, y := range loginRecord {
-		if y.ActionType == false {
+	for _, x := range loginRecord {
+		if x.ActionType == false {
 			continue
 		}
 
-		if !HasKey(indexs, y.Player) {
+		if !HasKey(indexs, x.Player) {
 			loginRecordBoard = append(loginRecordBoard, LoginRecordBoard{
-				Player:        y.Player,
+				Player:        x.Player,
 				Count:         1,
-				LastCreatedAt: y.CreatedAt,
+				LastCreatedAt: x.CreatedAt,
 			})
-			indexs[y.Player] = i
+			indexs[x.Player] = i
 			i += 1
 		} else {
-			loginRecordBoard[indexs[y.Player]].Count += 1
-			loginRecordBoard[indexs[y.Player]].LastCreatedAt = y.CreatedAt
+			loginRecordBoard[indexs[x.Player]].Count += 1
+			loginRecordBoard[indexs[x.Player]].LastCreatedAt = x.CreatedAt
 		}
 	}
 
