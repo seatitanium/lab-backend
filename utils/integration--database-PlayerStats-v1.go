@@ -84,3 +84,15 @@ func GetPeakOnlineHistory() (*SnapshotOnlinePlayers, *errors.CustomErr) {
 
 	return &snapshots[maximumIndex], nil
 }
+
+func GetLoginHistory(startTime time.Time, endTime time.Time) ([]LoginRecord, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+	var loginRecord = make([]LoginRecord, 0)
+
+	result := conn.Where("created_at BETWEEN ? AND ?", startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05")).Find(&loginRecord)
+	if result.Error != nil {
+		return nil, errors.DbError(result.Error)
+	}
+
+	return loginRecord, nil
+}
