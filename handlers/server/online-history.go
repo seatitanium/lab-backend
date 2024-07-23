@@ -5,13 +5,14 @@ import (
 	"seatimc/backend/errors"
 	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
+	"time"
 )
 
 func HandleOnlineHistory(ctx *gin.Context) *errors.CustomErr {
 	startTime := ctx.DefaultQuery("start", "")
 	endTime := ctx.DefaultQuery("end", "")
 
-	if startTime == "" || endTime == "" {
+	if startTime == "" {
 		return errors.WrongParam()
 	}
 
@@ -21,10 +22,16 @@ func HandleOnlineHistory(ctx *gin.Context) *errors.CustomErr {
 		return errors.WrongParam()
 	}
 
-	parsedEnd, err := utils.ParseTimeRFC3339Milli(endTime)
+	var parsedEnd time.Time
 
-	if err != nil {
-		return errors.WrongParam()
+	if endTime != "" {
+		parsedEnd, err = utils.ParseTimeRFC3339Milli(endTime)
+
+		if err != nil {
+			return errors.WrongParam()
+		}
+	} else {
+		parsedEnd = time.Now()
 	}
 
 	history, customErr := utils.GetOnlineHistory(parsedStart, parsedEnd)
