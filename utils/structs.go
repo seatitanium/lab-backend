@@ -27,6 +27,12 @@ type LoginRecordBoard struct {
 	LastCreatedAt time.Time `json:"lastCreatedAt"`
 }
 
+type PlaytimeBoard struct {
+	Player    string `json:"player"`
+	TimeTotal int32  `json:"timeTotal"`
+	TimeAfk   int32  `json:"timeAfk"`
+}
+
 /**
  * Status:
  * 1 - Pending - 创建中

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"seatimc/backend/errors"
+	"sort"
 	"time"
 )
 
@@ -134,5 +135,43 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 		return loginRecordBoard, nil
 	} else {
 		return loginRecordBoard[:limit[0]], nil
+	}
+}
+
+func GetPlaytimeBoard(tag string, limit ...int) ([]PlaytimeBoard, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+
+	var playtimeRecord []PlaytimeRecord
+
+	result := conn.Where(&LoginRecord{Tag: tag}).Find(&playtimeRecord)
+
+	if result.Error != nil {
+		return nil, errors.DbError(result.Error)
+	}
+
+	var playtimeRecordBoard = make([]PlaytimeBoard, 0)
+	var indexs = make(map[string]int)
+	i := 0
+
+	for _, x := range playtimeRecord {
+		if !HasKey(indexs, x.Player) {
+			playtimeRecordBoard = append(playtimeRecordBoard, PlaytimeBoard{
+				Player:    x.Player,
+				TimeAfk:   x.Afk,
+				TimeTotal: x.Total,
+			})
+			indexs[x.Player] = i
+			i += 1
+		}
+	}
+
+	sort.Slice(playtimeRecordBoard, func(i, j int) bool {
+		return (playtimeRecordBoard[i].TimeTotal - playtimeRecordBoard[i].TimeAfk) > (playtimeRecordBoard[j].TimeTotal - playtimeRecordBoard[j].TimeAfk)
+	})
+
+	if len(limit) == 0 || limit[0] > len(playtimeRecordBoard) {
+		return playtimeRecordBoard, nil
+	} else {
+		return playtimeRecordBoard[:limit[0]], nil
 	}
 }
