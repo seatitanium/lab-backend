@@ -42,14 +42,16 @@ func HandleUserPlaytime(ctx *gin.Context) *errors.CustomErr {
 	return nil
 }
 
-func HandleUserLoginRecord(ctx *gin.Context) *errors.CustomErr {
+func HandleUserLoginRecords(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.DefaultQuery("username", "")
 	playername := ctx.DefaultQuery("playername", "")
 	tag := ctx.DefaultQuery("tag", "")
+
 	offset, err := strconv.Atoi(ctx.DefaultQuery("offset", "0"))
 	if err != nil {
 		return errors.WrongParam()
 	}
+
 	limit, err := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
 	if err != nil {
 		return errors.WrongParam()
@@ -84,7 +86,7 @@ func HandleUserLoginRecord(ctx *gin.Context) *errors.CustomErr {
 	return nil
 }
 
-func HandleUserLoginRecordCount(ctx *gin.Context) *errors.CustomErr {
+func HandleUserLoginRecordTotalCount(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.DefaultQuery("username", "")
 	playername := ctx.DefaultQuery("playername", "")
 	tag := ctx.DefaultQuery("tag", "")
