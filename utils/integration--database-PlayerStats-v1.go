@@ -137,10 +137,10 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 		}
 	}
 
-	if len(limit) == 0 || limit[0] > len(loginRecordBoard) {
-		return loginRecordBoard, nil
+	if len(limit) > 0 {
+		return LimitSlice(limit[0], loginRecordBoard), nil
 	} else {
-		return loginRecordBoard[:limit[0]], nil
+		return loginRecordBoard, nil
 	}
 }
 
