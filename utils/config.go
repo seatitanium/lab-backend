@@ -18,6 +18,13 @@ type ConfigToken struct {
 	PrivateKey string `yaml:"private-key"`
 }
 
+type Term struct {
+	Tag     string `json:"tag" yaml:"tag"`
+	StartAt string `json:"startAt" yaml:"start-at"`
+	EndAt   string `json:"endAt" yaml:"end-at"`
+	Active  bool   `json:"active" yaml:"active"`
+}
+
 type Config struct {
 	Domain                 string         `yaml:"domain"`
 	AllowedOrigins         []string       `yaml:"allowed-origins"`
@@ -30,6 +37,7 @@ type Config struct {
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
 	ServerSecret           string         `yaml:"server-secret"`
+	Terms                  []Term         `yaml:"terms"`
 }
 
 var GlobalConfig *Config
@@ -41,4 +49,13 @@ func LoadGlobalConfig(path string) {
 	err = yaml.Unmarshal(cfgFile, GlobalConfig)
 	MustPanic(err)
 	return
+}
+
+func GetActiveTerm() *Term {
+	for _, term := range GlobalConfig.Terms {
+		if term.Active == true {
+			return &term
+		}
+	}
+	return nil
 }

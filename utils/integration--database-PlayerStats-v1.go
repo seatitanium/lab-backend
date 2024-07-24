@@ -1,6 +1,8 @@
 package utils
 
 import (
+	errs "errors"
+	"gorm.io/gorm"
 	"seatimc/backend/errors"
 	"sort"
 	"time"
@@ -174,4 +176,53 @@ func GetPlaytimeBoard(tag string, limit ...int) ([]PlaytimeBoard, *errors.Custom
 	} else {
 		return playtimeRecordBoard[:limit[0]], nil
 	}
+}
+
+func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+
+	var loginRecords []LoginRecord
+	var count int64
+	var involved []Term
+
+	for _, t := range GlobalConfig.Terms {
+		result := conn.Where(&LoginRecord{Player: mcid, Tag: t.Tag}).Find(&loginRecords).Count(&count)
+
+		if result.Error != nil {
+			return nil, errors.DbError(result.Error)
+		}
+
+		if count > 0 {
+			t.StartAt += "T00:00:00Z"
+			if t.EndAt != "" {
+				t.EndAt += "T00:00:00Z"
+			}
+			involved = append(involved, t)
+		}
+	}
+
+	return involved, nil
+}
+
+func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+	var loginRecord LoginRecord
+
+	var query *LoginRecord
+	if tag == "" {
+		query = &LoginRecord{Player: mcid}
+	} else {
+		query = &LoginRecord{Player: mcid, Tag: tag}
+	}
+
+	result := conn.Where(query).Order("created_at").First(&loginRecord)
+
+	if result.Error != nil {
+		if errs.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, errors.DbError(result.Error)
+	}
+
+	return &loginRecord, nil
 }
