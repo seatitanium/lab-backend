@@ -10,4 +10,5 @@ use (
 	middleware
 	monitor
 	utils
+	static
 )
