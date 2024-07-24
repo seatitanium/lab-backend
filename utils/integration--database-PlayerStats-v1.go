@@ -4,7 +4,6 @@ import (
 	errs "errors"
 	"gorm.io/gorm"
 	"seatimc/backend/errors"
-	"seatimc/static"
 	"sort"
 	"time"
 )
@@ -200,7 +199,7 @@ func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
 			return nil, errors.DbError(result.Error)
 		}
 
-		if count > 0 || static.HistoryTermsContainsPlayer(t.Tag, mcid) {
+		if count > 0 || HistoryTermsContainsPlayer(t.Tag, mcid) {
 			t.StartAt += "T00:00:00Z"
 			if t.EndAt != "" {
 				t.EndAt += "T00:00:00Z"

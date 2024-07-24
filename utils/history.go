@@ -1,9 +1,10 @@
-package static
+package utils
 
 import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type HistoryTermPlayers struct {
@@ -16,7 +17,7 @@ func GetHistoryTermPlayers() (map[string][]HistoryTermPlayers, error) {
 	var data map[string][]HistoryTermPlayers
 
 	// Note: should be relative to project root
-	absPath, _ := filepath.Abs("static/history-term-players.json")
+	absPath, _ := filepath.Abs("utils/history-term-players.json")
 	bytes, readErr := os.ReadFile(absPath)
 
 	if readErr != nil {
@@ -47,4 +48,40 @@ func HistoryTermsContainsPlayer(tag string, player string) bool {
 	}
 
 	return false
+}
+
+func GetHistoryLoginRecord(player string) *LoginRecord {
+
+	targetRecord := LoginRecord{
+		Id:         0,
+		ActionType: true,
+		CreatedAt:  time.Now(),
+		Tag:        "",
+		Player:     player,
+	}
+
+	containsFlag := false
+
+	for _, t := range GlobalConfig.Terms {
+		if HistoryTermsContainsPlayer(t.Tag, player) {
+			containsFlag = true
+			parsedTime, err := ParseTimeRFC3339(t.StartAt + "T00:00:00Z")
+
+			if err != nil {
+				println(err.Error())
+				continue
+			}
+
+			if parsedTime.Before(targetRecord.CreatedAt) {
+				targetRecord.CreatedAt = parsedTime
+				targetRecord.Tag = t.Tag
+			}
+		}
+	}
+
+	if !containsFlag {
+		return nil
+	}
+
+	return &targetRecord
 }
