@@ -12,7 +12,7 @@ func GetLoginRecordsByName(playername string, tag string, offset int, limit int)
 	conn := GetStatsDBConn()
 	var loginRecord []LoginRecord
 
-	result := conn.Where(&LoginRecord{Player: playername, Tag: tag}).Offset(offset).Limit(limit).Find(&loginRecord)
+	result := conn.Where(&LoginRecord{Player: playername, Tag: tag}).Order("created_at desc").Offset(offset).Limit(limit).Find(&loginRecord)
 	if result.Error != nil {
 		return nil, errors.DbError(result.Error)
 	}
