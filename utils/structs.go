@@ -33,6 +33,20 @@ type PlaytimeBoard struct {
 	TimeAfk   int32  `json:"timeAfk"`
 }
 
+type Term struct {
+	Tag         string `json:"tag"`
+	Version     string `json:"version"`
+	Theme       string `json:"theme"`
+	ThemeAlt    string `json:"themeAlt,omitempty"`
+	PackVersion string `json:"packVersion,omitempty"`
+	Type        string `json:"type"`
+	Author      string `json:"author"`
+	Link        string `json:"link,omitempty"`
+	StartAt     string `json:"startAt"`
+	EndAt       string `json:"endAt,omitempty"`
+	Created     string `json:"created"`
+}
+
 /**
  * Status:
  * 1 - Pending - 创建中

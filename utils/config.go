@@ -18,13 +18,6 @@ type ConfigToken struct {
 	PrivateKey string `yaml:"private-key"`
 }
 
-type Term struct {
-	Tag     string `json:"tag" yaml:"tag"`
-	StartAt string `json:"startAt" yaml:"start-at"`
-	EndAt   string `json:"endAt" yaml:"end-at"`
-	Active  bool   `json:"active" yaml:"active"`
-}
-
 type Config struct {
 	Domain                 string         `yaml:"domain"`
 	AllowedOrigins         []string       `yaml:"allowed-origins"`
@@ -37,7 +30,7 @@ type Config struct {
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
 	ServerSecret           string         `yaml:"server-secret"`
-	Terms                  []Term         `yaml:"terms"`
+	ActiveTerm             string         `yaml:"active-term"`
 }
 
 var GlobalConfig *Config
@@ -52,8 +45,8 @@ func LoadGlobalConfig(path string) {
 }
 
 func GetActiveTerm() *Term {
-	for _, term := range GlobalConfig.Terms {
-		if term.Active == true {
+	for _, term := range GetTerms() {
+		if term.Tag == GlobalConfig.ActiveTerm {
 			return &term
 		}
 	}

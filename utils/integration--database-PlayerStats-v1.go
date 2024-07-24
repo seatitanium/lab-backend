@@ -192,7 +192,7 @@ func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
 	var count int64
 	var involved []Term
 
-	for _, t := range GlobalConfig.Terms {
+	for _, t := range GetTerms() {
 		result := conn.Where(&LoginRecord{Player: mcid, Tag: t.Tag}).Find(&loginRecords).Count(&count)
 
 		if result.Error != nil {

@@ -17,7 +17,7 @@ func GetHistoryTermPlayers() (map[string][]HistoryTermPlayers, error) {
 	var data map[string][]HistoryTermPlayers
 
 	// Note: should be relative to project root
-	absPath, _ := filepath.Abs("utils/history-term-players.json")
+	absPath, _ := filepath.Abs("data/history-term-players.json")
 	bytes, readErr := os.ReadFile(absPath)
 
 	if readErr != nil {
@@ -62,7 +62,7 @@ func GetHistoryLoginRecord(player string) *LoginRecord {
 
 	containsFlag := false
 
-	for _, t := range GlobalConfig.Terms {
+	for _, t := range GetTerms() {
 		if HistoryTermsContainsPlayer(t.Tag, player) {
 			containsFlag = true
 			parsedTime, err := ParseTimeRFC3339(t.StartAt + "T00:00:00Z")

@@ -1,0 +1,83 @@
+[
+  {
+    "tag": "st7",
+    "version": "1.18.2",
+    "theme": "魔法+科技",
+    "type": "自组包",
+    "author": "Seati",
+    "startAt": "2023-06-14",
+    "endAt": "2023-07-29",
+    "created": "2023"
+  },
+  {
+    "tag": "st8",
+    "version": "1.18.1",
+    "theme": "无限 Infinity",
+    "themeAlt": "IF",
+    "type": "整合包",
+    "author": "NightBreak 等",
+    "link": "https://www.mcmod.cn/modpack/427.html",
+    "startAt": "2023-08-01",
+    "endAt": "2023-08-03",
+    "created": "2022"
+  },
+  {
+    "tag": "st9",
+    "version": "1.12.2",
+    "theme": "格雷：量子跃迁",
+    "themeAlt": "GTQT",
+    "type": "整合包",
+    "author": "刻晴so可爱 等",
+    "link": "https://www.mcmod.cn/modpack/590.html",
+    "startAt": "2023-08-15",
+    "endAt": "2023-09-08",
+    "created": "2023"
+  },
+  {
+    "tag": "st10",
+    "version": "1.12.2",
+    "theme": "Nomifactory CEu",
+    "themeAlt": "Nomi-CEu",
+    "type": "整合包",
+    "author": "tracer4b, Exa4096 等",
+    "link": "https://www.mcmod.cn/modpack/519.html",
+    "startAt": "2023-09-12",
+    "endAt": "2024-01-03",
+    "created": "2022"
+  },
+  {
+    "tag": "st11",
+    "version": "1.16.5",
+    "theme": "光芒消逝之日",
+    "themeAlt": "VL",
+    "packVersion": "1.3.2",
+    "type": "整合包",
+    "author": "伙伴伊布 等",
+    "link": "https://www.mcmod.cn/modpack/554.html",
+    "startAt": "2024-01-14",
+    "endAt": "2024-01-15",
+    "created": "2023"
+  },
+  {
+    "tag": "st12",
+    "version": "1.16.5",
+    "theme": "龙之冒险",
+    "packVersion": "3.2a",
+    "type": "整合包",
+    "author": "RuoLing",
+    "link": "https://www.mcmod.cn/modpack/589.html",
+    "startAt": "2024-01-16",
+    "endAt": "2024-02-01",
+    "created": "2022"
+  },
+  {
+    "tag": "st13",
+    "version": "1.20.1",
+    "theme": "All the Mods No Frills",
+    "themeAlt": "ATM9NF",
+    "type": "整合包",
+    "author": "ATMTeam",
+    "startAt": "2024-05-27",
+    "created": "2022"
+  }
+]
