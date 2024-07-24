@@ -12,10 +12,6 @@ func HandleBoardPlaytime(ctx *gin.Context) *errors.CustomErr {
 	tag := ctx.DefaultQuery("tag", "")
 	limit := ctx.DefaultQuery("limit", "")
 
-	if tag == "" {
-		return errors.WrongParam()
-	}
-
 	var board []utils.PlaytimeBoard
 	var customErr *errors.CustomErr
 

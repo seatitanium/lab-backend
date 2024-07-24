@@ -25,7 +25,7 @@ func GetPlaytimeRecord(playername string, tag string) (*PlaytimeRecord, *errors.
 	var playtimeRecord PlaytimeRecord
 
 	if tag == "" {
-		tag = "default"
+		tag = GetActiveTerm().Tag
 	}
 
 	result := conn.Where(&PlaytimeRecord{Player: playername, Tag: tag}).Find(&playtimeRecord)
@@ -42,7 +42,7 @@ func GetLoginRecordCount(playername string, tag string) (int64, *errors.CustomEr
 	var loginRecord []LoginRecord
 
 	if tag == "" {
-		tag = "default"
+		tag = GetActiveTerm().Tag
 	}
 
 	// Note: Must Find before Count
@@ -104,6 +104,10 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 	conn := GetStatsDBConn()
 	var loginRecord []LoginRecord
 
+	if tag == "" {
+		tag = GetActiveTerm().Tag
+	}
+
 	result := conn.Where(&LoginRecord{Tag: tag}).Find(&loginRecord)
 
 	if result.Error != nil {
@@ -142,8 +146,11 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 
 func GetPlaytimeBoard(tag string, limit ...int) ([]PlaytimeBoard, *errors.CustomErr) {
 	conn := GetStatsDBConn()
-
 	var playtimeRecord []PlaytimeRecord
+
+	if tag == "" {
+		tag = GetActiveTerm().Tag
+	}
 
 	result := conn.Where(&LoginRecord{Tag: tag}).Find(&playtimeRecord)
 
@@ -209,6 +216,7 @@ func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomE
 	var loginRecord LoginRecord
 
 	var query *LoginRecord
+
 	if tag == "" {
 		query = &LoginRecord{Player: mcid}
 	} else {
