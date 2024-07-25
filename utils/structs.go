@@ -45,6 +45,12 @@ type Term struct {
 	StartAt     string `json:"startAt"`
 	EndAt       string `json:"endAt,omitempty"`
 	Created     string `json:"created"`
+	Image       string `json:"image,omitempty"`
+}
+
+type ServerPlayer struct {
+	Name string `json:"name"`
+	UUID string `json:"uuid"`
 }
 
 /**
@@ -105,6 +111,7 @@ type LoginRecord struct {
 	CreatedAt  time.Time `json:"createdAt" gorm:"autoCreateTime:milli;NOT NULL"`
 	Tag        string    `json:"tag" gorm:"size:20;NOT NULL"`
 	Player     string    `json:"player" gorm:"size:20;NOT NULL"`
+	UUID       string    `json:"uuid" gorm:"size:50;NOT NULL"`
 }
 
 type PlaytimeRecord struct {
@@ -114,6 +121,7 @@ type PlaytimeRecord struct {
 	UpdatedAt time.Time `json:"updatedAt" gorm:"autoUpdateTime:milli;NOT NULL"`
 	Tag       string    `json:"tag" gorm:"size:20;NOT NULL"`
 	Player    string    `json:"player" gorm:"size:20;NOT NULL"`
+	UUID      string    `json:"uuid" gorm:"size:50;NOT NULL"`
 }
 
 type SnapshotOnlinePlayers struct {

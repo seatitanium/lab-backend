@@ -234,3 +234,27 @@ func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomE
 
 	return &loginRecord, nil
 }
+
+func GetTermPlayers(termNumber string) ([]ServerPlayer, *errors.CustomErr) {
+	conn := GetStatsDBConn()
+	var playtimeRecord []PlaytimeRecord
+
+	tag := "st" + termNumber
+
+	result := conn.Where(&PlaytimeRecord{Tag: tag}).Find(&playtimeRecord)
+
+	if result.Error != nil {
+		return nil, errors.DbError(result.Error)
+	}
+
+	var res = make([]ServerPlayer, 0)
+
+	for _, x := range playtimeRecord {
+		res = append(res, ServerPlayer{
+			x.Player,
+			x.UUID,
+		})
+	}
+
+	return res, nil
+}
