@@ -3,6 +3,7 @@ package utils
 import (
 	"gopkg.in/yaml.v3"
 	"os"
+	"strconv"
 )
 
 type ConfigDatabase struct {
@@ -30,7 +31,7 @@ type Config struct {
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
 	ServerSecret           string         `yaml:"server-secret"`
-	ActiveTerm             string         `yaml:"active-term"`
+	ActiveTerm             int            `yaml:"active-term"`
 }
 
 var GlobalConfig *Config
@@ -46,7 +47,7 @@ func LoadGlobalConfig(path string) {
 
 func GetActiveTerm() *Term {
 	for _, term := range GetTerms() {
-		if term.Tag == GlobalConfig.ActiveTerm {
+		if term.Tag == "st"+strconv.Itoa(GlobalConfig.ActiveTerm) {
 			return &term
 		}
 	}
