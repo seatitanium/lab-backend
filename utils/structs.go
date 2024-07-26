@@ -33,19 +33,31 @@ type PlaytimeBoard struct {
 	TimeAfk   int32  `json:"timeAfk"`
 }
 
+type TermDownloadItem struct {
+	Name string `json:"name,omitempty"`
+	Size string `json:"size,omitempty"`
+}
+
+type TermDownloads struct {
+	World TermDownloadItem `json:"world,omitempty"`
+	Pack  TermDownloadItem `json:"pack,omitempty"`
+	Mods  TermDownloadItem `json:"mods,omitempty"`
+}
+
 type Term struct {
-	Tag         string `json:"tag"`
-	Version     string `json:"version"`
-	Theme       string `json:"theme"`
-	ThemeAlt    string `json:"themeAlt,omitempty"`
-	PackVersion string `json:"packVersion,omitempty"`
-	Type        string `json:"type"`
-	Author      string `json:"author"`
-	Link        string `json:"link,omitempty"`
-	StartAt     string `json:"startAt"`
-	EndAt       string `json:"endAt,omitempty"`
-	Created     string `json:"created"`
-	Image       string `json:"image,omitempty"`
+	Tag         string        `json:"tag"`
+	Version     string        `json:"version"`
+	Theme       string        `json:"theme"`
+	ThemeAlt    string        `json:"themeAlt,omitempty"`
+	PackVersion string        `json:"packVersion,omitempty"`
+	Type        string        `json:"type"`
+	Author      string        `json:"author"`
+	Link        string        `json:"link,omitempty"`
+	StartAt     string        `json:"startAt"`
+	EndAt       string        `json:"endAt,omitempty"`
+	Created     string        `json:"created"`
+	Image       string        `json:"image,omitempty"`
+	Downloads   TermDownloads `json:"downloads"`
 }
 
 type ServerPlayer struct {

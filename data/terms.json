@@ -7,7 +7,17 @@
     "author": "Seati",
     "startAt": "2023-06-14",
     "endAt": "2023-07-29",
-    "created": "2023"
+    "created": "2023",
+    "downloads": {
+      "world": {
+        "name": "world.7z",
+        "size": "170.56MB"
+      },
+      "mods": {
+        "name": "mods.zip",
+        "size": "2.90GB"
+      }
+    }
   },
   {
     "tag": "st8",
@@ -20,7 +30,17 @@
     "startAt": "2023-08-01",
     "endAt": "2023-08-03",
     "created": "2022",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBehR.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBehR.png",
+    "downloads": {
+      "world": {
+        "name": "world.7z",
+        "size": "7.30GB"
+      },
+      "mods": {
+        "name": "mods.zip",
+        "size": "249.69MB"
+      }
+    }
   },
   {
     "tag": "st9",
@@ -33,7 +53,17 @@
     "startAt": "2023-08-15",
     "endAt": "2023-09-08",
     "created": "2023",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBVAJ.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBVAJ.png",
+    "downloads": {
+      "world": {
+        "name": "world.zip",
+        "size": "545.83MB"
+      },
+      "mods": {
+        "name": "mods.zip",
+        "size": "399.59MB"
+      }
+    }
   },
   {
     "tag": "st10",
@@ -46,7 +76,17 @@
     "startAt": "2023-09-12",
     "endAt": "2024-01-03",
     "created": "2022",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBFnU.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBFnU.png",
+    "downloads": {
+      "world": {
+        "name": "world.7z",
+        "size": "322.29MB"
+      },
+      "mods": {
+        "name": "mods.zip",
+        "size": "170.73MB"
+      }
+    }
   },
   {
     "tag": "st11",
@@ -60,7 +100,13 @@
     "startAt": "2024-01-14",
     "endAt": "2024-01-15",
     "created": "2023",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBA74.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBA74.png",
+    "downloads": {
+      "pack": {
+        "name": "pack_光芒消逝之日-1.3.2.zip",
+        "size": "347.39MB"
+      }
+    }
   },
   {
     "tag": "st12",
@@ -73,7 +119,17 @@
     "startAt": "2024-01-16",
     "endAt": "2024-02-01",
     "created": "2022",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBZN9.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBZN9.png",
+    "downloads": {
+      "pack": {
+        "name": "pack_龙之冒险v3.2a.zip",
+        "size": "672.89MB"
+      },
+      "world": {
+        "name": "world.7z",
+        "size": "7.43GB"
+      }
+    }
   },
   {
     "tag": "st13",
@@ -85,6 +141,12 @@
     "startAt": "2024-05-27",
     "created": "2022",
     "link": "https://www.mcmod.cn/modpack/738.html",
-    "image": "https://s21.ax1x.com/2024/07/25/pkbBkBF.png"
+    "image": "https://s21.ax1x.com/2024/07/25/pkbBkBF.png",
+    "downloads": {
+      "pack": {
+        "name": "All the Mods 9 - No Frills-0.1.13.zip",
+        "size": "40.84MB"
+      }
+    }
   }
 ]
