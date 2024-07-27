@@ -58,9 +58,9 @@ type AvailableBalance struct {
 	AvailableCashAmount float64 `json:"availableCashAmount"`
 }
 
-type Transaction struct {
-	BillingCycle    string    `json:"billingCycle"`
-	TransactionTime time.Time `json:"transactionTime"`
-	Amount          float64   `json:"amount"`
-	IsIncome        bool      `json:"isIncome"`
+type Bill struct {
+	Cycle            string  `json:"cycle"`
+	CashAmount       float32 `json:"cashAmount"`
+	ProductCode      string  `json:"productCode"`
+	SubscriptionType string  `json:"subscriptionType"`
 }
