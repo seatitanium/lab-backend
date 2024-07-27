@@ -235,11 +235,9 @@ func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomE
 	return &loginRecord, nil
 }
 
-func GetTermPlayers(termNumber string) ([]ServerPlayer, *errors.CustomErr) {
+func GetTermPlayers(tag string) ([]ServerPlayer, *errors.CustomErr) {
 	conn := GetStatsDBConn()
 	var playtimeRecord []PlaytimeRecord
-
-	tag := "st" + termNumber
 
 	result := conn.Where(&PlaytimeRecord{Tag: tag}).Find(&playtimeRecord)
 

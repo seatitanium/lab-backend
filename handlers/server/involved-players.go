@@ -8,11 +8,49 @@ import (
 	"strconv"
 )
 
+func handleGetAllInvolvedPlayers(ctx *gin.Context) *errors.CustomErr {
+	unique := ctx.DefaultQuery("unique", "false")
+
+	uniqueBool := unique == "true"
+
+	history, hErr := utils.GetHistoryTermPlayers()
+
+	if hErr != nil {
+		return errors.ServerError(hErr)
+	}
+
+	players := make([]utils.ServerPlayer, 0)
+
+	for _, v := range history {
+		players = append(players, v...)
+	}
+
+	for i := 13; i <= utils.GlobalConfig.ActiveTerm; i++ {
+		dbPlayers, customErr := utils.GetTermPlayers("st" + strconv.Itoa(i))
+
+		if customErr != nil {
+			return customErr
+		}
+
+		players = append(players, dbPlayers...)
+	}
+
+	if uniqueBool {
+		players = utils.Unique(players, func(a utils.ServerPlayer, b utils.ServerPlayer) bool {
+			return a.UUID == b.UUID
+		})
+	}
+
+	handlers.RespSuccess(ctx, players)
+
+	return nil
+}
+
 func HandleInvolvedPlayers(ctx *gin.Context) *errors.CustomErr {
 	termNumber := ctx.DefaultQuery("term", "")
 
 	if termNumber == "" {
-		return errors.WrongParam()
+		return handleGetAllInvolvedPlayers(ctx)
 	}
 
 	term, err := strconv.Atoi(termNumber)
@@ -47,7 +85,7 @@ func HandleInvolvedPlayers(ctx *gin.Context) *errors.CustomErr {
 		return nil
 	}
 
-	players, customErr := utils.GetTermPlayers(termNumber)
+	players, customErr := utils.GetTermPlayers("st" + termNumber)
 
 	if customErr != nil {
 		return customErr

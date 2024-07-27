@@ -7,14 +7,9 @@ import (
 	"time"
 )
 
-type HistoryTermPlayers struct {
-	Name string `json:"name"`
-	UUID string `json:"uuid"`
-}
+func GetHistoryTermPlayers() (map[string][]ServerPlayer, error) {
 
-func GetHistoryTermPlayers() (map[string][]HistoryTermPlayers, error) {
-
-	var data map[string][]HistoryTermPlayers
+	var data map[string][]ServerPlayer
 
 	// Note: should be relative to project root
 	absPath, _ := filepath.Abs("data/history-term-players.json")
