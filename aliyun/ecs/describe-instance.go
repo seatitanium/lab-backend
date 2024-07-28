@@ -31,7 +31,7 @@ func DescribeInstance(instanceId string, regionId string) (*aliyun.InstanceDescr
 	for _, inst := range res.Body.Instances.Instance {
 		result.Status = tea.StringValue(inst.Status)
 		result.PublicIpAddress = tea.StringSliceValue(inst.PublicIpAddress.IpAddress)
-		parsedTime, err := utils.ParseTimeRFC3339(tea.StringValue(inst.CreationTime))
+		parsedTime, err := utils.ParseTimeRFC3339Aliyun(tea.StringValue(inst.CreationTime))
 		if err != nil {
 			return nil, errors.ServerError(err)
 		}

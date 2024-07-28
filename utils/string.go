@@ -31,6 +31,10 @@ func ParseTime(layout string, str string) (time.Time, error) {
 	return time.Parse(layout, str)
 }
 
+func ParseTimeRFC3339Aliyun(str string) (time.Time, error) {
+	return ParseTime("2006-01-02T15:04Z", str)
+}
+
 func ParseTimeRFC3339(str string) (time.Time, error) {
 	return ParseTime("2006-01-02T15:04:05Z", str)
 }
