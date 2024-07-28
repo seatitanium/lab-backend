@@ -71,13 +71,14 @@ func GetActiveInstanceId() (string, *errors.CustomErr) {
 // 将一个 *aliyun.CreatedInstance 插入数据库，并将其设定为 active
 //
 // 提醒：插入数据库时，记录的 active 值默认为 true。
-func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, instanceType string) *errors.CustomErr {
+func SaveNewActiveInstance(instance *aliyun.CreatedInstance, regionId string, zoneId string, instanceType string) *errors.CustomErr {
 	conn := GetDBConn()
 
 	result := conn.Create(&Ecs{
 		InstanceId:   instance.InstanceId,
 		TradePrice:   instance.TradePrice,
 		RegionId:     regionId,
+		ZoneId:       zoneId,
 		InstanceType: instanceType,
 		Status:       "Pending",
 	})

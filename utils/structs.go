@@ -79,6 +79,7 @@ type Ecs struct {
 	InstanceId   string  `json:"instanceId" gorm:"size:50;NOT NULL"`
 	TradePrice   float32 `json:"tradePrice" gorm:"NOT NULL"`
 	RegionId     string  `json:"regionId" gorm:"size:20;NOT NULL"`
+	ZoneId       string  `json:"zoneId" gorm:"size:20;NOT NULL"`
 	InstanceType string  `json:"instanceType" gorm:"size:20;NOT NULL"`
 	Active       bool    `json:"active" gorm:"NOT NULL;default:true"`
 	Status       string  `json:"status" gorm:"size:20;NOT NULL;"`

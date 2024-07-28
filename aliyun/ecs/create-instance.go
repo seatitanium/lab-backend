@@ -17,6 +17,7 @@ func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errors.C
 
 	request := &ecs.CreateInstanceRequest{
 		RegionId:                tea.String(conf.PrimaryRegionId),
+		ZoneId:                  tea.String(conf.PrimaryZoneId),
 		IoOptimized:             tea.String(aliyun.GetIoOptimized(conf.Using.IoOptimized)),
 		SpotDuration:            tea.Int32(conf.Using.SpotDuration),
 		ImageId:                 tea.String(conf.Using.ImageId),

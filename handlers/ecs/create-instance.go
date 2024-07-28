@@ -25,7 +25,7 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 		return customErr
 	}
 
-	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, conf.Using.InstanceType)
+	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, conf.PrimaryZoneId, conf.Using.InstanceType)
 	if customErr != nil {
 		return customErr
 	}

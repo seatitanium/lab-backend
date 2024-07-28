@@ -56,6 +56,7 @@ func HandleDescribeInstance(ctx *gin.Context) *errors.CustomErr {
 		Local: aliyun.InstanceDescriptionLocal{
 			InstanceId:   targetInstance.InstanceId,
 			RegionId:     targetInstance.RegionId,
+			ZoneId:       targetInstance.ZoneId,
 			InstanceType: targetInstance.InstanceType,
 		},
 		Retrieved: *retrieved,

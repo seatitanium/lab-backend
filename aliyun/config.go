@@ -55,10 +55,14 @@ type AliyunConf struct {
 	AccessKeySecret string `yaml:"access-key-secret"`
 	// 首选地域 ID，如 cn-shenzhen
 	PrimaryRegionId string `yaml:"primary-region-id"`
+	// 首选可用区 ID，如 cn-shenzhen-f
+	PrimaryZoneId string `yaml:"primary-zone-id"`
 	// 用于部署的云助手指令 ID，格式 c-xxxxx
 	DeployCommandId string `yaml:"deploy-command-id"`
 	// 当前使用的实例相关配置
 	Using AliyunUsingConf `yaml:"using"`
+	// 数据盘 ID
+	DatadiskId string `yaml:"datadisk-id"`
 }
 
 var AliyunConfig *AliyunConf

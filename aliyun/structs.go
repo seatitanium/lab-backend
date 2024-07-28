@@ -43,6 +43,7 @@ type InstanceDescriptionRetrieved struct {
 type InstanceDescriptionLocal struct {
 	InstanceId   string `json:"instance_id"`
 	RegionId     string `json:"region_id"`
+	ZoneId       string `json:"zone_id"`
 	InstanceType string `json:"instance_type"`
 }
 
