@@ -119,6 +119,7 @@ func (r *Router) Run() {
 	serverGroup.GET("/board/playtime", wrapper(server.HandleBoardPlaytime))
 	serverGroup.GET("/terms", wrapper(server.HandleTerms))
 	serverGroup.GET("/involved-players", wrapper(server.HandleInvolvedPlayers))
+	serverGroup.GET("/current-term-set", wrapper(server.HandleTermSet))
 
 	err := r.Router.Run(fmt.Sprintf(":%d", r.Port))
 	utils.MustPanic(err)
