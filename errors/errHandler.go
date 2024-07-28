@@ -93,6 +93,10 @@ func ServerError(err error) *CustomErr {
 	return newCustomError(ErrTypeServer, http.StatusInternalServerError, RespErrCodeServerErr, err.Error())
 }
 
+func Offline() *CustomErr {
+	return newCustomError(ErrTypeMinecraft, http.StatusFailedDependency, RespErrCodeOffline, RespErrMsgOffline)
+}
+
 func AliyunError(err error) *CustomErr {
 	return newCustomError(ErrTypeAliyun, http.StatusInternalServerError, RespErrCodeAliyunErr, err.Error())
 }

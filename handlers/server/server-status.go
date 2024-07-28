@@ -46,6 +46,10 @@ func HandleServerStatus(ctx *gin.Context) *errors.CustomErr {
 
 	resp, err := mcutil.Status(mcCtx, ip, uint16(portInt))
 
+	if resp == nil {
+		return errors.Offline()
+	}
+
 	handlers.RespSuccess(ctx, resp)
 
 	return nil

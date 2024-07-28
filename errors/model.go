@@ -6,6 +6,7 @@ const (
 	ErrTypeUser
 	ErrTypeDb
 	ErrTypeAliyun
+	ErrTypeMinecraft
 )
 
 const (
@@ -58,4 +59,9 @@ const (
 
 	RespErrCodeOperationNotApplied = 1304
 	RespErrMsgOperationNotApplied  = "Operation Not Applied"
+)
+
+const (
+	RespErrCodeOffline = 1401
+	RespErrMsgOffline  = "Server Offline"
 )
