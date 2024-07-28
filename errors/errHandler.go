@@ -94,7 +94,7 @@ func ServerError(err error) *CustomErr {
 }
 
 func Offline() *CustomErr {
-	return newCustomError(ErrTypeMinecraft, http.StatusFailedDependency, RespErrCodeOffline, RespErrMsgOffline)
+	return newCustomError(ErrTypeMinecraft, http.StatusOK, RespErrCodeOffline, RespErrMsgOffline)
 }
 
 func AliyunError(err error) *CustomErr {
