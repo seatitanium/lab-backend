@@ -9,7 +9,7 @@ import (
 )
 
 func GetLoginRecordsByName(playername string, tag string, offset int, limit int) ([]LoginRecord, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var loginRecord []LoginRecord
 
 	result := conn.Where(&LoginRecord{Player: playername, Tag: tag}).Order("created_at desc").Offset(offset).Limit(limit).Find(&loginRecord)
@@ -21,7 +21,7 @@ func GetLoginRecordsByName(playername string, tag string, offset int, limit int)
 }
 
 func GetPlaytimeRecord(playername string, tag string) (*PlaytimeRecord, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var playtimeRecord PlaytimeRecord
 
 	if tag == "" {
@@ -37,7 +37,7 @@ func GetPlaytimeRecord(playername string, tag string) (*PlaytimeRecord, *errors.
 }
 
 func GetLoginRecordCount(playername string, tag string) (int64, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var count int64
 	var loginRecord []LoginRecord
 
@@ -55,7 +55,7 @@ func GetLoginRecordCount(playername string, tag string) (int64, *errors.CustomEr
 }
 
 func GetOnlineHistory(startTime time.Time, endTime time.Time) ([]SnapshotOnlinePlayers, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var snapshots = make([]SnapshotOnlinePlayers, 0)
 
 	result := conn.Where("created_at BETWEEN ? AND ?", startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05")).Find(&snapshots)
@@ -68,7 +68,7 @@ func GetOnlineHistory(startTime time.Time, endTime time.Time) ([]SnapshotOnlineP
 
 // 返回最新且 Count 最大的那个 SnapshotOnlinePlayers 记录值
 func GetPeakOnlineHistory() (*SnapshotOnlinePlayers, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var snapshots = make([]SnapshotOnlinePlayers, 0)
 
 	result := conn.Find(&snapshots)
@@ -89,7 +89,7 @@ func GetPeakOnlineHistory() (*SnapshotOnlinePlayers, *errors.CustomErr) {
 }
 
 func GetLoginHistory(startTime time.Time, endTime time.Time) ([]LoginRecord, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var loginRecord = make([]LoginRecord, 0)
 
 	result := conn.Where("created_at BETWEEN ? AND ?", startTime.Format("2006-01-02 15:04:05"), endTime.Format("2006-01-02 15:04:05")).Find(&loginRecord)
@@ -101,7 +101,7 @@ func GetLoginHistory(startTime time.Time, endTime time.Time) ([]LoginRecord, *er
 }
 
 func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var loginRecord []LoginRecord
 
 	if tag == "" {
@@ -145,7 +145,7 @@ func GetLoginRecordBoard(tag string, limit ...int) ([]LoginRecordBoard, *errors.
 }
 
 func GetPlaytimeBoard(tag string, limit ...int) ([]PlaytimeBoard, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var playtimeRecord []PlaytimeRecord
 
 	if tag == "" {
@@ -186,7 +186,7 @@ func GetPlaytimeBoard(tag string, limit ...int) ([]PlaytimeBoard, *errors.Custom
 }
 
 func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 
 	var loginRecords []LoginRecord
 	var count int64
@@ -212,7 +212,7 @@ func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
 }
 
 func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var loginRecord LoginRecord
 
 	var query *LoginRecord
@@ -236,7 +236,7 @@ func GetFirstLoginRecord(mcid string, tag string) (*LoginRecord, *errors.CustomE
 }
 
 func GetTermPlayers(tag string) ([]ServerPlayer, *errors.CustomErr) {
-	conn := GetStatsDBConn()
+	conn := GetServerDBConn()
 	var playtimeRecord []PlaytimeRecord
 
 	result := conn.Where(&PlaytimeRecord{Tag: tag}).Find(&playtimeRecord)

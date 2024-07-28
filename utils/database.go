@@ -12,7 +12,7 @@ type Database struct {
 }
 
 var DB *Database
-var StatsDB *Database
+var ServerDB *Database
 
 func Load(dsn string) (error, *gorm.DB) {
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -35,8 +35,8 @@ func GetDBConn() *gorm.DB {
 	return DB.Conn
 }
 
-func GetStatsDBConn() *gorm.DB {
-	return StatsDB.Conn
+func GetServerDBConn() *gorm.DB {
+	return ServerDB.Conn
 }
 
 func InitDB() error {

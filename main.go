@@ -34,7 +34,7 @@ func main() {
 			aliyun.LoadAliyunConfig(cli.FlagAliyunConfigVar)
 
 			var dbConf = utils.GlobalConfig.Database
-			var statsDbConf = utils.GlobalConfig.StatsDatabase
+			var statsDbConf = utils.GlobalConfig.ServerDatabase
 			var err error
 
 			if utils.AnyMatch("", dbConf.Host, dbConf.User, dbConf.Password, dbConf.DBName) || dbConf.Port == 0 || utils.AnyMatch("", statsDbConf.Host, statsDbConf.User, statsDbConf.Password, statsDbConf.DBName) || statsDbConf.Port == 0 {
@@ -42,14 +42,14 @@ func main() {
 			}
 
 			utils.DB = &utils.Database{}
-			utils.StatsDB = &utils.Database{}
+			utils.ServerDB = &utils.Database{}
 
 			err, utils.DB.Conn = utils.Load(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 				dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.DBName))
 			if err != nil {
 				return err
 			}
-			err, utils.StatsDB.Conn = utils.Load(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			err, utils.ServerDB.Conn = utils.Load(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 				statsDbConf.User, statsDbConf.Password, statsDbConf.Host, statsDbConf.Port, statsDbConf.DBName))
 			if err != nil {
 				return err
