@@ -1,6 +1,11 @@
 package utils
 
-import "time"
+import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"time"
+)
 
 func AnyMatch(match string, strs ...string) bool {
 	for _, str := range strs {
@@ -32,4 +37,21 @@ func ParseTimeRFC3339(str string) (time.Time, error) {
 
 func ParseTimeRFC3339Milli(str string) (time.Time, error) {
 	return ParseTime("2006-01-02T15:04:05.999Z07:00", str)
+}
+
+func GetJsonFromData(dataName string, data interface{}) error {
+	absPath, _ := filepath.Abs("data/" + dataName)
+	bytes, readErr := os.ReadFile(absPath)
+
+	if readErr != nil {
+		return readErr
+	}
+
+	err := json.Unmarshal(bytes, data)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

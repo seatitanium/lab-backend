@@ -1,9 +1,6 @@
 package utils
 
 import (
-	"encoding/json"
-	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -11,15 +8,7 @@ func GetHistoryTermPlayers() (map[string][]ServerPlayer, error) {
 
 	var data map[string][]ServerPlayer
 
-	// Note: should be relative to project root
-	absPath, _ := filepath.Abs("data/history-term-players.json")
-	bytes, readErr := os.ReadFile(absPath)
-
-	if readErr != nil {
-		return nil, readErr
-	}
-
-	err := json.Unmarshal(bytes, &data)
+	err := GetJsonFromData("history-term-players.json", &data)
 
 	if err != nil {
 		return nil, err
