@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/mcstatus-io/mcutil/v3"
+	"github.com/mcstatus-io/mcutil/v3/options"
 	"seatimc/backend/errors"
 	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
@@ -44,7 +45,13 @@ func HandleServerStatus(ctx *gin.Context) *errors.CustomErr {
 		return errors.ServerError(err)
 	}
 
-	resp, err := mcutil.Status(mcCtx, ip, uint16(portInt))
+	resp, err := mcutil.Status(mcCtx, ip, uint16(portInt), options.JavaStatus{
+		Timeout: 5 * time.Second,
+	})
+
+	if err != nil {
+		return errors.ServerError(err)
+	}
 
 	if resp == nil {
 		return errors.Offline()
