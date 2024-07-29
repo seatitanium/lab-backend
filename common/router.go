@@ -49,6 +49,22 @@ func handleVersion(ctx *gin.Context) {
 	ctx.String(200, "tisea @ "+utils.GlobalConfig.Version)
 }
 
+func HandleDonators(ctx *gin.Context) *errors.CustomErr {
+	var donators []struct {
+		Name   string  `json:"name"`
+		Amount float32 `json:"amount"`
+	}
+	err := utils.GetJsonFromData("donators.json", &donators)
+
+	if err != nil {
+		return errors.ServerError(err)
+	}
+
+	ctx.JSON(200, donators)
+
+	return nil
+}
+
 func handleUnauth(ctx *gin.Context) {
 	handleErr := errors.UnAuth()
 	handleErr.Request = requestInfo(ctx)
@@ -78,6 +94,8 @@ func (r *Router) Run() {
 
 	r.Router.GET("/", handleVersion)
 	r.Router.POST("/", handleVersion)
+
+	r.Router.GET("/donations", wrapper(HandleDonators))
 
 	authGroup := r.Router.Group("/auth")
 	authGroup.POST("register", wrapper(auth.HandleRegister))
