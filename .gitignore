@@ -2,3 +2,7 @@
 config.yml
 aliyun/aconfig.yml
 secret.py
+data/bin
+data/include
+data/lib
+data/pyvenv.cfg
