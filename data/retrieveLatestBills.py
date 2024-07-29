@@ -14,6 +14,8 @@ from dateutil.relativedelta import *
 import json
 from secret import akid, aksecret
 
+product_code="yundisk" # yundisk, oss, ecs
+subscription_type="PayAsYouGo" # PayAsYouGo, Subscription
 
 class Sample:
     def __init__(self):
@@ -83,9 +85,9 @@ class Sample:
                 # query params
                 queries = {}
                 queries['BillingCycle'] = cycle
-                queries['ProductCode'] = 'ecs'
+                queries['ProductCode'] = product_code
                 queries['ProductType'] = None
-                queries['SubscriptionType'] = 'PayAsYouGo'
+                queries['SubscriptionType'] = subscription_type
                 queries['IsHideZeroCharge'] = True
                 queries['PageNum'] = i+1
                 queries['PageSize'] = 300
@@ -101,7 +103,7 @@ class Sample:
                 result.extend(resp["body"]["Data"]["Items"]["Item"])
                 print(f"result length={len(result)}")
 
-        with open("ecs-bills.json", "w") as f:
+        with open(product_code + "-bills.json", "w") as f:
             json.dump(result, f)
 
     @staticmethod
