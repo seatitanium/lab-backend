@@ -13,13 +13,15 @@ import (
 //
 // 参数：
 //   - interval - 检测时间间隔
-//   - threshold - 删除阈值。当检测到停机时间超过该阈值时，执行强制删除。警告：阈值不宜过低（一分钟以上即可），否则可能导致实例在不恰当的时机被删除。
+//   - instanceThreshold - 实例的删除阈值。当检测到停机时间超过该阈值时，执行强制删除。警告：阈值不宜过低（一分钟以上即可），否则可能导致实例在不恰当的时机被删除。
+//   - serverThreshold - 服务器的删除阈值。当检测到实例开启但服务器不在线的时间超过该阈值时，执行强制删除。
 //   - end - 控制监控器的结束状态
-func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, end <-chan bool) {
-	var stoppedDuration time.Duration
+func RunInstanceStatusMonitor(interval time.Duration, instanceThreshold time.Duration, serverThreshold time.Duration, end <-chan bool) {
+	var instanceStoppedDuration time.Duration
+	var serverStoppedDuration time.Duration
 
 	log.Printf("Instance Status Monitor\n")
-	log.Printf("Running with argument: interval=%v, threshold=%v\n", interval, threshold)
+	log.Printf("Running with argument: interval=%v, instanceThreshold=%v, serverThreshold=%v\n", interval, instanceThreshold, serverThreshold)
 
 	for {
 		var customErr *errors.CustomErr
@@ -78,25 +80,37 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 
 			if serverStatus == nil {
 				// The instance is running for nothing. The server is not online.
-				stoppedDuration += interval
+				serverStoppedDuration += interval
 				log.Printf("Retrieved status \"Running\" but the server status is nil, adding stopped duration by %v\n", interval)
 			} else {
 				// The instance is running and the server is online.
-				stoppedDuration = 0
+				serverStoppedDuration = 0
 				log.Printf("Retrieved status \"Running\" and the server latency is %v, setting stopped duration to 0s.", serverStatus.Latency)
 			}
 		} else if retrieved.Status == "Stopped" {
 			// The instance is stopped.
-			stoppedDuration += interval
+			instanceStoppedDuration += interval
 			log.Printf("Retrieved status \"Stopped\", adding stopped duration by %v.\n", interval)
 		} else {
 			// For any unhandled status, set duration to 0.
-			stoppedDuration = 0
+			instanceStoppedDuration = 0
+			serverStoppedDuration = 0
 			log.Printf("Retrieved unhandled status \"%v\", setting stopped duration to 0s.\n", retrieved.Status)
 		}
 
-		if stoppedDuration >= threshold {
-			log.Printf("Reaching the threshold of inactivity (%v). Forcefully deleting instance %v.\n", threshold, activeInstance.InstanceId)
+		if instanceStoppedDuration >= instanceThreshold || serverStoppedDuration >= serverThreshold {
+			which := ""
+			var whichThreshold time.Duration
+
+			if instanceStoppedDuration >= instanceThreshold {
+				which = "instance threshold"
+				whichThreshold = instanceThreshold
+			} else {
+				which = "server thershold"
+				whichThreshold = serverThreshold
+			}
+
+			log.Printf("Reaching the %v of inactivity (%v). Forcefully deleting instance %v.\n", which, whichThreshold, activeInstance.InstanceId)
 
 			customErr = ecs.DeleteInstance(activeInstance.InstanceId, true)
 			if customErr != nil {
