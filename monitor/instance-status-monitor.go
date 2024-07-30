@@ -18,7 +18,7 @@ import (
 func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, end <-chan bool) {
 	var stoppedDuration time.Duration
 
-	log.Printf("Stopped Instance Monitor\n")
+	log.Printf("Instance Status Monitor\n")
 	log.Printf("Running with argument: interval=%v, threshold=%v\n", interval, threshold)
 
 	for {
@@ -58,6 +58,8 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 			goto endOfLoop
 		}
 
+		log.Println("Retrieved instance status " + retrieved.Status + ". Updating.")
+
 		customErr = utils.SetInstanceStatus(activeInstance.InstanceId, retrieved.Status)
 
 		if customErr != nil {
@@ -65,12 +67,32 @@ func RunInstanceStatusMonitor(interval time.Duration, threshold time.Duration, e
 			goto endOfLoop
 		}
 
-		if retrieved.Status == "Stopped" {
+		if retrieved.Status == "Running" {
+			// The instance is running. Getting the server status now.
+			serverStatus, err := utils.GetServerStatus(activeInstance.Ip, 25565)
+
+			if err != nil {
+				log.Println("Critical. The instance is running but the server status cannot be retrieved: " + err.Error())
+				goto endOfLoop
+			}
+
+			if serverStatus == nil {
+				// The instance is running for nothing. The server is not online.
+				stoppedDuration += interval
+				log.Printf("Retrieved status \"Running\" but the server status is nil, adding stopped duration by %v\n", interval)
+			} else {
+				// The instance is running and the server is online.
+				stoppedDuration = 0
+				log.Printf("Retrieved status \"Running\" and the server latency is %v, setting stopped duration to 0s.", serverStatus.Latency)
+			}
+		} else if retrieved.Status == "Stopped" {
+			// The instance is stopped.
 			stoppedDuration += interval
 			log.Printf("Retrieved status \"Stopped\", adding stopped duration by %v.\n", interval)
 		} else {
+			// For any unhandled status, set duration to 0.
 			stoppedDuration = 0
-			log.Printf("Retrieved status \"%v\", setting stopped duration to 0s.\n", retrieved.Status)
+			log.Printf("Retrieved unhandled status \"%v\", setting stopped duration to 0s.\n", retrieved.Status)
 		}
 
 		if stoppedDuration >= threshold {
