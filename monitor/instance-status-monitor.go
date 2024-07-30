@@ -74,11 +74,9 @@ func RunInstanceStatusMonitor(interval time.Duration, instanceThreshold time.Dur
 			serverStatus, err := utils.GetServerStatus(activeInstance.Ip, 25565)
 
 			if err != nil {
-				log.Println("Critical. The instance is running but the server status cannot be retrieved: " + err.Error())
-				goto endOfLoop
-			}
-
-			if serverStatus == nil {
+				serverStoppedDuration += interval
+				log.Printf("Could not retrieve server status, adding stopped duration by %v\n", interval)
+			} else if serverStatus == nil {
 				// The instance is running for nothing. The server is not online.
 				serverStoppedDuration += interval
 				log.Printf("Retrieved status \"Running\" but the server status is nil, adding stopped duration by %v\n", interval)
