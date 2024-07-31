@@ -48,7 +48,7 @@ func handleNotFound(ctx *gin.Context) {
 }
 
 func handleVersion(ctx *gin.Context) {
-	ctx.String(200, "tisea @ "+utils.GlobalConfig.Version+"\nbuild"+LastBuiltAt)
+	ctx.String(200, "🌊tisea @ "+utils.GlobalConfig.Version+"\nlast built at "+LastBuiltAt)
 }
 
 func HandleDonators(ctx *gin.Context) *errors.CustomErr {
