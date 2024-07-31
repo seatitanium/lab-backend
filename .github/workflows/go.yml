@@ -1,0 +1,39 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Build
+      run: chmod +x ./build.sh && ./build.sh
+
+    - name: Setup SSH private key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.PRIVKEY }}
+
+    - name: Configure git
+      run: git config --global user.name action
+      
+    - name: Clone production
+      run: git clone git@github.com:seatitanium/lab-backend-production.git
+
+    - name: Update built file
+      run: mv lab lab-backend-production && cd lab-backend-production && git add * && git commit -m 'update binary' && git push origin main
