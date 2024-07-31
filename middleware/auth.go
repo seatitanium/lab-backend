@@ -11,7 +11,7 @@ func TokenCheck(ctx *gin.Context) {
 		return
 	}
 
-	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Token"))
+	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Authorization"))
 
 	if checkErr != nil {
 		handlers.RespTokenError(ctx, checkErr.Code, checkErr.Msg)
