@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+var LastBuiltAt string
+
 type Router struct {
 	Port   int
 	Router *gin.Engine
@@ -46,7 +48,7 @@ func handleNotFound(ctx *gin.Context) {
 }
 
 func handleVersion(ctx *gin.Context) {
-	ctx.String(200, "tisea @ "+utils.GlobalConfig.Version)
+	ctx.String(200, "tisea @ "+utils.GlobalConfig.Version+"\nbuild"+LastBuiltAt)
 }
 
 func HandleDonators(ctx *gin.Context) *errors.CustomErr {
@@ -73,6 +75,7 @@ func handleUnauth(ctx *gin.Context) {
 
 func (r *Router) Init() {
 	log.Println("Using Gin " + gin.Version)
+	log.Println("Built at " + LastBuiltAt)
 
 	r.Router = gin.Default()
 

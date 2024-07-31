@@ -1,1 +1,1 @@
-env GOOS=linux GOARCH=amd64 go build -o lab
+env GOOS=linux GOARCH=amd64 go build -o lab -ldflags='-X LastBuiltAt="date +%Y-%m-%d_%H:%M:%S"'
