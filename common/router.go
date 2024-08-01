@@ -91,6 +91,7 @@ func (r *Router) Init() {
 	r.Router.Use(middleware.AuthorizationCheck)
 	r.Router.Use(middleware.ServerCheck)
 	r.Router.Use(middleware.AdminCheck)
+	r.Router.Use(middleware.SelfCheck)
 }
 
 func (r *Router) Run() {

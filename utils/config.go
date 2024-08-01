@@ -31,6 +31,7 @@ type Config struct {
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
 	AdminOnlyEndpoints     []string       `yaml:"admin-only-endpoints"`
+	SelfOnlyEndpoints      []string       `yaml:"self-only-endpoints"`
 	ServerSecret           string         `yaml:"server-secret"`
 	ActiveTerm             int            `yaml:"active-term"`
 	Administrators         []string       `yaml:"administrators"`
