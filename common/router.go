@@ -88,8 +88,9 @@ func (r *Router) Init() {
 		AllowCredentials: true,
 		MaxAge:           time.Duration(utils.GlobalConfig.Token.Expiration) * time.Minute,
 	}))
-	r.Router.Use(middleware.TokenCheck)
+	r.Router.Use(middleware.AuthorizationCheck)
 	r.Router.Use(middleware.ServerCheck)
+	r.Router.Use(middleware.AdminCheck)
 }
 
 func (r *Router) Run() {

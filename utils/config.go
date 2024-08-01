@@ -30,8 +30,10 @@ type Config struct {
 	EnableConfigWhitelist  bool           `yaml:"enable-config-whitelist"`
 	NeedAuthorizeEndpoints []string       `yaml:"need-authorize-endpoints"`
 	ServerOnlyEndpoints    []string       `yaml:"server-only-endpoints"`
+	AdminOnlyEndpoints     []string       `yaml:"admin-only-endpoints"`
 	ServerSecret           string         `yaml:"server-secret"`
 	ActiveTerm             int            `yaml:"active-term"`
+	Administrators         []string       `yaml:"administrators"`
 }
 
 var GlobalConfig *Config

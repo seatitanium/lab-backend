@@ -28,6 +28,18 @@ func IsServerOnly(uri string) bool {
 	return false
 }
 
+func IsAdminOnly(uri string) bool {
+	needs := GlobalConfig.AdminOnlyEndpoints
+
+	for i := 0; i < len(needs); i++ {
+		if strings.HasPrefix(uri, needs[i]) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func IsTrue(boolean string) bool {
 	return strings.EqualFold(boolean, "true")
 }

@@ -6,7 +6,7 @@ import (
 	"seatimc/backend/utils"
 )
 
-func TokenCheck(ctx *gin.Context) {
+func AuthorizationCheck(ctx *gin.Context) {
 	if !utils.NeedAuthorize(ctx.Request.RequestURI) {
 		return
 	}
