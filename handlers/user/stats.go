@@ -17,21 +17,13 @@ func HandleUserPlaytime(ctx *gin.Context) *errors.CustomErr {
 		return errors.TargetNotExist()
 	}
 
-	var targetName string
+	target, customErr := utils.GetPlayernameByDoubleProvision(username, playername)
 
-	if playername == "" {
-		user, customErr := utils.GetUserByUsername(username)
-
-		if customErr != nil {
-			return customErr
-		}
-
-		targetName = user.MCID
-	} else {
-		targetName = playername
+	if customErr != nil {
+		return customErr
 	}
 
-	playtimeRecord, customErr := utils.GetPlaytimeRecord(targetName, tag)
+	playtimeRecord, customErr := utils.GetPlaytimeRecord(target, tag)
 
 	if customErr != nil {
 		return customErr
@@ -61,21 +53,13 @@ func HandleUserLoginRecords(ctx *gin.Context) *errors.CustomErr {
 		return errors.TargetNotExist()
 	}
 
-	var targetName string
+	target, customErr := utils.GetPlayernameByDoubleProvision(username, playername)
 
-	if playername == "" {
-		user, customErr := utils.GetUserByUsername(username)
-
-		if customErr != nil {
-			return customErr
-		}
-
-		targetName = user.MCID
-	} else {
-		targetName = playername
+	if customErr != nil {
+		return customErr
 	}
 
-	loginRecords, customErr := utils.GetLoginRecordsByName(targetName, tag, offset, limit)
+	loginRecords, customErr := utils.GetLoginRecordsByName(target, tag, offset, limit)
 
 	if customErr != nil {
 		return customErr
@@ -95,21 +79,13 @@ func HandleUserLoginRecordTotalCount(ctx *gin.Context) *errors.CustomErr {
 		return errors.TargetNotExist()
 	}
 
-	var targetName string
+	target, customErr := utils.GetPlayernameByDoubleProvision(username, playername)
 
-	if playername == "" {
-		user, customErr := utils.GetUserByUsername(username)
-
-		if customErr != nil {
-			return customErr
-		}
-
-		targetName = user.MCID
-	} else {
-		targetName = playername
+	if customErr != nil {
+		return customErr
 	}
 
-	loginRecords, customErr := utils.GetLoginRecordCount(targetName, tag)
+	loginRecords, customErr := utils.GetLoginRecordCount(target, tag)
 
 	if customErr != nil {
 		return customErr
