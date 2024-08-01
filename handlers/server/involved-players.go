@@ -29,7 +29,7 @@ func handleGetAllInvolvedPlayers(ctx *gin.Context) *errors.CustomErr {
 		dbPlayers, customErr := utils.GetTermPlayers("st" + strconv.Itoa(i))
 
 		if customErr != nil {
-			return customErr
+			continue
 		}
 
 		players = append(players, dbPlayers...)
