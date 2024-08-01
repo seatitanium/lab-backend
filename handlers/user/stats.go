@@ -11,7 +11,7 @@ import (
 func HandleUserPlaytime(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.DefaultQuery("username", "")
 	playername := ctx.DefaultQuery("playername", "")
-	tag := ctx.DefaultQuery("tag", "")
+	tag := ctx.DefaultQuery("tag", utils.GetActiveTerm().Tag)
 
 	if username == "" && playername == "" {
 		return errors.TargetNotExist()
@@ -45,7 +45,7 @@ func HandleUserPlaytime(ctx *gin.Context) *errors.CustomErr {
 func HandleUserLoginRecords(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.DefaultQuery("username", "")
 	playername := ctx.DefaultQuery("playername", "")
-	tag := ctx.DefaultQuery("tag", "")
+	tag := ctx.DefaultQuery("tag", utils.GetActiveTerm().Tag)
 
 	offset, err := strconv.Atoi(ctx.DefaultQuery("offset", "0"))
 	if err != nil {
@@ -89,7 +89,7 @@ func HandleUserLoginRecords(ctx *gin.Context) *errors.CustomErr {
 func HandleUserLoginRecordTotalCount(ctx *gin.Context) *errors.CustomErr {
 	username := ctx.DefaultQuery("username", "")
 	playername := ctx.DefaultQuery("playername", "")
-	tag := ctx.DefaultQuery("tag", "")
+	tag := ctx.DefaultQuery("tag", utils.GetActiveTerm().Tag)
 
 	if username == "" && playername == "" {
 		return errors.TargetNotExist()
