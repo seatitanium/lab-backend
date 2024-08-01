@@ -206,13 +206,21 @@ func GetTermsInvolved(mcid string) ([]Term, *errors.CustomErr) {
 	var involved []Term
 
 	for _, t := range GetTerms() {
+
+		if HistoryTermsContainsPlayer(t.Tag, mcid) {
+			t.StartAt += "T00:00:00Z"
+			t.EndAt += "T00:00:00Z"
+			involved = append(involved, t)
+			continue
+		}
+
 		result := conn.Where(&LoginRecord{Player: mcid, Tag: t.Tag}).Find(&loginRecords).Count(&count)
 
 		if result.Error != nil {
-			return nil, errors.DbError(result.Error)
+			continue
 		}
 
-		if count > 0 || HistoryTermsContainsPlayer(t.Tag, mcid) {
+		if count > 0 {
 			t.StartAt += "T00:00:00Z"
 			if t.EndAt != "" {
 				t.EndAt += "T00:00:00Z"
