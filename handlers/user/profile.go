@@ -5,6 +5,7 @@ import (
 	"seatimc/backend/errors"
 	"seatimc/backend/handlers"
 	"seatimc/backend/utils"
+	"slices"
 )
 
 func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
@@ -29,6 +30,7 @@ func HandleUserProfile(ctx *gin.Context) *errors.CustomErr {
 		CreatedAt:    user.CreatedAt,
 		UpdatedAt:    user.UpdatedAt,
 		MCIDVerified: user.MCIDVerified,
+		Admin:        slices.Contains(utils.GlobalConfig.Administrators, user.Username),
 	})
 
 	return nil
