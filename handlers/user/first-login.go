@@ -8,16 +8,23 @@ import (
 )
 
 func HandleFirstLogin(ctx *gin.Context) *errors.CustomErr {
-	mcid := ctx.DefaultQuery("playername", "")
+	playername := ctx.DefaultQuery("playername", "")
+	username := ctx.DefaultQuery("username", "")
 	tag := ctx.DefaultQuery("tag", "")
 
-	if mcid == "" {
+	if playername == "" && username == "" {
 		return errors.WrongParam()
+	}
+
+	target, customErr := utils.GetPlayernameByDoubleProvision(username, playername)
+
+	if customErr != nil {
+		return customErr
 	}
 
 	// Search in history
 	if tag == "" {
-		historyLogin := utils.GetHistoryLoginRecord(mcid)
+		historyLogin := utils.GetHistoryLoginRecord(target)
 
 		if historyLogin != nil {
 			handlers.RespSuccess(ctx, historyLogin)
@@ -25,7 +32,7 @@ func HandleFirstLogin(ctx *gin.Context) *errors.CustomErr {
 		}
 	}
 
-	first, customErr := utils.GetFirstLoginRecord(mcid, tag)
+	first, customErr := utils.GetFirstLoginRecord(target, tag)
 
 	if customErr != nil {
 		return customErr

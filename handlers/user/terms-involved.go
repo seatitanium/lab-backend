@@ -8,13 +8,20 @@ import (
 )
 
 func HandleTermsInvolved(ctx *gin.Context) *errors.CustomErr {
-	mcid := ctx.DefaultQuery("playername", "")
+	playername := ctx.DefaultQuery("playername", "")
+	username := ctx.DefaultQuery("username", "")
 
-	if mcid == "" {
+	if playername == "" && username == "" {
 		return errors.WrongParam()
 	}
 
-	involved, customErr := utils.GetTermsInvolved(mcid)
+	target, customErr := utils.GetPlayernameByDoubleProvision(username, playername)
+
+	if customErr != nil {
+		return customErr
+	}
+
+	involved, customErr := utils.GetTermsInvolved(target)
 
 	if customErr != nil {
 		return customErr
