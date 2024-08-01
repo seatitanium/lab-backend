@@ -30,10 +30,10 @@ jobs:
         ssh-private-key: ${{ secrets.PRIVKEY }}
 
     - name: Configure git
-      run: git config --global user.name action
+      run: git config --global user.name action && git config --global user.email i@seati.cc
       
     - name: Clone production
       run: git clone git@github.com:seatitanium/lab-backend-production.git
 
     - name: Update built file
-      run: mv lab lab-backend-production && cd lab-backend-production && git add * && git commit -m 'update binary' && git push origin main
+      run: cp -r data lab-backend-production && mv lab lab-backend-production && cd lab-backend-production && git add * && git commit -m 'update binary & data' && git push origin main
