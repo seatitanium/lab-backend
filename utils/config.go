@@ -20,7 +20,6 @@ type ConfigToken struct {
 }
 
 type Config struct {
-	Domain                 string         `yaml:"domain"`
 	AllowedOrigins         []string       `yaml:"allowed-origins"`
 	Database               ConfigDatabase `yaml:"database"`
 	ServerDatabase         ConfigDatabase `yaml:"server-database"`
