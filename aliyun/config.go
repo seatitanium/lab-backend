@@ -13,6 +13,8 @@ type InstanceDiskConf struct {
 	DiskName string `yaml:"disk-name"`
 	// 硬盘大小
 	Size int32 `yaml:"size"`
+	// 性能等级
+	PerformanceLevel string `yaml:"performance-level"`
 }
 
 type AliyunUsingConf struct {
@@ -38,8 +40,10 @@ type AliyunUsingConf struct {
 	InternetMaxBandwidthOut int32 `yaml:"internet-max-bandwidth-out"`
 	// 实例密码
 	Password string `yaml:"password"`
-	// 硬盘相关配置
-	Disk InstanceDiskConf `yaml:"disk"`
+	// 系统盘相关配置
+	SystemDisk InstanceDiskConf `yaml:"system-disk"`
+	// 数据盘相关配置
+	DataDisk InstanceDiskConf `yaml:"data-disk"`
 	// 实例付费方式
 	InstanceChargeType string `yaml:"instance-charge-type"`
 	// 实例抢占策略
@@ -55,8 +59,6 @@ type AliyunConf struct {
 	AccessKeySecret string `yaml:"access-key-secret"`
 	// 首选地域 ID，如 cn-shenzhen
 	PrimaryRegionId string `yaml:"primary-region-id"`
-	// 首选可用区 ID，如 cn-shenzhen-f
-	PrimaryZoneId string `yaml:"primary-zone-id"`
 	// 用于部署的云助手指令 ID，格式 c-xxxxx
 	DeployCommandId string `yaml:"deploy-command-id"`
 	// 当前使用的实例相关配置
