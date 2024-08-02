@@ -60,14 +60,6 @@ func RunDeployMonitor(interval time.Duration, end <-chan bool) {
 		}
 
 		if retrieved.Status == "Stopped" {
-			log.Println("Attaching data disk.")
-			customErr = ecs.AttachDisk(activeInstance.InstanceId, aliyun.AliyunConfig.DatadiskId)
-
-			if customErr != nil {
-				log.Println("Critical. Failed AttachDisk: " + customErr.Handle().Error())
-				goto endOfLoop
-			}
-
 			log.Println("Starting instance.")
 			customErr = ecs.StartInstance(activeInstance.InstanceId)
 

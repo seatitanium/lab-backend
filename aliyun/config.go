@@ -63,8 +63,6 @@ type AliyunConf struct {
 	DeployCommandId string `yaml:"deploy-command-id"`
 	// 当前使用的实例相关配置
 	Using AliyunUsingConf `yaml:"using"`
-	// 数据盘 ID
-	DatadiskId string `yaml:"datadisk-id"`
 }
 
 var AliyunConfig *AliyunConf
