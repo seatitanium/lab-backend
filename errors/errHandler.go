@@ -121,7 +121,7 @@ func Forbidden() *CustomErr {
 	return newCustomError(ErrTypeHttp, http.StatusForbidden, RespErrCodeForbidden, RespErrMsgForbidden)
 }
 
-func OperateNotApplied() *CustomErr {
+func OperationNotApplied() *CustomErr {
 	return newCustomError(ErrTypeUser, http.StatusOK, RespErrCodeOperationNotApplied, RespErrMsgOperationNotApplied)
 }
 
