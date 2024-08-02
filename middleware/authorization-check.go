@@ -11,6 +11,10 @@ func AuthorizationCheck(ctx *gin.Context) {
 		return
 	}
 
+	if utils.VerifyServerSecretCtx(ctx) {
+		return
+	}
+
 	checkErr := utils.CheckJWT(ctx.Request.Header.Get("Authorization"))
 
 	if checkErr != nil {

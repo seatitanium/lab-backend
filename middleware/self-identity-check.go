@@ -11,6 +11,10 @@ func SelfCheck(ctx *gin.Context) {
 		return
 	}
 
+	if utils.VerifyServerSecretCtx(ctx) {
+		return
+	}
+
 	parsed, parseErr := utils.GetPayloadFromToken(ctx.Request.Header.Get("Authorization"))
 
 	if parseErr != nil {

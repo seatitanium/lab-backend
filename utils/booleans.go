@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"github.com/gin-gonic/gin"
+	"strings"
+)
 
 // 根据 URI 前缀判断该 URI 请求是否需要验证
 func NeedAuthorize(uri string) bool {
@@ -56,4 +59,13 @@ func IsSelfOnly(uri string) bool {
 
 func IsTrue(boolean string) bool {
 	return strings.EqualFold(boolean, "true")
+}
+
+func VerifyServerSecret(secret string) bool {
+	return GlobalConfig.ServerSecret == secret
+}
+
+func VerifyServerSecretCtx(ctx *gin.Context) bool {
+	// Header naming conventions from https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions
+	return VerifyServerSecret(ctx.Request.Header.Get("Seati-Server-Secret"))
 }

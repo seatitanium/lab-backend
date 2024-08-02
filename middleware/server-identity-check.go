@@ -11,8 +11,7 @@ func ServerCheck(ctx *gin.Context) {
 		return
 	}
 
-	// Header naming conventions considered from https://stackoverflow.com/questions/3561381/custom-http-headers-naming-conventions
-	if ctx.Request.Header.Get("Seati-Server-Secret") != utils.GlobalConfig.ServerSecret {
+	if !utils.VerifyServerSecretCtx(ctx) {
 		handlers.RespForbidden(ctx)
 		ctx.Abort()
 		return
