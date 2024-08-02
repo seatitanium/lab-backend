@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"seatimc/backend/aliyun"
 	"seatimc/backend/ecs"
 	"seatimc/backend/errors"
@@ -16,16 +17,29 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 	}
 
 	if hasActive == true {
-		return errors.OperateNotApplied()
+		return errors.OperationNotApplied()
 	}
 
-	conf := aliyun.AliyunConfig
-	created, customErr := ecs.CreateInstance(conf)
+	zoneId, customErr := ecs.GetAvailableZoneId()
+
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, conf.PrimaryZoneId, conf.Using.InstanceType)
+	if zoneId == "" {
+		log.Println("Warn: target instance type is not available across the region.")
+		return errors.OperationNotApplied()
+	}
+
+	conf := aliyun.AliyunConfig
+
+	created, customErr := ecs.CreateInstance(zoneId, conf)
+
+	if customErr != nil {
+		return customErr
+	}
+
+	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, zoneId, conf.Using.InstanceType)
 	if customErr != nil {
 		return customErr
 	}
