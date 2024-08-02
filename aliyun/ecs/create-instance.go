@@ -8,16 +8,16 @@ import (
 )
 
 // 按照 aconfig.yml 中的配置创建一个新的实例，并返回成交价格和实例 ID
-func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errors.CustomErr) {
+func CreateInstance(zoneId string, conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errors.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
-	if customErr != nil {
 
+	if customErr != nil {
 		return nil, customErr
 	}
 
 	request := &ecs.CreateInstanceRequest{
 		RegionId:                tea.String(conf.PrimaryRegionId),
-		ZoneId:                  tea.String(conf.PrimaryZoneId),
+		ZoneId:                  tea.String(zoneId),
 		IoOptimized:             tea.String(aliyun.GetIoOptimized(conf.Using.IoOptimized)),
 		SpotDuration:            tea.Int32(conf.Using.SpotDuration),
 		ImageId:                 tea.String(conf.Using.ImageId),
@@ -33,9 +33,19 @@ func CreateInstance(conf *aliyun.AliyunConf) (*aliyun.CreatedInstance, *errors.C
 	}
 
 	request.SystemDisk = &ecs.CreateInstanceRequestSystemDisk{
-		DiskName: tea.String(conf.Using.Disk.DiskName),
-		Category: tea.String(conf.Using.Disk.Category),
-		Size:     tea.Int32(conf.Using.Disk.Size),
+		DiskName:         tea.String(conf.Using.SystemDisk.DiskName),
+		Category:         tea.String(conf.Using.SystemDisk.Category),
+		Size:             tea.Int32(conf.Using.SystemDisk.Size),
+		PerformanceLevel: tea.String(conf.Using.SystemDisk.PerformanceLevel),
+	}
+
+	request.DataDisk = []*ecs.CreateInstanceRequestDataDisk{
+		{
+			DiskName:         tea.String(conf.Using.DataDisk.DiskName),
+			Category:         tea.String(conf.Using.DataDisk.Category),
+			Size:             tea.Int32(conf.Using.DataDisk.Size),
+			PerformanceLevel: tea.String(conf.Using.SystemDisk.PerformanceLevel),
+		},
 	}
 
 	resp, err := client.CreateInstance(request)
