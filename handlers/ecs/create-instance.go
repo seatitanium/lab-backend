@@ -23,6 +23,7 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 	conf := aliyun.AliyunConfig
 
 	zoneId, customErr := ecs.GetAvailableZoneId(conf.Using.InstanceType)
+	targetInstanceType := ""
 
 	if customErr != nil {
 		return customErr
@@ -41,16 +42,20 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 		if zoneId == "" {
 			log.Printf("Warn: alternative instance type [%v] is not available across the region.\n", conf.Using.AltInstanceType)
 			return errors.OperationNotApplied()
+		} else {
+			targetInstanceType = conf.Using.AltInstanceType
 		}
+	} else {
+		targetInstanceType = conf.Using.InstanceType
 	}
 
-	created, customErr := ecs.CreateInstance(zoneId, conf)
+	created, customErr := ecs.CreateInstance(targetInstanceType, zoneId, conf)
 
 	if customErr != nil {
 		return customErr
 	}
 
-	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, zoneId, conf.Using.InstanceType)
+	customErr = utils.SaveNewActiveInstance(created, conf.PrimaryRegionId, zoneId, targetInstanceType)
 	if customErr != nil {
 		return customErr
 	}
