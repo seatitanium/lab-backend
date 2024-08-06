@@ -20,6 +20,8 @@ type InstanceDiskConf struct {
 type AliyunUsingConf struct {
 	// 实例类型，决定配置。如 ecs.g6.large
 	InstanceType string `yaml:"instance-type"`
+	// 备选配置
+	AltInstanceType string `yaml:"alt-instance-type"`
 	// 网络类型
 	NetworkType string `yaml:"network-type"`
 	// 是否为 IO 优化实例

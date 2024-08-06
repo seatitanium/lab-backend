@@ -20,18 +20,29 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 		return errors.OperationNotApplied()
 	}
 
-	zoneId, customErr := ecs.GetAvailableZoneId()
+	conf := aliyun.AliyunConfig
+
+	zoneId, customErr := ecs.GetAvailableZoneId(conf.Using.InstanceType)
 
 	if customErr != nil {
 		return customErr
 	}
 
 	if zoneId == "" {
-		log.Println("Warn: target instance type is not available across the region.")
-		return errors.OperationNotApplied()
-	}
+		log.Printf("Warn: primary instance type [%v] is not available across the region.\n", conf.Using.InstanceType)
 
-	conf := aliyun.AliyunConfig
+		if conf.Using.AltInstanceType != "" {
+			log.Println("Warn: no alternative instance type configured.")
+			return errors.OperationNotApplied()
+		}
+
+		zoneId, customErr = ecs.GetAvailableZoneId(conf.Using.AltInstanceType)
+
+		if zoneId == "" {
+			log.Printf("Warn: alternative instance type [%v] is not available across the region.\n", conf.Using.AltInstanceType)
+			return errors.OperationNotApplied()
+		}
+	}
 
 	created, customErr := ecs.CreateInstance(zoneId, conf)
 

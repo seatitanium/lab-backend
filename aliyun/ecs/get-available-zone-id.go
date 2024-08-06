@@ -7,7 +7,7 @@ import (
 	"seatimc/backend/errors"
 )
 
-func GetAvailableZoneId() (string, *errors.CustomErr) {
+func GetAvailableZoneId(instanceType string) (string, *errors.CustomErr) {
 	client, customErr := aliyun.CreateEcsClient()
 
 	if customErr != nil {
@@ -19,7 +19,7 @@ func GetAvailableZoneId() (string, *errors.CustomErr) {
 		InstanceChargeType:  tea.String(aliyun.AliyunConfig.Using.InstanceChargeType),
 		SpotStrategy:        tea.String(aliyun.AliyunConfig.Using.SpotStrategy),
 		DestinationResource: tea.String("InstanceType"),
-		InstanceType:        tea.String(aliyun.AliyunConfig.Using.InstanceType),
+		InstanceType:        tea.String(instanceType),
 	})
 
 	if err != nil {
