@@ -88,7 +88,12 @@ func GetClaimsFromToken(headerToken string) (jwt.MapClaims, *errors.CustomErr) {
 func GetPayloadFromToken(headerToken string) (*JWTPayload, *errors.CustomErr) {
 	claims, customErr := GetClaimsFromToken(headerToken)
 
-	payloadData := claims["payload"].(map[string]any)
+	payloadData, cast := claims["payload"].(map[string]any)
+
+	if !cast {
+		return nil, errors.ServerError(fmt.Errorf("cannot get payload"))
+	}
+
 	payload := JWTPayload{}
 
 	marshaled, err := json.Marshal(payloadData)
