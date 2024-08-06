@@ -7,7 +7,7 @@ import (
 
 func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errors.CustomErr {
 	conn := GetDBConn()
-	token := ctx.GetHeader("Token")
+	token := ctx.GetHeader("Authorization")
 	payload, err := GetPayloadFromToken(token)
 
 	if err != nil {
