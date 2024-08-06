@@ -31,7 +31,7 @@ func HandleCreateInstance(ctx *gin.Context) *errors.CustomErr {
 	if zoneId == "" {
 		log.Printf("Warn: primary instance type [%v] is not available across the region.\n", conf.Using.InstanceType)
 
-		if conf.Using.AltInstanceType != "" {
+		if conf.Using.AltInstanceType == "" {
 			log.Println("Warn: no alternative instance type configured.")
 			return errors.OperationNotApplied()
 		}
