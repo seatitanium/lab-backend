@@ -7,11 +7,21 @@ import (
 
 func WriteManualEcsRecord(ctx *gin.Context, instanceId string, actionType string, force bool) *errors.CustomErr {
 	conn := GetDBConn()
-	token := ctx.GetHeader("Authorization")
-	payload, err := GetPayloadFromToken(token)
 
-	if err != nil {
-		return err
+	var payload *JWTPayload
+	var customErr *errors.CustomErr
+
+	if !VerifyServerSecretCtx(ctx) {
+		payload, customErr = GetPayloadFromToken(ctx.GetHeader("Authorization"))
+
+		if customErr != nil {
+			return customErr
+		}
+	} else {
+		payload = &JWTPayload{
+			Username:  "server",
+			UpdatedAt: "",
+		}
 	}
 
 	if force {
