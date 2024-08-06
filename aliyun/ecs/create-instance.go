@@ -41,10 +41,11 @@ func CreateInstance(zoneId string, conf *aliyun.AliyunConf) (*aliyun.CreatedInst
 
 	request.DataDisk = []*ecs.CreateInstanceRequestDataDisk{
 		{
-			DiskName:         tea.String(conf.Using.DataDisk.DiskName),
-			Category:         tea.String(conf.Using.DataDisk.Category),
-			Size:             tea.Int32(conf.Using.DataDisk.Size),
-			PerformanceLevel: tea.String(conf.Using.SystemDisk.PerformanceLevel),
+			DiskName:           tea.String(conf.Using.DataDisk.DiskName),
+			Category:           tea.String(conf.Using.DataDisk.Category),
+			Size:               tea.Int32(conf.Using.DataDisk.Size),
+			PerformanceLevel:   tea.String(conf.Using.SystemDisk.PerformanceLevel),
+			DeleteWithInstance: tea.Bool(true),
 		},
 	}
 
