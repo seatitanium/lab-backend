@@ -95,6 +95,7 @@ func GetPeakOnlineHistory() (*SnapshotOnlinePlayers, *errors.CustomErr) {
 	for i, snapshot := range snapshots {
 		if snapshot.Count > maximumCount {
 			maximumIndex = i
+			maximumCount = snapshot.Count
 		}
 	}
 
